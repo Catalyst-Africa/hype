@@ -100,6 +100,7 @@ const InputContainer = styled.div`
 `;
 
 const HelperText = styled.small`
+  margin-top: 10px;
   display: inline-block;
   color: ${({ type, theme }) =>
     type === "error"
@@ -112,4 +113,6 @@ const HelperText = styled.small`
 const Label = styled.label`
   font-size: 14px;
   font-weight: 700;
+  margin-bottom: 8px;
+  display: inline-block;
 `;
