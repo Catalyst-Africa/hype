@@ -86,13 +86,13 @@ export const Button = styled.button`
   justify-content: center;
   align-items: center;
   gap: 8px;
-  border-radius: 12px;
+  border-radius: 4px;
   padding: 0px 8px;
   min-width: 100px;
   width: ${({ fullWidth }) => (fullWidth ? "100%" : null)};
   min-height: 40px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 700;
   transition: ease-in 0.3s;
 
   ${({ $type }) => {
