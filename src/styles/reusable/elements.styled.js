@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 
 export const Container = styled.section`
   width: 100%;
-  max-width: 1440px;
+  max-width: ${({ fullWidth }) => (fullWidth ? "100%" : "1440px")};
   padding: 24px;
 `;
 
@@ -89,6 +89,7 @@ export const Button = styled.button`
   border-radius: 12px;
   padding: 0px 8px;
   min-width: 100px;
+  width: ${({ fullWidth }) => (fullWidth ? "100%" : null)};
   min-height: 40px;
   font-size: 14px;
   font-weight: 500;
@@ -100,32 +101,33 @@ export const Button = styled.button`
         return css``;
       case "outlined":
         return css`
-          color: ${({ theme, $disabled }) =>
-            $disabled ? "rgba(28, 27, 31, 0.38)" : theme.color.main.default};
+          color: ${({ theme, disabled }) =>
+            disabled ? "rgba(28, 27, 31, 0.38)" : theme.color.main.default};
           border: 1px solid
-            ${({ theme, $disabled }) =>
-              $disabled ? "#CAC4D0" : theme.color.main.default};
+            ${({ theme, disabled }) =>
+              disabled ? "#CAC4D0" : theme.color.main.default};
 
           &:hover,
           &:active,
           &:focus {
-            background: ${({ theme, $disabled }) =>
-              $disabled ? "none" : theme.color.main["50"]};
+            background: ${({ theme, disabled }) =>
+              disabled ? "none" : theme.color.main["50"]};
           }
         `;
       default:
         return css`
-          background: ${({ theme, $disabled }) =>
-            $disabled ? "rgba(28, 27, 31, 0.12)" : theme.color.main.default};
-          color: ${({ $disabled }) => ($disabled ? "rgba(28, 27, 31, 0.38)" : "#fff")}; 
+          background: ${({ theme, disabled }) =>
+            disabled ? "rgba(28, 27, 31, 0.12)" : theme.color.main.default};
+          color: ${({ disabled }) =>
+            disabled ? "rgba(28, 27, 31, 0.38)" : "#fff"};
 
           &:hover {
             box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
               0px 1px 3px 1px rgba(0, 0, 0, 0.15);
           }
           &:active {
-            background: ${({ theme, $disabled }) =>
-              $disabled ? "rgba(28, 27, 31, 0.12)" : theme.color.main["200"]};
+            background: ${({ theme, disabled }) =>
+              disabled ? "rgba(28, 27, 31, 0.12)" : theme.color.main["200"]};
           }
         `;
     }
