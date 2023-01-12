@@ -22,11 +22,7 @@ export default Layout;
 const Main = styled.main`
   width: 100%;
   height: calc(100vh - 61px);
-
-  ${Container} {
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
