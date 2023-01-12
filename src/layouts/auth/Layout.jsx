@@ -7,12 +7,12 @@ import { Container } from "@/styles/reusable/elements.styled";
 const Layout = () => {
   return (
     <>
-      <Header />
-      <Main>
-        <Container>
+      <Container>
+        <Header />
+        <Main>
           <Outlet />
-        </Container>
-      </Main>
+        </Main>
+      </Container>
     </>
   );
 };
