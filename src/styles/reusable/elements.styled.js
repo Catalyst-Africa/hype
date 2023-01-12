@@ -133,3 +133,18 @@ export const Button = styled.button`
     }
   }}
 `;
+
+// Resizes based on device scrren size, very fluid
+
+export const FluidTitle = styled.h1`
+  color: ${({ color }) => (color ? color : "black")};
+  font-size: 4.8vw;
+  font-weight: ${({ $weight }) => ($weight ? $weight : "700")};
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  ${({ theme }) => theme.breakpoints.up("sm")} {
+    font-size: ${(props) => (props.$size ? props.$size : "24px")};
+  }
+`;
