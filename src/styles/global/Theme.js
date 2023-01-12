@@ -1,3 +1,6 @@
+// Nospacing method was created, however, spacing happen in ${4} according to the figma design.
+// What I mean is, 4 x 1 = 4px, 4 x 2 = 8px, 4 x 4 = 16px and so on
+
 export const breakpoints = {
   xs: 480,
   sm: 767,
@@ -45,8 +48,58 @@ export const breakpoints = {
 
 export const light = {
   breakpoints: breakpoints,
+  color: {
+    black: "#020202",
+    white: "#FBFFFD",
+    error: "#FF0000",
+    success: "#2A8F27",
+    main: {
+      default: "#F69D00",
+      900: "#672700",
+      800: "#7C3900",
+      700: "#934C00",
+      600: "#AB6000",
+      500: "#C37400",
+      400: "#DC8800",
+      300: "#F69D00",
+      200: "#FFB328",
+      100: "#FFC942",
+      50: "#FFDF59",
+    },
+    secondary: {
+      default: "#D6313D",
+      900: "#8A000A",
+      800: "#A3001B",
+      700: "#BC0F2C",
+      600: "#D6313D",
+      500: "#EF4A50",
+      400: "#FF6263",
+      300: "#FF7977",
+      200: "#FF908C",
+      100: "#FFA7A1",
+      50: "#FFBEB6",
+    },
+    tertiary: {
+      default: "#4ADCD3",
+      900: "#004742",
+      800: "#005A55",
+      700: "#006E68",
+      600: "#00837C",
+      500: "#009891",
+      400: "#00AEA6",
+      300: "#26C4BB",
+      200: "#49DBD2",
+      100: "#65F2E8",
+      50: "#7EFFFF",
+    },
+  },
 };
 
 export const dark = {
   breakpoints: breakpoints,
+  color: {
+    main: {},
+    secondary: {},
+    tertiary: {},
+  },
 };
