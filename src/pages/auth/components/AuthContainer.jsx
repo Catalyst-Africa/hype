@@ -18,9 +18,12 @@ const FormContainer = styled.div`
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
     0px 1px 3px 1px rgba(0, 0, 0, 0.15);
   border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+
+  > form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
 
   ${({ theme }) => theme.breakpoints.down("xs")} {
     padding: 24px 24px;

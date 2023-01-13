@@ -14,13 +14,13 @@ const InputGroup = ({
   return (
     <div>
       {label && <Label>{label}</Label>}
-      <InputContainer type={helperTextType} $disabled={disabled}>
+      <InputContainer $type={helperTextType} $disabled={disabled}>
         {startIcon && startIcon}
         <input {...props} readOnly={disabled ? true : false} />
         {endIcon && endIcon}
       </InputContainer>
       {helperText && (
-        <HelperText type={helperTextType}>{helperText}</HelperText>
+        <HelperText $type={helperTextType}>{helperText}</HelperText>
       )}
     </div>
   );
@@ -43,8 +43,8 @@ const InputContainer = styled.div`
   display: flex;
   align-items: center;
 
-  ${({ type }) => {
-    switch (type) {
+  ${({ $type }) => {
+    switch ($type) {
       case "error":
         return css`
           border: 1px solid ${({ theme }) => theme.color.error};
@@ -63,8 +63,8 @@ const InputContainer = styled.div`
   &:hover {
     border: 1px solid rgba(36, 24, 24, 0.8);
 
-    ${({ type }) => {
-      switch (type) {
+    ${({ $type }) => {
+      switch ($type) {
         case "error":
           return css`
             border: 1px solid ${({ theme }) => theme.color.error};
@@ -102,10 +102,10 @@ const InputContainer = styled.div`
 const HelperText = styled.small`
   margin-top: 10px;
   display: inline-block;
-  color: ${({ type, theme }) =>
-    type === "error"
+  color: ${({ $type, theme }) =>
+    $type === "error"
       ? theme.color.error
-      : type === "success"
+      : $type === "success"
       ? theme.color.success
       : "initial"};
 `;
