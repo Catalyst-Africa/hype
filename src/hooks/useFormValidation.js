@@ -83,10 +83,18 @@ const useFormValidation = (data, validation) => {
       return false;
     }
   };
+
+  const checkIsValid = (field) => {
+    if (field in errors) {
+      return errors[field] === undefined ? "success" : "error";
+    }
+  };
+
   //  Returns the necessary data
   return {
     formData,
     errors,
+    checkIsValid,
     handleChange,
     handleBlur,
     validateOnSubmit,
