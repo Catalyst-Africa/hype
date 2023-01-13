@@ -12,7 +12,6 @@ const OtpForm = () => {
   const [addClassName, setAddClassName] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
 
-  console.log(otp.length);
   useEffect(() => {
     if (otp === "1010") {
       setIsVerified(true);
@@ -25,7 +24,7 @@ const OtpForm = () => {
     <>
       <AuthContainer>
         {isVerified ? (
-          <>
+          <div>
             <div style={{ textAlign: "center" }}>
               <img src={verifiedicon} alt="verified-icon" />
               <br />
@@ -34,9 +33,9 @@ const OtpForm = () => {
               <Legend>We have successfully verified your email address</Legend>
             </div>
             <Button $fullWidth>Continue</Button>
-          </>
+          </div>
         ) : (
-          <>
+          <div>
             <div style={{ textAlign: "center" }}>
               <img src={verifyicon} alt="verify-icon" />
               <br />
@@ -61,7 +60,7 @@ const OtpForm = () => {
                 <strong>Didn’t receive a code?</strong> Resend
               </small>
             </div>
-          </>
+          </div>
         )}
       </AuthContainer>
     </>
