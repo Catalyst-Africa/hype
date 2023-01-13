@@ -6,25 +6,25 @@ import { InputGroup } from "@/components/ui";
 import { Button, FluidTitle } from "@/styles/reusable/elements.styled";
 import googleIcon from "@/assets/icons/google.svg";
 
-const LoginForm = () => {
+const SignUpForm = () => {
   return (
     <>
       <AuthContainer>
         <div style={{ textAlign: "center" }}>
-          <FluidTitle>Welcome Back!</FluidTitle>
+          <FluidTitle>Let's get you started</FluidTitle>
         </div>
         <GoogleAuthButton $type="outlined">
           <img src={googleIcon} alt="" />
           Continue with Google
         </GoogleAuthButton>
         <Fieldset>
-          <legend>or Sign in with email</legend>
+          <legend>or Sign up with email</legend>
         </Fieldset>
         <InputGroup
           type="email"
           id="email"
           label="Email address"
-          placeholder="Email address"
+          placeholder="This is a text field"
         />
         <InputGroup
           type="password"
@@ -33,11 +33,17 @@ const LoginForm = () => {
           placeholder="Enter Password"
           endIcon={<AiOutlineEye />}
         />
-        <strong>Forgot password?</strong>
-        <Button $fullWidth>Log In</Button>
+        <Button $fullWidth>Create account</Button>
         <div style={{ textAlign: "center" }}>
           <small>
-            <strong>New to Hype?</strong> Sign Up here
+            By continuing, you’re agreeing to our
+            <strong> Terms of services</strong> and
+            <strong> Privacy policy</strong>
+            <br />
+            <br />
+          </small>
+          <small>
+            <strong>Already have an account?</strong> Sign In here
           </small>
         </div>
       </AuthContainer>
@@ -45,7 +51,7 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default SignUpForm;
 
 const GoogleAuthButton = styled(Button)`
   border: 1px solid lightgrey;
