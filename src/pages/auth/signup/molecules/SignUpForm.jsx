@@ -15,7 +15,7 @@ const SignUpForm = () => {
     email: "",
     password: "",
   };
-  const { errors, handleBlur, checkIsValid } = useFormValidation(
+  const { errors, handleBlur, handleChange, checkIsValid } = useFormValidation(
     initialData,
     validation,
   );
@@ -36,6 +36,7 @@ const SignUpForm = () => {
             label="Email address"
             placeholder="Email address"
             onBlur={(e) => handleBlur(e)}
+            onChange={(e) => handleChange(e)}
             helperText={errors.email}
             helperTextType={checkIsValid("email")}
           />
@@ -52,6 +53,7 @@ const SignUpForm = () => {
               )
             }
             onBlur={(e) => handleBlur(e)}
+            onChange={(e) => handleChange(e)}
             helperText={errors.password}
             helperTextType={checkIsValid("password")}
           />

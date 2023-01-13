@@ -15,7 +15,7 @@ const LoginForm = () => {
     email: "",
     password: "",
   };
-  const { errors, handleBlur, checkIsValid, validateOnSubmit } =
+  const { errors, handleBlur, handleChange, checkIsValid, validateOnSubmit } =
     useFormValidation(initialData, validation);
 
   return (
@@ -34,11 +34,12 @@ const LoginForm = () => {
             label="Email address"
             placeholder="Email address"
             onBlur={(e) => handleBlur(e)}
+            onChange={(e) => handleChange(e)}
             helperText={errors.email}
             helperTextType={checkIsValid("email")}
           />
           <InputGroup
-            type="password"
+            type={passwordType ? "password" : "text"}
             id="password"
             label="Password"
             placeholder="Enter Password"
@@ -50,6 +51,7 @@ const LoginForm = () => {
               )
             }
             onBlur={(e) => handleBlur(e)}
+            onChange={(e) => handleChange(e)}
             helperText={errors.password}
             helperTextType={checkIsValid("password")}
           />
