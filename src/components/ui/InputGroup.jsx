@@ -12,7 +12,7 @@ const InputGroup = ({
   ...props
 }) => {
   return (
-    <>
+    <div>
       {label && <Label>{label}</Label>}
       <InputContainer type={helperTextType} $disabled={disabled}>
         {startIcon && startIcon}
@@ -22,7 +22,7 @@ const InputGroup = ({
       {helperText && (
         <HelperText type={helperTextType}>{helperText}</HelperText>
       )}
-    </>
+    </div>
   );
 };
 
@@ -35,7 +35,7 @@ const InputContainer = styled.div`
     $disabled ? "rgba(212, 212, 212, 1)" : "transparent"};
   border: 1px solid
     ${({ $disabled }) => ($disabled ? "none" : "rgba(212, 212, 212, 1)")};
-  border-radius: 4px;
+  border-radius: 8px;
   outline: none;
   padding: 0px 12px;
   gap: 12px;
@@ -87,7 +87,7 @@ const InputContainer = styled.div`
     outline: none;
     width: 100%;
     display: flex;
-    font-size: 12px;
+    font-size: 14px;
   }
 
   span {
