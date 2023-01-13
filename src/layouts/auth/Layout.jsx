@@ -1,14 +1,12 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 
-import Header from "@/layouts/auth/partials/Header";
 import { Container } from "@/styles/reusable/elements.styled";
 
 const Layout = () => {
   return (
     <>
       <Container>
-        <Header />
         <Main>
           <Outlet />
         </Main>

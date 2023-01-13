@@ -4,6 +4,7 @@ export const Container = styled.section`
   width: 100%;
   max-width: ${({ fullWidth }) => (fullWidth ? "100%" : "1440px")};
   padding: 24px;
+  margin: auto;
 `;
 
 export const Title = styled.h1`
@@ -85,8 +86,8 @@ export const Button = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  border-radius: 4px;
+  gap: 12px;
+  border-radius: 6px;
   padding: 0px 8px;
   min-width: 100px;
   width: ${({ fullWidth }) => (fullWidth ? "100%" : null)};
@@ -94,6 +95,10 @@ export const Button = styled.button`
   font-size: 14px;
   font-weight: 700;
   transition: ease-in 0.3s;
+
+  ${({ $elevated }) =>
+    $elevated &&
+    "box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15)"}
 
   ${({ $type }) => {
     switch ($type) {
@@ -140,9 +145,6 @@ export const FluidTitle = styled.h1`
   color: ${({ color }) => (color ? color : "black")};
   font-size: 4.8vw;
   font-weight: ${({ $weight }) => ($weight ? $weight : "700")};
-  display: flex;
-  gap: 12px;
-  align-items: center;
 
   ${({ theme }) => theme.breakpoints.up("sm")} {
     font-size: ${(props) => (props.$size ? props.$size : "24px")};
