@@ -19,7 +19,8 @@ const FormContainer = styled.div`
     0px 1px 3px 1px rgba(0, 0, 0, 0.15);
   border-radius: 12px;
 
-  > form {
+  > form,
+  > div {
     display: flex;
     flex-direction: column;
     gap: 24px;
