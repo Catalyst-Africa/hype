@@ -1,7 +1,7 @@
-import OtpForm from "@/pages/auth/verifyEmail/molecules/OtpForm";
+import VerifyEmailForm from "@/pages/auth/verifyEmail/molecules/VerifyEmailForm";
 
 const index = () => {
-  return <OtpForm />;
+  return <VerifyEmailForm />;
 };
 
 export default index;

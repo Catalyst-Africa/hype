@@ -10,7 +10,7 @@ const AuthHeader = ({ title }) => {
       <div style={{ textAlign: "center" }}>
         <FluidTitle>{title}</FluidTitle>
       </div>
-      <GoogleAuthButton $type="outlined">
+      <GoogleAuthButton type="button" $type="outlined">
         <img src={googleIcon} alt="" />
         Continue with Google
       </GoogleAuthButton>
