@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDrWHVwNJEosfYSYXjE_9exVH8X1JiNrqc",
@@ -14,8 +15,9 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+export const auth = getAuth(app);
 
 export const actionCodeSettings = {
-  url: "https://project-artemis.netlify.app/auth/login",
+  url: "https://hype-dev.netlify.app/login",
   handleCodeInApp: true,
 };
