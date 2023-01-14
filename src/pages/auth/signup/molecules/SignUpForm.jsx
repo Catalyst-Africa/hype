@@ -28,6 +28,7 @@ const SignUpForm = () => {
             e.preventDefault();
             validateOnSubmit();
           }}
+          autoComplete="off"
         >
           <AuthHeader title="Let's get you started" />
           <InputGroup

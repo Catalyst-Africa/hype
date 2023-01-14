@@ -16,6 +16,7 @@ const VerifyEmail = () => {
               <br />
               <br />
               <FluidTitle>Email Verification Successful!</FluidTitle>
+              <br />
               <Message>
                 We have successfully verified your email address
               </Message>
@@ -50,7 +51,6 @@ const VerifyEmail = () => {
 export default VerifyEmail;
 
 const Message = styled.span`
-  padding: 16px 16px;
   color: #4b4b4b;
 `;
 
