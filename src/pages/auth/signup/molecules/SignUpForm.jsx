@@ -15,10 +15,8 @@ const SignUpForm = () => {
     email: "",
     password: "",
   };
-  const { errors, handleBlur, handleChange, checkIsValid } = useFormValidation(
-    initialData,
-    validation,
-  );
+  const { errors, handleBlur, handleChange, checkIsValid, validateOnSubmit } =
+    useFormValidation(initialData, validation);
 
   return (
     <>
