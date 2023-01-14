@@ -20,6 +20,6 @@ const appSlice = createSlice({
   },
 });
 
-export const { changeTheme, setIsLoggedIn } = appSlice.actions;
+export const { updateTheme, updateAuth } = appSlice.actions;
 
 export default appSlice.reducer;
