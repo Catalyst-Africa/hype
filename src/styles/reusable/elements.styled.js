@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { spin } from "@/styles/reusable/animations.styled";
 
 export const Container = styled.section`
   width: 100%;
@@ -95,6 +96,7 @@ export const Button = styled.button`
   font-size: 14px;
   font-weight: 700;
   transition: ease-in 0.3s;
+  cursor: pointer;
 
   ${({ $elevated }) =>
     $elevated &&
@@ -149,4 +151,15 @@ export const FluidTitle = styled.h1`
   ${({ theme }) => theme.breakpoints.up("sm")} {
     font-size: ${(props) => (props.$size ? props.$size : "24px")};
   }
+`;
+
+// This is a spinning loader, inline by default, to use the overlay Loader, you can checkout the OverlayLoader in src/components/ui
+
+export const Loader = styled.div`
+  width: 28px;
+  height: 28px;
+  border: 5px solid ${({ theme }) => theme.color.main.default};
+  border-radius: 50%;
+  border-top: 5px solid ${({ theme }) => theme.color.main["50"]};
+  animation: ${spin} 1s linear infinite;
 `;
