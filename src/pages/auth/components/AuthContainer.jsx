@@ -13,8 +13,8 @@ export default AuthContainer;
 
 const FormContainer = styled.div`
   width: 100%;
-  max-width: 500px;
-  padding: 24px 40px;
+  max-width: 450px;
+  padding: 24px 32px;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
     0px 1px 3px 1px rgba(0, 0, 0, 0.15);
   border-radius: 12px;

@@ -7,17 +7,21 @@ import App from "./App";
 import { ScrollToTop } from "@/components/functional";
 import CustomThemeProvider from "@/context/CustomThemeProvider";
 import GlobalStyles from "@/styles/global/Global.styled";
+import { store } from "@/setup/store/store";
+import { Provider } from "react-redux";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <CustomThemeProvider>
-      <GlobalStyles />
-      <Router>
-        <ScrollToTop />
-        <IconContext.Provider value={{ size: "24px" }}>
-          <App />
-        </IconContext.Provider>
-      </Router>
-    </CustomThemeProvider>
+    <Provider store={store}>
+      <CustomThemeProvider>
+        <GlobalStyles />
+        <Router>
+          <ScrollToTop />
+          <IconContext.Provider value={{ size: "24px" }}>
+            <App />
+          </IconContext.Provider>
+        </Router>
+      </CustomThemeProvider>
+    </Provider>
   </React.StrictMode>,
 );

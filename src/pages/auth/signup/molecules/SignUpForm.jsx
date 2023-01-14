@@ -15,10 +15,8 @@ const SignUpForm = () => {
     email: "",
     password: "",
   };
-  const { errors, handleBlur, checkIsValid } = useFormValidation(
-    initialData,
-    validation,
-  );
+  const { errors, handleBlur, handleChange, checkIsValid, validateOnSubmit } =
+    useFormValidation(initialData, validation);
 
   return (
     <>
@@ -28,6 +26,7 @@ const SignUpForm = () => {
             e.preventDefault();
             validateOnSubmit();
           }}
+          autoComplete="off"
         >
           <AuthHeader title="Let's get you started" />
           <InputGroup
@@ -36,6 +35,7 @@ const SignUpForm = () => {
             label="Email address"
             placeholder="Email address"
             onBlur={(e) => handleBlur(e)}
+            onChange={(e) => handleChange(e)}
             helperText={errors.email}
             helperTextType={checkIsValid("email")}
           />
@@ -52,6 +52,7 @@ const SignUpForm = () => {
               )
             }
             onBlur={(e) => handleBlur(e)}
+            onChange={(e) => handleChange(e)}
             helperText={errors.password}
             helperTextType={checkIsValid("password")}
           />
