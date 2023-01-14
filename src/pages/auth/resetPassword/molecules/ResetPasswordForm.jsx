@@ -51,7 +51,7 @@ const ResetPasswordForm = () => {
 
           <InputGroup
             type={passwordType ? "password" : "text"}
-            id="password"
+            id="confirm_password"
             label="Confirm Password"
             placeholder="Confirm Password"
             endIcon={
@@ -63,7 +63,7 @@ const ResetPasswordForm = () => {
             }
             onBlur={(e) => handleBlur(e)}
             onChange={(e) => handleChange(e)}
-            helperText={errors.password}
+            helperText={errors.confirm_password}
             helperTextType={checkIsValid("confirm_password")}
           />
           <Button $fullWidth>Reset Password</Button>
