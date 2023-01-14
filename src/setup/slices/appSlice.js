@@ -10,10 +10,10 @@ const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    changeTheme: (state, action) => {
+    updateTheme: (state, action) => {
       state.theme = action.payload;
     },
-    setIsLoggedIn: (state, action) => {
+    updateAuth: (state, action) => {
       state.isLoggedIn = action.payload;
       state.loading = false;
     },

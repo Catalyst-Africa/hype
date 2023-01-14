@@ -7,7 +7,7 @@ import publicRoutes from "@/routes/PublicRoutes";
 import privateRoutes from "@/routes/PrivateRoutes";
 
 import { auth } from "@/setup/firebase/firebase";
-import { setIsLoggedIn } from "@/setup/slices/appSlice";
+import { updateAuth } from "@/setup/slices/appSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { OverlayLoader } from "@/components/ui";
 
@@ -17,8 +17,8 @@ const App = () => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if (user) dispatch(setIsLoggedIn(true));
-      else dispatch(setIsLoggedIn(false));
+      if (user) dispatch(updateAuth(true));
+      else dispatch(updateAuth(false));
     });
   }, []);
 
