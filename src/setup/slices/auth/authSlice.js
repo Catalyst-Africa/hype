@@ -7,6 +7,8 @@ import {
   verifyEmail,
   signIn,
   signOutUser,
+  forgotPassword,
+  resetPassword,
 } from "@/handlers/auth/auth";
 
 const initialState = {
@@ -51,6 +53,22 @@ export const handleSignin = createAsyncThunk(
 export const handleSignout = createAsyncThunk("auth/signout", async (auth) => {
   await signOutUser(auth);
 });
+
+export const handleForgotPassword = createAsyncThunk(
+  "auth/forgotPassword",
+  async (email) => {
+    await forgotPassword(email);
+  },
+);
+
+export const handleResetPassword = createAsyncThunk(
+  "auth/resetPassword",
+  async (data) => {
+    console.log("boy");
+    const response = await resetPassword(data);
+    console.log(response);
+  },
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -101,6 +119,24 @@ const authSlice = createSlice({
         state.loading = false;
       })
       .addCase(handleSignin.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(handleForgotPassword.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(handleForgotPassword.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(handleForgotPassword.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(handleResetPassword.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(handleResetPassword.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(handleResetPassword.rejected, (state) => {
         state.loading = false;
       });
   },
