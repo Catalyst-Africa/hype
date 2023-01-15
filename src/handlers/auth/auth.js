@@ -5,6 +5,7 @@ import {
   GoogleAuthProvider,
   applyActionCode,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { toast } from "react-hot-toast";
@@ -79,10 +80,18 @@ export const sendEmailVerificationLink = async () => {
 export const verifyEmail = async (oobCode) => {
   try {
     await applyActionCode(auth, oobCode);
-    toast.success("Email verified successfully!");
+
     window.location.href = "/email-verification";
   } catch (err) {
-    console.log(err.message);
+    toast.error(extractErrorMessage(err.message));
+  }
+};
+
+export const signOutUser = async (auth) => {
+  try {
+    await signOut(auth);
+    toast.success("Successfully signed out");
+  } catch (err) {
     toast.error(extractErrorMessage(err.message));
   }
 };

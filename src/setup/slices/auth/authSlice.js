@@ -1,10 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
 import {
   signInWithGoogle,
   signupUser,
   sendEmailVerificationLink,
   verifyEmail,
   signIn,
+  signOutUser,
 } from "@/handlers/auth/auth";
 
 const initialState = {
@@ -14,42 +16,41 @@ const initialState = {
 export const handleGoogleAuth = createAsyncThunk(
   "auth/signinWithGoogle",
   async () => {
-    const response = await signInWithGoogle();
-    return response.data;
+    await signInWithGoogle();
   },
 );
 
 export const handleSignup = createAsyncThunk(
   "auth/signup",
   async (formData) => {
-    const response = await signupUser(formData);
-    return response.data;
+    await signupUser(formData);
   },
 );
 
 export const handleEmailVerificationLink = createAsyncThunk(
   "auth/sendEmailVerifcationLink",
   async () => {
-    const response = await sendEmailVerificationLink();
-    return response.data;
+    await sendEmailVerificationLink();
   },
 );
 
 export const handleEmailVerification = createAsyncThunk(
   "auth/emailVerification",
   async (oobCode) => {
-    const response = await verifyEmail(oobCode);
-    return response.data;
+    await verifyEmail(oobCode);
   },
 );
 
 export const handleSignin = createAsyncThunk(
   "auth/signin",
   async (formData) => {
-    const response = await signIn(formData);
-    return response.data;
+    await signIn(formData);
   },
 );
+
+export const handleSignout = createAsyncThunk("auth/signout", async (auth) => {
+  await signOutUser(auth);
+});
 
 const authSlice = createSlice({
   name: "auth",

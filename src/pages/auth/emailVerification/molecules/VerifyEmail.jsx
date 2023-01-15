@@ -1,6 +1,5 @@
-import { useSearchParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { toast } from "react-hot-toast";
 import styled from "styled-components";
 
 import AuthContainer from "@/pages/auth/components/AuthContainer";
@@ -9,22 +8,14 @@ import verifyicon from "@/assets/verify.svg";
 import verifiedicon from "@/assets/verified.svg";
 import {
   handleEmailVerificationLink,
-  handleEmailVerification,
+  handleSignout,
 } from "@/setup/slices/auth/authSlice";
-import { useEffect } from "react";
+import { auth } from "@/setup/firebase/firebase";
 
 const VerifyEmail = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.user.loading);
   const emailVerified = useSelector((state) => state.user.emailVerified);
-  const [searchParams] = useSearchParams();
-  const { oobCode } = Object.fromEntries([...searchParams]);
-
-  // useEffect(() => {
-  //   if (oobCode) {
-  //     dispatch(handleEmailVerification(oobCode));
-  //   }
-  // }, []);
 
   return (
     <>
@@ -44,7 +35,10 @@ const VerifyEmail = () => {
                   We have successfully verified your email address
                 </Message>
               </div>
-              <Button $fullWidth>Continue</Button>
+
+              <Button $fullWidth onClick={() => dispatch(handleSignout(auth))}>
+                Continue
+              </Button>
             </VerifiedEmailContainer>
           )
         ) : (
@@ -72,6 +66,13 @@ const VerifyEmail = () => {
             >
               {loading ? <Loader /> : "Resend Verification Link"}
             </Button>
+            <Button
+              $type="outlined"
+              type="button"
+              onClick={() => dispatch(handleSignout(auth))}
+            >
+              Sign Out
+            </Button>
           </VerifyEmailContainer>
         )}
       </AuthContainer>
@@ -85,5 +86,10 @@ const Message = styled.span`
   color: #4b4b4b;
 `;
 
-const VerifiedEmailContainer = styled.div``;
+const VerifiedEmailContainer = styled.div`
+  a {
+    width: 100%;
+    color: #fff;
+  }
+`;
 const VerifyEmailContainer = styled.div``;
