@@ -78,7 +78,6 @@ export const sendEmailVerificationLink = async () => {
     await sendEmailVerification(auth.currentUser);
     toast.success("Verification link resent to your email");
   } catch (err) {
-    console.log(err.message);
     toast.error(extractErrorMessage(err.message));
   }
 };

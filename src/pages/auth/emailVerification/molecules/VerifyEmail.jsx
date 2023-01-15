@@ -14,33 +14,29 @@ import { auth } from "@/setup/firebase/firebase";
 
 const VerifyEmail = () => {
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.user.loading);
+  const loading = useSelector((state) => state.auth.loading);
   const emailVerified = useSelector((state) => state.user.emailVerified);
 
   return (
     <>
       <AuthContainer>
         {emailVerified ? (
-          loading ? (
-            <Loader />
-          ) : (
-            <VerifiedEmailContainer>
-              <div style={{ textAlign: "center" }}>
-                <img src={verifiedicon} alt="verified-icon" />
-                <br />
-                <br />
-                <FluidTitle>Email Verification Successful!</FluidTitle>
-                <br />
-                <Message>
-                  We have successfully verified your email address
-                </Message>
-              </div>
+          <VerifiedEmailContainer>
+            <div style={{ textAlign: "center" }}>
+              <img src={verifiedicon} alt="verified-icon" />
+              <br />
+              <br />
+              <FluidTitle>Email Verification Successful!</FluidTitle>
+              <br />
+              <Message>
+                We have successfully verified your email address
+              </Message>
+            </div>
 
-              <Button $fullWidth onClick={() => dispatch(handleSignout(auth))}>
-                Continue
-              </Button>
-            </VerifiedEmailContainer>
-          )
+            <Button $fullWidth onClick={() => dispatch(handleSignout(auth))}>
+              Continue
+            </Button>
+          </VerifiedEmailContainer>
         ) : (
           <VerifyEmailContainer>
             <div style={{ textAlign: "center" }}>
