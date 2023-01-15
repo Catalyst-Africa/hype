@@ -27,7 +27,7 @@ const App = () => {
         );
       } else dispatch(updateAuth(false));
     });
-  }, []);
+  }, [auth]);
 
   if (loading) {
     return <OverlayLoader />;

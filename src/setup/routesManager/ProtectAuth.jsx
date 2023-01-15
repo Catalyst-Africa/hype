@@ -3,8 +3,12 @@ import { useSelector } from "react-redux";
 
 const ProtectAuth = () => {
   const isLoggedIn = useSelector((state) => state.app.isLoggedIn);
+  const emailVerified = useSelector((state) => state.user.emailVerified);
 
-  return isLoggedIn ? <Navigate to="/dashboard" /> : <Outlet />;
+  if (isLoggedIn)
+    if (!emailVerified) return <Navigate to="/email-verification" />;
+    else return <Navigate to="/dashboard" />;
+  else return <Outlet />;
 };
 
 export default ProtectAuth;
