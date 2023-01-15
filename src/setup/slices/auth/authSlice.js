@@ -1,10 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
 import {
   signInWithGoogle,
   signupUser,
   sendEmailVerificationLink,
   verifyEmail,
   signIn,
+  signOutUser,
+  forgotPassword,
+  resetPassword,
 } from "@/handlers/auth/auth";
 
 const initialState = {
@@ -14,40 +18,55 @@ const initialState = {
 export const handleGoogleAuth = createAsyncThunk(
   "auth/signinWithGoogle",
   async () => {
-    const response = await signInWithGoogle();
-    return response.data;
+    await signInWithGoogle();
   },
 );
 
 export const handleSignup = createAsyncThunk(
   "auth/signup",
   async (formData) => {
-    const response = await signupUser(formData);
-    return response.data;
+    await signupUser(formData);
   },
 );
 
 export const handleEmailVerificationLink = createAsyncThunk(
   "auth/sendEmailVerifcationLink",
   async () => {
-    const response = await sendEmailVerificationLink();
-    return response.data;
+    await sendEmailVerificationLink();
   },
 );
 
 export const handleEmailVerification = createAsyncThunk(
   "auth/emailVerification",
   async (oobCode) => {
-    const response = await verifyEmail(oobCode);
-    return response.data;
+    await verifyEmail(oobCode);
   },
 );
 
 export const handleSignin = createAsyncThunk(
   "auth/signin",
   async (formData) => {
-    const response = await signIn(formData);
-    return response.data;
+    await signIn(formData);
+  },
+);
+
+export const handleSignout = createAsyncThunk("auth/signout", async (auth) => {
+  await signOutUser(auth);
+});
+
+export const handleForgotPassword = createAsyncThunk(
+  "auth/forgotPassword",
+  async (email) => {
+    await forgotPassword(email);
+  },
+);
+
+export const handleResetPassword = createAsyncThunk(
+  "auth/resetPassword",
+  async (data) => {
+    console.log("boy");
+    const response = await resetPassword(data);
+    console.log(response);
   },
 );
 
@@ -100,6 +119,24 @@ const authSlice = createSlice({
         state.loading = false;
       })
       .addCase(handleSignin.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(handleForgotPassword.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(handleForgotPassword.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(handleForgotPassword.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(handleResetPassword.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(handleResetPassword.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(handleResetPassword.rejected, (state) => {
         state.loading = false;
       });
   },

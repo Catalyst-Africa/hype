@@ -5,6 +5,9 @@ import {
   GoogleAuthProvider,
   applyActionCode,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  confirmPasswordReset,
+  signOut,
 } from "firebase/auth";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { toast } from "react-hot-toast";
@@ -39,10 +42,12 @@ export const signInWithGoogle = async () => {
   }
 };
 
+//  Sign Up User
+
 export const signupUser = async (formData) => {
-  // Destructure details needed from the form data received
-  const { email, password } = formData;
   try {
+    // Destructure details needed from the form data received
+    const { email, password } = formData;
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
@@ -66,32 +71,47 @@ export const signupUser = async (formData) => {
   }
 };
 
+//  Send Email Verification Link
+
 export const sendEmailVerificationLink = async () => {
   try {
     await sendEmailVerification(auth.currentUser);
     toast.success("Verification link resent to your email");
   } catch (err) {
-    console.log(err.message);
     toast.error(extractErrorMessage(err.message));
   }
 };
+
+// Verify Email
 
 export const verifyEmail = async (oobCode) => {
   try {
     await applyActionCode(auth, oobCode);
-    toast.success("Email verified successfully!");
+
     window.location.href = "/email-verification";
   } catch (err) {
-    console.log(err.message);
     toast.error(extractErrorMessage(err.message));
   }
 };
 
-export const signIn = async (formData) => {
-  // Destructure details needed from the form data received
-  const { email, password } = formData;
+//  Sign Out
 
+export const signOutUser = async (auth) => {
   try {
+    await signOut(auth);
+    toast.success("Successfully signed out");
+  } catch (err) {
+    toast.error(extractErrorMessage(err.message));
+  }
+};
+
+//  Sign In
+
+export const signIn = async (formData) => {
+  try {
+    // Destructure details needed from the form data received
+    const { email, password } = formData;
+
     const userCredential = await signInWithEmailAndPassword(
       auth,
       email,
@@ -101,6 +121,36 @@ export const signIn = async (formData) => {
     if (userCredential.user) {
       toast.success("Successfully signed in");
     }
+  } catch (err) {
+    toast.error(extractErrorMessage(err.message));
+  }
+};
+
+//  Forgot Password
+
+export const forgotPassword = async (formData) => {
+  try {
+    // Destructure details needed from the form data received
+    const { email } = formData;
+    await sendPasswordResetEmail(auth, email);
+
+    toast.success("Sent password reset link");
+  } catch (err) {
+    toast.error(extractErrorMessage(err.message));
+  }
+};
+
+//  Reset Password
+
+export const resetPassword = async (data) => {
+  try {
+    const { password, oobCode } = data;
+    if (auth.currentUser) {
+      await signOut(auth);
+    }
+    await confirmPasswordReset(auth, oobCode, password);
+
+    toast.success("Password reset successful. You can proceed to login");
   } catch (err) {
     toast.error(extractErrorMessage(err.message));
   }
