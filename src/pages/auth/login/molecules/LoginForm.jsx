@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
@@ -7,27 +8,37 @@ import AuthHeader from "@/pages/auth/components/AuthHeader";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 import { InputGroup } from "@/components/ui";
-import { Button } from "@/styles/reusable/elements.styled";
+import { Button, Loader } from "@/styles/reusable/elements.styled";
+import { handleSignin } from "@/setup/slices/auth/authSlice";
 
 const LoginForm = () => {
   const [passwordType, setPasswordType] = useState(true);
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
   const initialData = {
     email: "",
     password: "",
   };
-  const { errors, handleBlur, handleChange, checkIsValid, validateOnSubmit } =
-    useFormValidation(initialData, validation);
+  const {
+    formData,
+    errors,
+    handleBlur,
+    handleChange,
+    checkIsValid,
+    validateOnSubmit,
+  } = useFormValidation(initialData, validation);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateOnSubmit()) {
+      dispatch(handleSignin(formData));
+    }
+  };
 
   return (
     <>
       <AuthContainer>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            validateOnSubmit();
-          }}
-          autoComplete="off"
-        >
+        <form onSubmit={(e) => handleSubmit(e)} autoComplete="off">
           <AuthHeader title="Welcome Back!" />
           <InputGroup
             type="email"
@@ -61,7 +72,7 @@ const LoginForm = () => {
               <strong>Forgot password?</strong>
             </small>
           </Link>
-          <Button $fullWidth>Log In</Button>
+          <Button $fullWidth>{loading ? <Loader /> : "Log In"}</Button>
           <div style={{ textAlign: "center" }}>
             <small>
               <strong>New to Hype?</strong>

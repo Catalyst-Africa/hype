@@ -4,6 +4,7 @@ import {
   sendEmailVerification,
   GoogleAuthProvider,
   applyActionCode,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { toast } from "react-hot-toast";
@@ -79,8 +80,28 @@ export const verifyEmail = async (oobCode) => {
   try {
     await applyActionCode(auth, oobCode);
     toast.success("Email verified successfully!");
+    window.location.href = "/email-verification";
   } catch (err) {
     console.log(err.message);
+    toast.error(extractErrorMessage(err.message));
+  }
+};
+
+export const signIn = async (formData) => {
+  // Destructure details needed from the form data received
+  const { email, password } = formData;
+
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
+
+    if (userCredential.user) {
+      toast.success("Successfully signed in");
+    }
+  } catch (err) {
     toast.error(extractErrorMessage(err.message));
   }
 };

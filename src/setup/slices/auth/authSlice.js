@@ -4,6 +4,7 @@ import {
   signupUser,
   sendEmailVerificationLink,
   verifyEmail,
+  signIn,
 } from "@/handlers/auth/auth";
 
 const initialState = {
@@ -11,7 +12,7 @@ const initialState = {
 };
 
 export const handleGoogleAuth = createAsyncThunk(
-  "auth/signInWithGoogle",
+  "auth/signinWithGoogle",
   async () => {
     const response = await signInWithGoogle();
     return response.data;
@@ -38,6 +39,14 @@ export const handleEmailVerification = createAsyncThunk(
   "auth/emailVerification",
   async (oobCode) => {
     const response = await verifyEmail(oobCode);
+    return response.data;
+  },
+);
+
+export const handleSignin = createAsyncThunk(
+  "auth/signin",
+  async (formData) => {
+    const response = await signIn(formData);
     return response.data;
   },
 );
@@ -82,6 +91,15 @@ const authSlice = createSlice({
         state.loading = false;
       })
       .addCase(handleEmailVerification.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(handleSignin.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(handleSignin.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(handleSignin.rejected, (state) => {
         state.loading = false;
       });
   },
