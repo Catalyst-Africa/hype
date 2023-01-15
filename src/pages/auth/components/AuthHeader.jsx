@@ -1,18 +1,34 @@
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
 import { Button, FluidTitle } from "@/styles/reusable/elements.styled";
 import googleIcon from "@/assets/icons/google.svg";
+import { handlegGoogleAuth } from "@/setup/slices/auth/authSlice";
+import { Loader } from "@/styles/reusable/elements.styled";
 
 const AuthHeader = ({ title }) => {
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
+
   return (
     <>
       <div style={{ textAlign: "center" }}>
         <FluidTitle>{title}</FluidTitle>
       </div>
-      <GoogleAuthButton type="button" $type="outlined">
-        <img src={googleIcon} alt="" />
-        Continue with Google
+      <GoogleAuthButton
+        type="button"
+        $type="outlined"
+        onClick={() => dispatch(handlegGoogleAuth())}
+      >
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+            <img src={googleIcon} alt="" />
+            Continue with Google
+          </>
+        )}
       </GoogleAuthButton>
       <Fieldset>
         <legend>or Sign in with email</legend>
