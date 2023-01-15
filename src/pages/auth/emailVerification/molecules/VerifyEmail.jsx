@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { signOut } from "firebase/auth";
+import { toast } from "react-hot-toast";
 import styled from "styled-components";
 
 import AuthContainer from "@/pages/auth/components/AuthContainer";
@@ -13,7 +14,7 @@ import {
   handleEmailVerification,
 } from "@/setup/slices/auth/authSlice";
 import { auth } from "@/setup/firebase/firebase";
-import { toast } from "react-hot-toast";
+
 
 const VerifyEmail = () => {
   const dispatch = useDispatch();
