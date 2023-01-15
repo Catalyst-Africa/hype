@@ -80,6 +80,7 @@ export const verifyEmail = async (oobCode) => {
   try {
     await applyActionCode(auth, oobCode);
     toast.success("Email verified successfully!");
+    window.location.href = "/email-verification";
   } catch (err) {
     console.log(err.message);
     toast.error(extractErrorMessage(err.message));

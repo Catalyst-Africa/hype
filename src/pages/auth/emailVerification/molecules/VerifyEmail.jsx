@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { signOut } from "firebase/auth";
 import { toast } from "react-hot-toast";
 import styled from "styled-components";
 
@@ -13,30 +11,20 @@ import {
   handleEmailVerificationLink,
   handleEmailVerification,
 } from "@/setup/slices/auth/authSlice";
-import { auth } from "@/setup/firebase/firebase";
-
+import { useEffect } from "react";
 
 const VerifyEmail = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const loading = useSelector((state) => state.user.loading);
-  const [error, setError] = useState(false);
   const emailVerified = useSelector((state) => state.user.emailVerified);
   const [searchParams] = useSearchParams();
   const { oobCode } = Object.fromEntries([...searchParams]);
 
-  useEffect(() => {
-    const callVerifyEmail = async () => {
-      if (oobCode) {
-        if (dispatch(handleEmailVerification(oobCode))) {
-          await signOut(auth);
-        } else {
-          setError(true);
-        }
-      }
-    };
-    callVerifyEmail();
-  }, [oobCode]);
+  // useEffect(() => {
+  //   if (oobCode) {
+  //     dispatch(handleEmailVerification(oobCode));
+  //   }
+  // }, []);
 
   return (
     <>
@@ -59,8 +47,6 @@ const VerifyEmail = () => {
               <Button $fullWidth>Continue</Button>
             </VerifiedEmailContainer>
           )
-        ) : error ? (
-          toast.error("Unable to verify email")
         ) : (
           <VerifyEmailContainer>
             <div style={{ textAlign: "center" }}>
