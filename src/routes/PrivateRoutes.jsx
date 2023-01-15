@@ -1,5 +1,11 @@
 import { Route } from "react-router-dom";
 
-const privateRoutes = <Route path="/dashboard" element={"Private Routes"} />;
+import PrivateRoute from "@/setup/routesManager/PrivateRoutes";
+
+const privateRoutes = (
+  <Route element={<PrivateRoute />}>
+    <Route path="/dashboard" element={"Private Routes"} />
+  </Route>
+);
 
 export default privateRoutes;

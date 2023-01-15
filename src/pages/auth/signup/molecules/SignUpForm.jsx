@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 import AuthContainer from "@/pages/auth/components/AuthContainer";
@@ -7,27 +8,39 @@ import AuthHeader from "@/pages/auth/components/AuthHeader";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 import { InputGroup } from "@/components/ui";
-import { Button } from "@/styles/reusable/elements.styled";
+import { Button, Loader } from "@/styles/reusable/elements.styled";
+import { handleSignup } from "@/setup/slices/auth/authSlice";
 
 const SignUpForm = () => {
   const [passwordType, setPasswordType] = useState(true);
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
+
   const initialData = {
     email: "",
     password: "",
   };
-  const { errors, handleBlur, handleChange, checkIsValid, validateOnSubmit } =
-    useFormValidation(initialData, validation);
+  
+  const {
+    formData,
+    errors,
+    handleBlur,
+    handleChange,
+    checkIsValid,
+    validateOnSubmit,
+  } = useFormValidation(initialData, validation);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validateOnSubmit()) {
+      dispatch(handleSignup(formData));
+    }
+  };
 
   return (
     <>
       <AuthContainer>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            validateOnSubmit();
-          }}
-          autoComplete="off"
-        >
+        <form onSubmit={(e) => handleSubmit(e)} autoComplete="off">
           <AuthHeader title="Let's get you started" />
           <InputGroup
             type="email"
@@ -56,7 +69,7 @@ const SignUpForm = () => {
             helperText={errors.password}
             helperTextType={checkIsValid("password")}
           />
-          <Button $fullWidth>Create account</Button>
+          <Button $fullWidth>{loading ? <Loader /> : "Create account"}</Button>
           <div style={{ textAlign: "center" }}>
             <small>
               By continuing, you’re agreeing to our
