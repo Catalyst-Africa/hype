@@ -25,7 +25,9 @@ const Header = () => {
         <div></div>
         <Profile>
           <span>{firstname}</span>
-          <img src={user.photoURL} alt={user.displayName} />
+          <div>
+            <img src={user.photoURL} alt={user.displayName} />
+          </div>
         </Profile>
       </Options>
     </HeaderElement>
@@ -93,9 +95,16 @@ const Profile = styled.div`
     display: none;
   }
 
-  img {
+  div {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    border: 2px solid ${({ theme }) => theme.color.main.default};
+
+    img {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+    }
   }
 `;

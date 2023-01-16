@@ -8,6 +8,7 @@ import {
   sendPasswordResetEmail,
   confirmPasswordReset,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
 import { toast } from "react-hot-toast";
@@ -47,13 +48,18 @@ export const signInWithGoogle = async () => {
 export const signupUser = async (formData) => {
   try {
     // Destructure details needed from the form data received
-    const { email, password } = formData;
+    const { email, password, name } = formData;
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       email,
       password,
     );
     const { user } = userCredential;
+
+    await updateProfile(auth.currentUser, {
+      displayName: name,
+      photoURL: `https://avatars.dicebear.com/api/bottts/${user.email}.svg`,
+    });
 
     // Make a copy of the formData
     const copyOfFormData = { ...formData, displayName: null };
