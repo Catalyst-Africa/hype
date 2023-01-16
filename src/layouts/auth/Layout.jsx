@@ -22,9 +22,10 @@ export default Layout;
 
 const Main = styled.main`
   width: 100%;
-  height: calc(100vh - 61px);
+  min-height: calc(100vh - 61px);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  padding: 24px 0;
 `;

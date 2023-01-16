@@ -30,7 +30,7 @@ export default InputGroup;
 
 const InputContainer = styled.div`
   width: 100%;
-  min-height: 43px;
+  min-height: 40px;
   background: ${({ $disabled }) =>
     $disabled ? "rgba(212, 212, 212, 1)" : "transparent"};
   border: 1px solid

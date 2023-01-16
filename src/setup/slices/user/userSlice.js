@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  uid: "",
+  id: "",
   email: "",
   emailVerified: "",
   photoURL: "",
@@ -13,7 +13,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     updateUser: (state, action) => {
-      state.uid = action.payload.uid;
+      state.id = action.payload.uid;
       state.email = action.payload.email;
       state.emailVerified = action.payload.emailVerified;
       state.photoURL = action.payload.photoURL;
