@@ -17,10 +17,11 @@ const SignUpForm = () => {
   const loading = useSelector((state) => state.auth.loading);
 
   const initialData = {
+    name: "",
     email: "",
     password: "",
   };
-  
+
   const {
     formData,
     errors,
@@ -42,6 +43,16 @@ const SignUpForm = () => {
       <AuthContainer>
         <form onSubmit={(e) => handleSubmit(e)} autoComplete="off">
           <AuthHeader title="Let's get you started" />
+          <InputGroup
+            type="text"
+            id="name"
+            label="Name"
+            placeholder="Enter your name"
+            onBlur={(e) => handleBlur(e)}
+            onChange={(e) => handleChange(e)}
+            helperText={errors.name}
+            helperTextType={checkIsValid("name")}
+          />
           <InputGroup
             type="email"
             id="email"
