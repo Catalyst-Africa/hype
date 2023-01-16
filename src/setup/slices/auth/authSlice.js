@@ -13,6 +13,7 @@ import {
 
 const initialState = {
   loading: false,
+  emailVerified: false,
 };
 
 export const handleGoogleAuth = createAsyncThunk(
@@ -109,8 +110,9 @@ const authSlice = createSlice({
       .addCase(handleEmailVerification.pending, (state) => {
         state.loading = true;
       })
-      .addCase(handleEmailVerification.fulfilled, (state) => {
+      .addCase(handleEmailVerification.fulfilled, (state, action) => {
         state.loading = false;
+        state.emailVerified = action.payload;
       })
       .addCase(handleEmailVerification.rejected, (state) => {
         state.loading = false;

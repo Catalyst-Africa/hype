@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { handleEmailVerification } from "@/setup/slices/auth/authSlice";
-
 const initialState = {
   uid: "",
   email: "",
@@ -22,11 +20,6 @@ const userSlice = createSlice({
       state.displayName = action.payload.displayName;
     },
   },
-  // extraReducers: (builder) => {
-  //   builder.addCase(handleEmailVerification.fulfilled, (state, action) => {
-  //     state.emailVerified = action.payload;
-  //   });
-  // },
 });
 
 export const { updateUser } = userSlice.actions;
