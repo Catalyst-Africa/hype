@@ -31,6 +31,11 @@ const VerifiedEmail = () => {
     }
   }, []);
 
+  const handleContinue = () => {
+    handleSignout();
+    navigate("/login");
+  };
+
   return (
     <>
       {loading ? (
@@ -50,7 +55,7 @@ const VerifiedEmail = () => {
                 </Message>
               </div>
 
-              <Button $fullWidth onClick={() => navigate("/login")}>
+              <Button $fullWidth onClick={handleContinue}>
                 Continue
               </Button>
             </VerifiedEmailContainer>
