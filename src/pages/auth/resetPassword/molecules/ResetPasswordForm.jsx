@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useSearchParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { toast } from "react-hot-toast";
 
 import AuthContainer from "@/pages/auth/components/AuthContainer";
 import { useFormValidation } from "@/hooks";
@@ -12,11 +11,10 @@ import { Button, FluidTitle, Loader } from "@/styles/reusable/elements.styled";
 import { handleResetPassword } from "@/setup/slices/auth/authSlice";
 
 const ResetPasswordForm = () => {
+  const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const { oobCode } = Object.fromEntries([...searchParams]);
-  const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
-  const navigate = useNavigate();
   const [passwordType, setPasswordType] = useState(true);
   const initialData = {
     password: "",
@@ -37,13 +35,6 @@ const ResetPasswordForm = () => {
     const data = { password, oobCode };
     validateOnSubmit() && dispatch(handleResetPassword(data));
   };
-
-  useEffect(() => {
-    if (!oobCode) {
-      toast.error("Invalid action");
-      navigate("/forgot-password");
-    }
-  }, []);
 
   return (
     <>
@@ -89,6 +80,11 @@ const ResetPasswordForm = () => {
             helperTextType={checkIsValid("confirm_password")}
           />
           <Button $fullWidth>{loading ? <Loader /> : "Reset Password"}</Button>
+          <center>
+            <strong>
+              <Link to="/login">Click here to Login</Link>
+            </strong>
+          </center>
         </form>
       </AuthContainer>
     </>
