@@ -11,6 +11,7 @@ import {
   handleEmailVerification,
   handleSignout,
 } from "@/setup/slices/auth/authSlice";
+import { async } from "@firebase/util";
 
 const VerifiedEmail = () => {
   const dispatch = useDispatch();
@@ -31,8 +32,8 @@ const VerifiedEmail = () => {
     }
   }, []);
 
-  const handleContinue = () => {
-    handleSignout();
+  const handleContinue = async () => {
+    dispatch(handleSignout());
     navigate("/login");
   };
 
