@@ -87,6 +87,7 @@ export const sendEmailVerificationLink = async () => {
 export const verifyEmail = async (oobCode) => {
   try {
     await applyActionCode(auth, oobCode);
+    await signOut(auth);
     toast.success("Email verified successfully");
     return true;
   } catch (err) {

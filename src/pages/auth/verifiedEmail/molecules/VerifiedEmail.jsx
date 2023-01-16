@@ -9,7 +9,6 @@ import { OverlayLoader } from "@/components/ui";
 import verifiedicon from "@/assets/verified.svg";
 import {
   handleEmailVerification,
-  handleSignout,
 } from "@/setup/slices/auth/authSlice";
 
 const VerifiedEmail = () => {
@@ -31,11 +30,6 @@ const VerifiedEmail = () => {
     }
   }, []);
 
-  const handleContinue = () => {
-    dispatch(handleSignout());
-    navigate("/login");
-  };
-
   return (
     <>
       {loading ? (
@@ -55,7 +49,7 @@ const VerifiedEmail = () => {
                 </Message>
               </div>
 
-              <Button $fullWidth onClick={handleContinue}>
+              <Button $fullWidth onClick={() => navigate("/login")}>
                 Continue
               </Button>
             </VerifiedEmailContainer>
