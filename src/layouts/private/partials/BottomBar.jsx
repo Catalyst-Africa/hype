@@ -37,7 +37,7 @@ const BottomBarElement = styled.div`
   width: 100%;
   position: fixed;
   bottom: 0;
-  padding: 24px 24px;
+  padding: 16px 24px;
   background: #fff;
 
   ${({ theme }) => theme.breakpoints.up("sm")} {
