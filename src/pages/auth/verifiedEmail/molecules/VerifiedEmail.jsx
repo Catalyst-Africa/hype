@@ -31,7 +31,7 @@ const VerifiedEmail = () => {
     }
   }, []);
 
-  const handleContinue = async () => {
+  const handleContinue = () => {
     dispatch(handleSignout());
     navigate("/login");
   };
