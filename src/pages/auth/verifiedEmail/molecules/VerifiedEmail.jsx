@@ -17,12 +17,13 @@ const VerifiedEmail = () => {
   const [searchParams] = useSearchParams();
   const { oobCode } = Object.fromEntries([...searchParams]);
   const loading = useSelector((state) => state.auth.loading);
+  const isLoggedIn = useSelector((state) => state.app.isLoggedIn);
   const emailVerified = useSelector((state) => state.user.emailVerified);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (oobCode) {
-      emailVerified === false
+      isLoggedIn && !emailVerified
         ? dispatch(handleEmailVerification(oobCode))
         : null;
     } else {
@@ -49,7 +50,7 @@ const VerifiedEmail = () => {
                 </Message>
               </div>
 
-              <Button $fullWidth onClick={dispatch(handleSignout())}>
+              <Button $fullWidth onClick={() => navigate("/login")}>
                 Continue
               </Button>
             </VerifiedEmailContainer>
