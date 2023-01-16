@@ -22,7 +22,9 @@ const VerifiedEmail = () => {
 
   useEffect(() => {
     if (oobCode) {
-      !emailVerified ? dispatch(handleEmailVerification(oobCode)) : null;
+      emailVerified === false
+        ? dispatch(handleEmailVerification(oobCode))
+        : null;
     } else {
       navigate("/404");
     }
