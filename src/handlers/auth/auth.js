@@ -91,6 +91,7 @@ export const verifyEmail = async (oobCode) => {
     toast.success("Email verified successfully");
     return true;
   } catch (err) {
+    console.log(err);
     toast.error(extractErrorMessage(err.message));
     return false;
   }
