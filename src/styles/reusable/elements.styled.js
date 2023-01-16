@@ -92,7 +92,7 @@ export const Button = styled.button`
   padding: 0px 8px;
   min-width: 100px;
   width: ${({ fullWidth }) => (fullWidth ? "100%" : null)};
-  min-height: 40px;
+  min-height: 38px;
   font-size: 14px;
   font-weight: 700;
   transition: ease-in 0.3s;

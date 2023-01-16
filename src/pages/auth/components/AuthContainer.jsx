@@ -23,7 +23,7 @@ const FormContainer = styled.div`
   > div {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 18px;
   }
 
   ${({ theme }) => theme.breakpoints.down("xs")} {

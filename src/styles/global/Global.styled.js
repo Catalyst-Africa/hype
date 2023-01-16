@@ -10,6 +10,10 @@ export const GlobalStyles = createGlobalStyle`
         box-sizing: border-box;
     } 
 
+    body {
+        color: #393939;
+    }
+
     a {
         color: initial;
         text-decoration: initial;
