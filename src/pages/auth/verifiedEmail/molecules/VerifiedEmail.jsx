@@ -1,16 +1,16 @@
+import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import AuthContainer from "@/pages/auth/components/AuthContainer";
 import { Button, FluidTitle } from "@/styles/reusable/elements.styled";
+import { OverlayLoader } from "@/components/ui";
 import verifiedicon from "@/assets/verified.svg";
 import {
   handleEmailVerification,
   handleSignout,
 } from "@/setup/slices/auth/authSlice";
-import { OverlayLoader } from "@/components/ui";
-import { useEffect } from "react";
 
 const VerifiedEmail = () => {
   const dispatch = useDispatch();
@@ -22,37 +22,39 @@ const VerifiedEmail = () => {
 
   useEffect(() => {
     if (oobCode) {
-      dispatch(handleEmailVerification(oobCode));
+      !emailVerified ? dispatch(handleEmailVerification(oobCode)) : null;
     } else {
       navigate("/404");
     }
   }, []);
 
   return (
-    <AuthContainer>
-      {!loading ? (
-        emailVerified && (
-          <VerifiedEmailContainer>
-            <div style={{ textAlign: "center" }}>
-              <img src={verifiedicon} alt="verified-icon" />
-              <br />
-              <br />
-              <FluidTitle>Email Verification Successful!</FluidTitle>
-              <br />
-              <Message>
-                We have successfully verified your email address
-              </Message>
-            </div>
-
-            <Button $fullWidth onClick={dispatch(handleSignout())}>
-              Continue
-            </Button>
-          </VerifiedEmailContainer>
-        )
-      ) : (
+    <>
+      {loading ? (
         <OverlayLoader />
+      ) : (
+        emailVerified && (
+          <AuthContainer>
+            <VerifiedEmailContainer>
+              <div style={{ textAlign: "center" }}>
+                <img src={verifiedicon} alt="verified-icon" />
+                <br />
+                <br />
+                <FluidTitle>Email Verification Successful!</FluidTitle>
+                <br />
+                <Message>
+                  We have successfully verified your email address
+                </Message>
+              </div>
+
+              <Button $fullWidth onClick={dispatch(handleSignout())}>
+                Continue
+              </Button>
+            </VerifiedEmailContainer>
+          </AuthContainer>
+        )
       )}
-    </AuthContainer>
+    </>
   );
 };
 
