@@ -7,7 +7,7 @@ import ProtectEmailVerification from "@/setup/routesManager/ProtectEmailVerifica
 import {
   Login,
   SignUp,
-  EmailVerification,
+  VerifyEmail,
   ForgotPassword,
   ResetPassword,
 } from "@/pages/auth";
@@ -24,7 +24,7 @@ const authRoutes = (
       <Route path="/reset-password" element={<ResetPassword />} />
     </Route>
     <Route element={<ProtectEmailVerification />}>
-      <Route path="/email-verification" element={<EmailVerification />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
     </Route>
   </Route>
 );

@@ -39,7 +39,10 @@ export const handleEmailVerificationLink = createAsyncThunk(
 export const handleEmailVerification = createAsyncThunk(
   "auth/emailVerification",
   async (oobCode) => {
-    await verifyEmail(oobCode);
+    if (await verifyEmail(oobCode)) {
+      return true;
+    }
+    return false;
   },
 );
 

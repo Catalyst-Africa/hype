@@ -6,7 +6,7 @@ const ProtectAuth = () => {
   const emailVerified = useSelector((state) => state.user.emailVerified);
 
   if (isLoggedIn)
-    if (!emailVerified) return <Navigate to="/email-verification" />;
+    if (!emailVerified) return <Navigate to="/verify-email" />;
     else return <Navigate to="/dashboard" />;
   else return <Outlet />;
 };

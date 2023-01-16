@@ -1,18 +1,21 @@
+import PropTypes from "prop-types";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 
 import { Container } from "@/styles/reusable/elements.styled";
 
-const Layout = () => {
+const Layout = ({ renderChildren, children }) => {
   return (
     <>
       <Container>
-        <Main>
-          <Outlet />
-        </Main>
+        <Main>{renderChildren ? children : <Outlet />}</Main>
       </Container>
     </>
   );
+};
+
+Layout.propTypes = {
+  renderChildren: PropTypes.bool,
 };
 
 export default Layout;
