@@ -18,7 +18,7 @@ const VerifiedEmail = () => {
   const { oobCode } = Object.fromEntries([...searchParams]);
   const loading = useSelector((state) => state.auth.loading);
   const isLoggedIn = useSelector((state) => state.app.isLoggedIn);
-  const emailVerified = useSelector((state) => state.user.emailVerified);
+  const emailVerified = useSelector((state) => state.auth.emailVerified);
   const navigate = useNavigate();
 
   useEffect(() => {
