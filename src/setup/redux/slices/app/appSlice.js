@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   theme: {},
-  isLoggedIn: false,
+  loggedIn: false,
   loading: true,
 };
 
@@ -14,7 +14,7 @@ const appSlice = createSlice({
       state.theme = action.payload;
     },
     updateAuth: (state, action) => {
-      state.isLoggedIn = action.payload;
+      state.loggedIn = action.payload;
       state.loading = false;
     },
   },

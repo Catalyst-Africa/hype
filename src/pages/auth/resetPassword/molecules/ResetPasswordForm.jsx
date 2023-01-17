@@ -8,7 +8,7 @@ import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 import { InputGroup } from "@/components/ui";
 import { Button, FluidTitle, Loader } from "@/styles/reusable/elements.styled";
-import { handleResetPassword } from "@/setup/slices/auth/authSlice";
+import { resetPassword } from "@/setup/redux/slices/auth/extraReducers";
 
 const ResetPasswordForm = () => {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ const ResetPasswordForm = () => {
     e.preventDefault();
     const { password } = formData;
     const data = { password, oobCode };
-    validateOnSubmit() && dispatch(handleResetPassword(data));
+    validateOnSubmit() && dispatch(resetPassword(data));
   };
 
   return (

@@ -7,7 +7,7 @@ import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 import { InputGroup } from "@/components/ui";
 import { Button, FluidTitle, Loader } from "@/styles/reusable/elements.styled";
-import { handleForgotPassword } from "@/setup/slices/auth/authSlice";
+import { forgotPassword } from "@/setup/redux/slices/auth/extraReducers";
 
 const ForgotPasswordForm = () => {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const ForgotPasswordForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    validateOnSubmit() && dispatch(handleForgotPassword(formData));
+    validateOnSubmit() && dispatch(forgotPassword(formData));
   };
 
   return (

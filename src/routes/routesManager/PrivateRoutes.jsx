@@ -2,10 +2,10 @@ import { Outlet, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const PrivateRoute = () => {
-  const emailVerified = useSelector((state) => state.user.emailVerified);
-  const isLoggedIn = useSelector((state) => state.app.isLoggedIn);
+  const emailVerified = useSelector((state) => state.auth.user.emailVerified);
+  const loggedIn = useSelector((state) => state.app.loggedIn);
 
-  if (isLoggedIn)
+  if (loggedIn)
     if (!emailVerified) return <Navigate to="/email-verification" />;
     else return <Outlet />;
   else return <Navigate to="/login" />;

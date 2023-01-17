@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { Button, FluidTitle } from "@/styles/reusable/elements.styled";
 import googleIcon from "@/assets/icons/google.svg";
-import { handleGoogleAuth } from "@/setup/slices/auth/authSlice";
+import { googleAuth } from "@/setup/redux/slices/auth/extraReducers";
 import { Loader } from "@/styles/reusable/elements.styled";
 
 const AuthHeader = ({ title }) => {
@@ -19,7 +19,7 @@ const AuthHeader = ({ title }) => {
       <GoogleAuthButton
         type="button"
         $type="outlined"
-        onClick={() => dispatch(handleGoogleAuth())}
+        onClick={() => dispatch(googleAuth())}
       >
         {loading ? (
           <Loader />

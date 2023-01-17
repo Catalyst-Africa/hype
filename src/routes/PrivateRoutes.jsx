@@ -1,6 +1,6 @@
 import { Route } from "react-router-dom";
 
-import PrivateRoute from "@/setup/routesManager/PrivateRoutes";
+import PrivateRoute from "@/routes/routesManager/PrivateRoutes";
 import { PrivateLayout } from "@/layouts";
 
 const privateRoutes = (
