@@ -23,23 +23,12 @@ ChartJS.register(
 );
 
 export const options = {
-  // responsive: true,
   plugins: {
     legend: {
       position: "top",
     },
   },
   maintainAspectRatio: false,
-  scales: {
-    yAxes: [
-      {
-        ticks: {
-          // The y-axis value will start from zero
-          beginAtZero: true,
-        },
-      },
-    ],
-  },
 };
 
 const labels = [
@@ -55,20 +44,6 @@ const labels = [
   "Oct",
   "Nov",
   "Dec",
-];
-
-const datasets = [
-  {
-    // Label for bars
-    label: "total count/value",
-    // Data or value of your each variable
-    data: [1552, 1319, 613, 1400],
-    // Color of each bar
-    backgroundColor: ["aqua", "green", "red", "yellow"],
-    // Border color of each bar
-    borderColor: ["aqua", "green", "red", "yellow"],
-    borderWidth: 0.5,
-  },
 ];
 
 export const data = {
