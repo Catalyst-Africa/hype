@@ -6,9 +6,9 @@ import { Button, FluidTitle, Loader } from "@/styles/reusable/elements.styled";
 import verifyicon from "@/assets/verify.svg";
 
 import {
-  handleEmailVerificationLink,
-  handleSignout,
-} from "@/setup/slices/auth/authSlice";
+  sendEmailVerificationLink,
+  signout,
+} from "@/setup/redux/slices/auth/extraReducers";
 import { auth } from "@/setup/firebase/firebase";
 
 const VerifyEmail = () => {
@@ -38,14 +38,14 @@ const VerifyEmail = () => {
           <Button
             $fullWidth
             type="button"
-            onClick={() => dispatch(handleEmailVerificationLink())}
+            onClick={() => dispatch(sendEmailVerificationLink())}
           >
             {loading ? <Loader /> : "Resend Verification Link"}
           </Button>
           <Button
             $type="outlined"
             type="button"
-            onClick={() => dispatch(handleSignout(auth))}
+            onClick={() => dispatch(signout(auth))}
           >
             Sign Out
           </Button>

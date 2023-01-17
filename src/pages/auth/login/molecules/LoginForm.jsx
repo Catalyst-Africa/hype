@@ -9,7 +9,7 @@ import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 import { InputGroup } from "@/components/ui";
 import { Button, Loader } from "@/styles/reusable/elements.styled";
-import { handleSignin } from "@/setup/slices/auth/authSlice";
+import { signin } from "@/setup/redux/slices/auth/extraReducers";
 
 const LoginForm = () => {
   const [passwordType, setPasswordType] = useState(true);
@@ -31,7 +31,7 @@ const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateOnSubmit()) {
-      dispatch(handleSignin(formData));
+      dispatch(signin(formData));
     }
   };
 

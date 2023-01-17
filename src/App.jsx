@@ -8,8 +8,8 @@ import publicRoutes from "@/routes/PublicRoutes";
 import privateRoutes from "@/routes/PrivateRoutes";
 
 import { auth } from "@/setup/firebase/firebase";
-import { updateAuth } from "@/setup/slices/app/appSlice";
-import { updateUser } from "@/setup/slices/user/userSlice";
+import { updateAuth } from "@/setup/redux/slices/app/appSlice";
+import { updateUser } from "@/setup/redux/slices/auth/extraReducers";
 import { useSelector, useDispatch } from "react-redux";
 import { OverlayLoader } from "@/components/ui";
 
@@ -21,10 +21,7 @@ const App = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         dispatch(updateAuth(true));
-        const { uid, email, emailVerified, photoURL, displayName } = user;
-        dispatch(
-          updateUser({ uid, email, emailVerified, photoURL, displayName }),
-        );
+        dispatch(updateUser(user));
       } else dispatch(updateAuth(false));
     });
   }, [auth]);

@@ -1,8 +1,8 @@
 import { Route } from "react-router-dom";
 
 import { AuthLayout } from "@/layouts";
-import ProtectAuth from "@/setup/routesManager/ProtectAuth";
-import ProtectEmailVerification from "@/setup/routesManager/ProtectEmailVerification";
+import ProtectAuth from "@/routes/routesManager/ProtectAuth";
+import ProtectEmailVerification from "@/routes/routesManager/ProtectEmailVerification";
 
 import {
   Login,

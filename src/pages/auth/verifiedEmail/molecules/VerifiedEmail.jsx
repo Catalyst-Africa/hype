@@ -7,24 +7,20 @@ import AuthContainer from "@/pages/auth/components/AuthContainer";
 import { Button, FluidTitle } from "@/styles/reusable/elements.styled";
 import { OverlayLoader } from "@/components/ui";
 import verifiedicon from "@/assets/verified.svg";
-import {
-  handleEmailVerification,
-} from "@/setup/slices/auth/authSlice";
+import { verifyEmail } from "@/setup/redux/slices/auth/extraReducers";
 
 const VerifiedEmail = () => {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const { oobCode } = Object.fromEntries([...searchParams]);
   const loading = useSelector((state) => state.auth.loading);
-  const isLoggedIn = useSelector((state) => state.app.isLoggedIn);
-  const emailVerified = useSelector((state) => state.auth.emailVerified);
+  const loggedIn = useSelector((state) => state.app.loggedIn);
+  const emailVerified = useSelector((state) => state.auth.user.emailVerified);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (oobCode) {
-      isLoggedIn && !emailVerified
-        ? dispatch(handleEmailVerification(oobCode))
-        : null;
+      loggedIn && !emailVerified ? dispatch(verifyEmail(oobCode)) : null;
     } else {
       navigate("/404");
     }
