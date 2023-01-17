@@ -20,7 +20,6 @@ const Container = styled.div`
   padding: 22px 51px;
   background-color: #f3f3f3;
   ${({ theme }) => theme.breakpoints.down("sm")} {
-    background-color: #fff;
     padding: 37px 24px;
     margin: 0 auto;
     box-shadow: none;
