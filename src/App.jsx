@@ -22,7 +22,6 @@ const App = () => {
       if (user) {
         dispatch(updateAuth(true));
         dispatch(updateUser(user));
-        console.log(user);
       } else dispatch(updateAuth(false));
     });
   }, [auth]);
