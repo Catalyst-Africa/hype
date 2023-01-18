@@ -22,6 +22,8 @@ const initialState = {
   },
 };
 
+console.log(initialState);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -102,12 +104,13 @@ const authSlice = createSlice({
         state.user.emailVerified = action.payload.emailVerified;
         state.user.photoURL = action.payload.photoURL;
         state.user.displayName = action.payload.displayName;
-
       })
       .addCase(updateUser.rejected, (state) => {
         state.loading = false;
       });
   },
 });
+
+console.log(initialState)
 
 export default authSlice.reducer;

@@ -1,17 +1,17 @@
 import { useEffect } from "react";
 import { Routes } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
+import { useSelector, useDispatch } from "react-redux";
 import { Toaster } from "react-hot-toast";
 
 import authRoutes from "@/routes/AuthRoutes";
 import publicRoutes from "@/routes/PublicRoutes";
 import privateRoutes from "@/routes/PrivateRoutes";
 
+import { OverlayLoader } from "@/components/ui";
 import { auth } from "@/setup/firebase/firebase";
 import { updateAuth } from "@/setup/redux/slices/app/appSlice";
 import { updateUser } from "@/setup/redux/slices/auth/extraReducers";
-import { useSelector, useDispatch } from "react-redux";
-import { OverlayLoader } from "@/components/ui";
 
 const App = () => {
   const dispatch = useDispatch();

@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-hot-toast";
+import { signOut } from "firebase/auth";
 import styled from "styled-components";
 
 import AuthContainer from "@/pages/auth/components/AuthContainer";
@@ -8,6 +10,7 @@ import { Button, FluidTitle } from "@/styles/reusable/elements.styled";
 import { OverlayLoader } from "@/components/ui";
 import verifiedicon from "@/assets/verified.svg";
 import { verifyEmail } from "@/setup/redux/slices/auth/extraReducers";
+import { auth } from "@/setup/firebase/firebase";
 
 const VerifiedEmail = () => {
   const dispatch = useDispatch();
@@ -20,9 +23,13 @@ const VerifiedEmail = () => {
 
   useEffect(() => {
     if (oobCode) {
-      loggedIn && !emailVerified ? dispatch(verifyEmail(oobCode)) : null;
+      if (loggedIn && !emailVerified) {
+        dispatch(verifyEmail(oobCode));
+        signOut(auth);
+      } else navigate("/404");
     } else {
-      navigate("/404");
+      toast.error("Invalid request, missing parameter");
+      navigate("/verify-email");
     }
   }, []);
 
