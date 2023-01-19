@@ -22,8 +22,6 @@ const initialState = {
   },
 };
 
-console.log(initialState);
-
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -110,7 +108,5 @@ const authSlice = createSlice({
       });
   },
 });
-
-console.log(initialState)
 
 export default authSlice.reducer;
