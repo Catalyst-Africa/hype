@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Routes } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,27 +11,24 @@ import privateRoutes from "@/routes/PrivateRoutes";
 import { OverlayLoader } from "@/components/ui";
 import { auth } from "@/setup/firebase/firebase";
 import { updateAuth } from "@/setup/redux/slices/app/appSlice";
-import { updateUser } from "@/setup/redux/slices/auth/extraReducers";
+import { updateUser } from "@/setup/redux/slices/auth/authSlice";
 
 const App = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.app.loading);
-  const [userLoading, setUserLoading] = useState(true);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         dispatch(updateAuth(true));
         dispatch(updateUser(user));
-        setUserLoading(false);
       } else {
         dispatch(updateAuth(false));
-        setUserLoading(false);
       }
     });
   }, [auth]);
 
-  if (loading || userLoading) {
+  if (loading) {
     return <OverlayLoader />;
   }
 

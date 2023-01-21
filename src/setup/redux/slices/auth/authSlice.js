@@ -1,13 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import {
-  signup,
-  signin,
+  signUp,
+  signIn,
   sendEmailVerificationLink,
   verifyEmail,
   forgotPassword,
   resetPassword,
-  updateUser,
   googleAuth,
 } from "./extraReducers";
 
@@ -25,36 +24,39 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    updateUser: (state, action) => {
+      state.user.uid = action.payload.uid;
+      state.user.email = action.payload.email;
+      state.user.emailVerified = action.payload.emailVerified;
+      state.user.photoURL = action.payload.photoURL;
+      state.user.displayName = action.payload.displayName;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(googleAuth.pending, (state) => {
         state.loading = true;
       })
-      .addCase(googleAuth.fulfilled, (state) => {
+      .addCase(googleAuth.fulfilled || googleAuth.rejected, (state) => {
         state.loading = false;
       })
-      .addCase(googleAuth.rejected, (state) => {
-        state.loading = false;
-      })
-      .addCase(signup.pending, (state) => {
+      .addCase(signUp.pending, (state) => {
         state.loading = true;
       })
-      .addCase(signup.fulfilled, (state) => {
-        state.loading = false;
-      })
-      .addCase(signup.rejected, (state) => {
+      .addCase(signUp.fulfilled || signUp.rejected, (state) => {
         state.loading = false;
       })
       .addCase(sendEmailVerificationLink.pending, (state) => {
         state.loading = true;
       })
-      .addCase(sendEmailVerificationLink.fulfilled, (state) => {
-        state.loading = false;
-      })
-      .addCase(sendEmailVerificationLink.rejected, (state) => {
-        state.loading = false;
-      })
+      .addCase(
+        sendEmailVerificationLink.fulfilled ||
+          sendEmailVerificationLink.rejected,
+        (state) => {
+          state.loading = false;
+        },
+      )
       .addCase(verifyEmail.pending, (state) => {
         state.loading = true;
       })
@@ -65,48 +67,26 @@ const authSlice = createSlice({
       .addCase(verifyEmail.rejected, (state) => {
         state.loading = false;
       })
-      .addCase(signin.pending, (state) => {
+      .addCase(signIn.pending, (state) => {
         state.loading = true;
       })
-      .addCase(signin.fulfilled, (state) => {
-        state.loading = false;
-      })
-      .addCase(signin.rejected, (state) => {
+      .addCase(signIn.fulfilled || signIn.rejected, (state) => {
         state.loading = false;
       })
       .addCase(forgotPassword.pending, (state) => {
         state.loading = true;
       })
-      .addCase(forgotPassword.fulfilled, (state) => {
-        state.loading = false;
-      })
-      .addCase(forgotPassword.rejected, (state) => {
+      .addCase(forgotPassword.fulfilled || forgotPassword.rejected, (state) => {
         state.loading = false;
       })
       .addCase(resetPassword.pending, (state) => {
         state.loading = true;
       })
-      .addCase(resetPassword.fulfilled, (state) => {
-        state.loading = false;
-      })
-      .addCase(resetPassword.rejected, (state) => {
-        state.loading = false;
-      })
-      .addCase(updateUser.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(updateUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user.uid = action.payload.uid;
-        state.user.email = action.payload.email;
-        state.user.emailVerified = action.payload.emailVerified;
-        state.user.photoURL = action.payload.photoURL;
-        state.user.displayName = action.payload.displayName;
-      })
-      .addCase(updateUser.rejected, (state) => {
+      .addCase(resetPassword.fulfilled || resetPassword.rejected, (state) => {
         state.loading = false;
       });
   },
 });
 
+export const { updateUser } = authSlice.actions;
 export default authSlice.reducer;

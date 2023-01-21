@@ -7,9 +7,8 @@ import verifyicon from "@/assets/verify.svg";
 
 import {
   sendEmailVerificationLink,
-  signout,
+  logOut,
 } from "@/setup/redux/slices/auth/extraReducers";
-import { auth } from "@/setup/firebase/firebase";
 
 const VerifyEmail = () => {
   const dispatch = useDispatch();
@@ -45,7 +44,7 @@ const VerifyEmail = () => {
           <Button
             $type="outlined"
             type="button"
-            onClick={() => dispatch(signout(auth))}
+            onClick={() => dispatch(logOut())}
           >
             Sign Out
           </Button>

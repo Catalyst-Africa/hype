@@ -26,7 +26,7 @@ const ForgotPasswordForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    validateOnSubmit() && dispatch(forgotPassword(formData));
+    validateOnSubmit() && dispatch(forgotPassword(formData.email));
   };
 
   return (
