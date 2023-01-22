@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import thunk from "redux-thunk";
 
 // Import reducers here
 import appReducer from "@/setup/redux/slices/app/appSlice";
@@ -9,4 +10,5 @@ export const store = configureStore({
     app: appReducer,
     auth: authReducer,
   },
+  middleware: [thunk],
 });

@@ -31,9 +31,7 @@ const ResetPasswordForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { password } = formData;
-    const data = { password, oobCode };
-    validateOnSubmit() && dispatch(resetPassword(data));
+    validateOnSubmit() && dispatch(resetPassword(oobCode, formData.password));
   };
 
   return (

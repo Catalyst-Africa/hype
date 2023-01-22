@@ -5,15 +5,14 @@ import { IconContext } from "react-icons";
 import { Provider } from "react-redux";
 
 import App from "./App";
-import CustomThemeProvider from "@/context/CustomThemeProvider";
 import GlobalStyles from "@/styles/global/Global.styled";
-import { ScrollToTop } from "@/components/functional";
+import { ScrollToTop, ThemeProvider } from "@/components/functional";
 import { store } from "@/setup/redux/store";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <CustomThemeProvider>
+      <ThemeProvider>
         <GlobalStyles />
         <Router>
           <ScrollToTop />
@@ -21,7 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <App />
           </IconContext.Provider>
         </Router>
-      </CustomThemeProvider>
+      </ThemeProvider>
     </Provider>
   </React.StrictMode>,
 );
