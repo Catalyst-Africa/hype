@@ -28,6 +28,7 @@ export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
   try {
     const { email, password } = formData;
     await createUserWithEmailAndPassword(auth, email, password);
+    await sendEmailVerification(auth.currentUser);
     toast.success("Successfully created an account!");
   } catch (err) {
     toast.error(extractErrorMessage(err.message));
@@ -51,6 +52,7 @@ export const verifyEmail = createAsyncThunk(
   async (oobCode) => {
     try {
       await applyActionCode(auth, oobCode);
+      await signOut(auth);
       toast.success("Email verified successfully");
     } catch (err) {
       toast.error(extractErrorMessage(err.message));
