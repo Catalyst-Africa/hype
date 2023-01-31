@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import { Logo } from "@/components/ui";
 import { AiFillPieChart } from "react-icons/ai";
-import { DiGoogleAnalytics } from "react-icons/di";
+import { FaUser } from "react-icons/fa";
 import { SiRubygems } from "react-icons/si";
 import { IoMdSettings } from "react-icons/io";
 import { NavLink } from "react-router-dom";
@@ -20,13 +20,13 @@ const SideBar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/analytics">
-            <DiGoogleAnalytics /> Analytics
+          <NavLink to="/profile">
+            <FaUser /> Profile
           </NavLink>
         </li>
         <li>
-          <NavLink to="/gems">
-            <SiRubygems /> Gems
+          <NavLink to="/gems-polls">
+            <SiRubygems /> Gems & Polls
           </NavLink>
         </li>
         <li>
