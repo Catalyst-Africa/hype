@@ -131,4 +131,7 @@ const Form = styled.form`
   flex-direction: column;
   gap: 20px;
   width: 50%;
+  ${({ theme }) => theme.breakpoints.down("md")} {
+    width: 100%;
+  }
 `;
