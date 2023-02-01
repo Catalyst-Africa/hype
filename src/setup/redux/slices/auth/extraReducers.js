@@ -24,11 +24,11 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async () => {
   const docSnap = await getDoc(docRef);
   // If there are no user, create user
   if (!docSnap.exists()) {
-    console.log("i am running");
     await setDoc(doc(db, "users", auth.currentUser.uid), {
       name: auth.currentUser.displayName,
       email: auth.currentUser.email,
       timeStamp: serverTimestamp(),
+      photoUrl: `https://avatars.dicebear.com/api/bottts/${auth.currentUser.uid}.svg`,
       bio: "Hey there, I am active on Hype!",
     });
   }
@@ -49,6 +49,7 @@ export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
       name: auth.currentUser.displayName,
       email: auth.currentUser.email,
       timeStamp: serverTimestamp(),
+      photoUrl: `https://avatars.dicebear.com/api/bottts/${auth.currentUser.uid}.svg`,
       bio: "Hey there, I am active on Hype!",
     });
   }
@@ -67,7 +68,6 @@ export const verifyEmail = createAsyncThunk(
     try {
       await applyActionCode(auth, oobCode);
       await signOut(auth);
-      toast.success("Email verified successfully");
       return true;
     } catch (error) {
       toast.error(extractErrorMessage(error.msg));
