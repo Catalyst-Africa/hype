@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { AiFillPieChart } from "react-icons/ai";
-import { DiGoogleAnalytics } from "react-icons/di";
+import { FaUser } from "react-icons/fa";
 import { SiRubygems } from "react-icons/si";
 import { IoMdSettings } from "react-icons/io";
 
@@ -15,12 +15,12 @@ const BottomBar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/analytics">
-            <DiGoogleAnalytics />
+          <NavLink to="/profile">
+            <FaUser />
           </NavLink>
         </li>
         <li>
-          <NavLink to="/gems">
+          <NavLink to="/gems-polls">
             <SiRubygems />
           </NavLink>
         </li>
