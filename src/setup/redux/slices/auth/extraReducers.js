@@ -24,7 +24,6 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async () => {
   const docSnap = await getDoc(docRef);
   // If there are no user, create user
   if (!docSnap.exists()) {
-    console.log("i am running");
     await setDoc(doc(db, "users", auth.currentUser.uid), {
       name: auth.currentUser.displayName,
       email: auth.currentUser.email,
@@ -67,7 +66,6 @@ export const verifyEmail = createAsyncThunk(
     try {
       await applyActionCode(auth, oobCode);
       await signOut(auth);
-      toast.success("Email verified successfully");
       return true;
     } catch (error) {
       toast.error(extractErrorMessage(error.msg));
