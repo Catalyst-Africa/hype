@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 const ProfileCard = () => {
   const user = useSelector((state) => state.auth.user);
-  const firstname = user.displayName.split(" ")[0];
+  const firstname = user.displayName?.split(" ")[0];
   return (
     <>
       <ProfileContainer>

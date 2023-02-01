@@ -34,7 +34,7 @@ const authSlice = createSlice({
       state.user.photoURL =
         action.payload.photoURL || action.payload?.data?.photoUrl;
       state.user.displayName =
-        action.payload.displayName || action.payload?.data?.displayName;
+        action.payload.displayName || action.payload?.data?.name;
       state.user.bio = action.payload.data?.bio;
     },
   },
