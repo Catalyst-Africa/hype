@@ -10,23 +10,47 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
 } from "firebase/auth";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { toast } from "react-hot-toast";
 
 import { auth } from "@/setup/firebase/firebase";
 import { extractErrorMessage } from "@/helpers/helpers";
+import { db } from "@/setup/firebase/firebase";
 
 export const googleAuth = createAsyncThunk("auth/googleAuth", async () => {
   await signInWithPopup(auth, new GoogleAuthProvider());
+  //Check for user
+  const docRef = doc(db, "users", auth.currentUser.uid);
+  const docSnap = await getDoc(docRef);
+  // If there are no user, create user
+  if (!docSnap.exists()) {
+    console.log("i am running");
+    await setDoc(doc(db, "users", auth.currentUser.uid), {
+      name: auth.currentUser.displayName,
+      email: auth.currentUser.email,
+      timeStamp: serverTimestamp(),
+      bio: "Hey there, I am active on Hype!",
+    });
+  }
 });
 
 export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
-  try {
-    const { email, password } = formData;
-    await createUserWithEmailAndPassword(auth, email, password);
-    await sendEmailVerification(auth.currentUser);
-    toast.success("Successfully created an account!");
-  } catch (err) {
-    toast.error(extractErrorMessage(err.message));
+  const { email, password } = formData;
+  await createUserWithEmailAndPassword(auth, email, password);
+  await sendEmailVerification(auth.currentUser);
+
+  //Check for user
+  const docRef = doc(db, "users", auth.currentUser.uid);
+  const docSnap = await getDoc(docRef);
+
+  // If there are no user, create user
+  if (!docSnap.exists()) {
+    await setDoc(doc(db, "users", auth.currentUser.uid), {
+      name: auth.currentUser.displayName,
+      email: auth.currentUser.email,
+      timeStamp: serverTimestamp(),
+      bio: "Hey there, I am active on Hype!",
+    });
   }
 });
 
@@ -40,13 +64,8 @@ export const sendEmailVerificationLink = createAsyncThunk(
 export const verifyEmail = createAsyncThunk(
   "auth/verifyEmail",
   async (oobCode) => {
-    // try {
     await applyActionCode(auth, oobCode);
     await signOut(auth);
-
-    //   } catch (err) {
-    //     toast.error(extractErrorMessage(err.message));
-    //   }
   },
 );
 
