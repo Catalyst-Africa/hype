@@ -64,8 +64,14 @@ export const sendEmailVerificationLink = createAsyncThunk(
 export const verifyEmail = createAsyncThunk(
   "auth/verifyEmail",
   async (oobCode) => {
-    await applyActionCode(auth, oobCode);
-    await signOut(auth);
+    try {
+      await applyActionCode(auth, oobCode);
+      await signOut(auth);
+      toast.success("Email verified successfully");
+      return true;
+    } catch (error) {
+      toast.error(extractErrorMessage(error.msg));
+    }
   },
 );
 
