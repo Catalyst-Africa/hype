@@ -31,7 +31,7 @@ const authSlice = createSlice({
       state.user.uid = action.payload.uid;
       state.user.email = action.payload.email;
       state.user.emailVerified = action.payload.emailVerified;
-      state.user.photoURL = action.payload.data.photoURL;
+      state.user.photoURL = action.payload.data.photoUrl;
       state.user.displayName = action.payload.data.displayName;
       state.user.bio = action.payload.data.bio;
     },

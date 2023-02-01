@@ -11,7 +11,8 @@ import { getDoc, doc } from "firebase/firestore";
 const AccountSettings = () => {
   const user = useSelector((state) => state.auth.user);
 
-  const firstname = user.displayName?.split(" ")[0];
+  // const firstname = user.displayName?.split(" ")[0];
+  console.log(user);
   const initialData = {
     name: firstname,
     email: user?.email,
