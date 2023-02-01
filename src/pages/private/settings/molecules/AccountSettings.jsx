@@ -28,8 +28,6 @@ const AccountSettings = () => {
     validateOnSubmit,
   } = useFormValidation(initialData, validation);
 
-  console.log(formData);
-
   const handleSubmit = (e) => {
     e.preventDefault();
   };
