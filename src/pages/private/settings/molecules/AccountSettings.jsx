@@ -8,11 +8,14 @@ import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 
 const AccountSettings = () => {
+  const user = useSelector((state) => state.auth.user);
+  const firstname = user.displayName.split(" ")[0];
+
   const initialData = {
-    name: "",
-    email: "",
-    username: "",
-    phonenumber: "",
+    name: firstname,
+    email: user.email,
+    username: `@${firstname}`,
+    phonenumber: user.phoneNumber || "",
     bio: "",
   };
   const {
@@ -28,8 +31,6 @@ const AccountSettings = () => {
     e.preventDefault();
   };
 
-  const user = useSelector((state) => state.auth.user);
-  const firstname = user.displayName.split(" ")[0];
   return (
     <AccountSettingsContainer>
       <SubTitle style={{ color: "#9D9D9D" }}>Your Profile Picture</SubTitle>
@@ -48,7 +49,7 @@ const AccountSettings = () => {
               id="name"
               label="Name"
               placeholder="Name"
-              defaultValue={firstname}
+              value={formData.name}
               onBlur={(e) => handleBlur(e)}
               onChange={(e) => handleChange(e)}
               helperText={errors.name}
@@ -61,11 +62,12 @@ const AccountSettings = () => {
               id="email"
               label="Email address"
               placeholder="Email address"
-              defaultValue={user.email}
+              value={formData.email}
               onBlur={(e) => handleBlur(e)}
               onChange={(e) => handleChange(e)}
               helperText={errors.email}
               helperTextType={checkIsValid("email")}
+              disabled
             />
           </InputContainer>
         </FormGroupContainer>
@@ -76,7 +78,7 @@ const AccountSettings = () => {
               id="username"
               label="Username"
               placeholder="@Username"
-              defaultValue={`@${firstname}`}
+              value={formData.username}
               onBlur={(e) => handleBlur(e)}
               onChange={(e) => handleChange(e)}
               helperText={errors.username}
@@ -85,11 +87,11 @@ const AccountSettings = () => {
           </InputContainer>
           <InputContainer>
             <InputGroup
-              type="number"
+              type="tel"
               id="number"
               label="Phone number"
               placeholder="Phone number"
-              defaultValue={user.phoneNumber ? user.phoneNumber : ""}
+              value={formData.phonenumber}
               onBlur={(e) => handleBlur(e)}
               onChange={(e) => handleChange(e)}
             />
@@ -102,7 +104,8 @@ const AccountSettings = () => {
               id="bio"
               label="Bio"
               placeholder="Bio"
-              defaultValue={user.bio ? user.bio : ""}
+              // defaultValue={user.bio ? user.bio : ""}
+              value={formData.bio}
               onBlur={(e) => handleBlur(e)}
               onChange={(e) => handleChange(e)}
             />
