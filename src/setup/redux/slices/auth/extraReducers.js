@@ -35,7 +35,9 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async () => {
 });
 
 export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
-  const { email, password, firstname } = formData;
+  const { email, password, name } = formData;
+
+  console.log(formData);
 
   await createUserWithEmailAndPassword(auth, email, password);
   await sendEmailVerification(auth.currentUser);
@@ -47,7 +49,7 @@ export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
   // If there are no user, create user
   if (!docSnap.exists()) {
     await setDoc(doc(db, "users", auth.currentUser.uid), {
-      name: firstname,
+      name: name,
       email: email,
       timeStamp: serverTimestamp(),
       photoUrl: `https://avatars.dicebear.com/api/bottts/${auth.currentUser.uid}.svg`,
