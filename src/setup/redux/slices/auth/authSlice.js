@@ -33,6 +33,7 @@ const authSlice = createSlice({
       state.user.emailVerified = action.payload.emailVerified;
       state.user.photoURL = action.payload.photoURL;
       state.user.displayName = action.payload.displayName;
+      state.user.bio = action.payload.data;
     },
   },
   extraReducers: (builder) => {

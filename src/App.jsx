@@ -12,16 +12,25 @@ import { OverlayLoader } from "@/components/ui";
 import { auth } from "@/setup/firebase/firebase";
 import { updateAuth } from "@/setup/redux/slices/app/appSlice";
 import { updateUser } from "@/setup/redux/slices/auth/authSlice";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "./setup/firebase/firebase";
 
 const App = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.app.loading);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        console.log(docSnap.exists());
+        const data = docSnap.data()?.bio;
+
+        console.log(data);
+
         dispatch(updateAuth(true));
-        dispatch(updateUser(user));
+        dispatch(updateUser({ ...user, data }));
       } else {
         dispatch(updateAuth(false));
       }
