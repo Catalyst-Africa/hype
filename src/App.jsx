@@ -24,7 +24,7 @@ const App = () => {
       if (user) {
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
-        const data = docSnap.data()?.bio;
+        const data = docSnap.data();
 
         dispatch(updateAuth(true));
         dispatch(updateUser({ ...user, data }));
