@@ -38,25 +38,32 @@ const authSlice = createSlice({
       .addCase(googleAuth.pending, (state) => {
         state.loading = true;
       })
-      .addCase(googleAuth.fulfilled || googleAuth.rejected, (state) => {
+      .addCase(googleAuth.fulfilled, (state) => {
         state.loading = false;
       })
+
+      .addCase(googleAuth.rejected, (state) => {
+        state.loading = false;
+      })
+
       .addCase(signUp.pending, (state) => {
         state.loading = true;
       })
-      .addCase(signUp.fulfilled || signUp.rejected, (state) => {
+      .addCase(signUp.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(signUp.rejected, (state) => {
         state.loading = false;
       })
       .addCase(sendEmailVerificationLink.pending, (state) => {
         state.loading = true;
       })
-      .addCase(
-        sendEmailVerificationLink.fulfilled ||
-          sendEmailVerificationLink.rejected,
-        (state) => {
-          state.loading = false;
-        },
-      )
+      .addCase(sendEmailVerificationLink.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(sendEmailVerificationLink.rejected, (state) => {
+        state.loading = false;
+      })
       .addCase(verifyEmail.pending, (state) => {
         state.loading = true;
       })
