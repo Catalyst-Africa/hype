@@ -417,10 +417,6 @@ const FormShareGroupContainer = styled.div`
   display: flex;
   gap: 27px;
 
-  ${({ theme }) => theme.breakpoints.down("md")} {
-    flex-direction: column;
-  }
-
   ${({ theme }) => theme.breakpoints.down("xl")} {
     flex-direction: column;
   }
