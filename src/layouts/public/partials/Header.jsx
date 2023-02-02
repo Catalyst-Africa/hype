@@ -85,6 +85,11 @@ const NavMenu = styled.div`
   span {
     cursor: pointer;
   }
+  ${({ theme }) => theme.breakpoints.down("md")} {
+    span {
+      display: none;
+    }
+  }
 `;
 const Profile = styled.div`
   display: flex;

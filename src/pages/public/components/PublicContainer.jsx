@@ -30,7 +30,7 @@ const Container = styled.div`
   /* background-color: transparent; */
 
   ${({ theme }) => theme.breakpoints.down("md")} {
-    background-size: contain;
+    background-size: cover;
   }
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
