@@ -43,7 +43,8 @@ const AccountSettings = () => {
     const docRef = doc(db, "users", user.uid);
     await updateDoc(docRef, {
       bio: bio || user?.bio,
-      username: username || user?.username,
+      username:
+        username[0] === "@" ? username : `@${username}` || user?.username,
       phonenumber: phonenumber || user?.phonenumber || "",
     });
     setSubmitted(false);
