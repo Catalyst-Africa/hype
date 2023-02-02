@@ -55,7 +55,7 @@ export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
       email: email,
       timeStamp: serverTimestamp(),
       photoUrl: `https://avatars.dicebear.com/api/bottts/${auth.currentUser.uid}.svg`,
-      username: `@${name.split(" ")[0].toLowerCase()}`,
+      username: `@${name.toLowerCase().split(" ")[0]}`,
       phonenumber: "",
       bio: "Hey there, I am active on Hype!",
     });
