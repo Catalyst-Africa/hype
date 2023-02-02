@@ -1,7 +1,7 @@
 import { SubTitle } from "@/styles/reusable/elements.styled";
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/styles/reusable/elements.styled";
 import { InputGroup, TextAreaInputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
@@ -11,10 +11,13 @@ import { db } from "@/setup/firebase/firebase";
 import { OverlayLoader } from "@/components/ui";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { updateAuth } from "@/setup/redux/slices/app/appSlice";
+import { updateUser } from "@/setup/redux/slices/auth/authSlice";
 
 const AccountSettings = () => {
   const user = useSelector((state) => state.auth.user);
   const [submitted, setSubmitted] = useState(false);
+  const dispatch = useDispatch();
   const firstname = user.displayName;
   const initialData = {
     name: firstname,
@@ -45,6 +48,16 @@ const AccountSettings = () => {
     });
     setSubmitted(false);
     toast.success("Profile Successfully Updated");
+
+    if (user) {
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      const data = docSnap.data();
+      dispatch(updateAuth(true));
+      dispatch(updateUser({ ...user, data }));
+    } else {
+      dispatch(updateAuth(false));
+    }
   };
 
   return (
