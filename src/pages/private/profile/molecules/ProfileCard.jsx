@@ -20,6 +20,7 @@ const ProfileCard = () => {
           <TitleContainer>
             <FluidTitle>{firstname}</FluidTitle>
             <span>@{firstname}</span>
+            <div>{user.bio}</div>
           </TitleContainer>
           <Button>Send Hypes</Button>
           <InfoContainer>

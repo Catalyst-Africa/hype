@@ -6,7 +6,8 @@ import { Button } from "@/styles/reusable/elements.styled";
 import { InputGroup, TextAreaInputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
-import { getDoc, doc } from "firebase/firestore";
+import { getDoc, doc, updateDoc } from "firebase/firestore";
+import { db } from "@/setup/firebase/firebase";
 
 const AccountSettings = () => {
   const user = useSelector((state) => state.auth.user);
@@ -29,9 +30,34 @@ const AccountSettings = () => {
     validateOnSubmit,
   } = useFormValidation(initialData, validation);
 
-  const handleSubmit = (e) => {
+  const { bio, username, phonenumber } = formData;
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const docRef = doc(db, "users", user.uid);
+    await updateDoc(docRef, {
+      bio,
+      username,
+      phonenumber,
+    });
   };
+
+  /*
+
+  bio
+"Hey there, I am active on Hype!"
+email
+"nwakanmaprince1996@gmail.com"
+name
+"Princewill Nwakanma"
+photoUrl
+"https://avatars.dicebear.com/api/bottts/fJUxym3GMxbM71Fn0t4eVNYgdKv1.svg"
+timeStamp
+February 2, 2023 at 12:17:31 AM UTC+1
+
+
+  */
 
   return (
     <AccountSettingsContainer>
@@ -56,6 +82,7 @@ const AccountSettings = () => {
               onChange={(e) => handleChange(e)}
               helperText={errors.name}
               helperTextType={checkIsValid("name")}
+              disabled
             />
           </InputContainer>
           <InputContainer>
