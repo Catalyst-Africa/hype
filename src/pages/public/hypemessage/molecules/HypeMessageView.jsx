@@ -15,7 +15,7 @@ const HypeMessageView = () => {
   const idNumber = Number(id);
 
   useEffect(() => {
-    if (idNumber === 12345) {
+    if (idNumber === 10101010) {
       return;
     } else {
       navigate("*");
