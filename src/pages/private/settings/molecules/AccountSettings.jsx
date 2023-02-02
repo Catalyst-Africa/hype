@@ -22,7 +22,7 @@ const AccountSettings = () => {
   const initialData = {
     name: firstname,
     email: user.email,
-    username: `@${firstname}`,
+    username: user.username,
     phonenumber: user.phoneNumber || "",
     bio: user.bio,
   };
