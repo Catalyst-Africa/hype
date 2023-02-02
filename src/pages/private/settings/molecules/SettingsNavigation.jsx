@@ -8,6 +8,7 @@ const SettingsNavigation = () => {
   return (
     <>
       <FluidTitle>Settings</FluidTitle>
+      <button>Logout</button>
       <SettingsNavigationContainer>
         <Link to="/settings">
           <NavigationItem
