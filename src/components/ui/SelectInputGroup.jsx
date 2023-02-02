@@ -10,10 +10,11 @@ const SelectInputGroup = ({
   label,
   className,
   disabled = false,
+  width = "90%",
   ...props
 }) => {
   return (
-    <div style={{ width: "90%" }}>
+    <div style={{ width: width }}>
       {label && <Label>{label}</Label>}
       <InputContainer $type={helperTextType} $disabled={disabled}>
         {startIcon && startIcon}

@@ -18,7 +18,7 @@ const TopStats = () => {
             <GemInnerBlock>
               <FaGem color="#FFB328" size={42} />
               <GemTitle>
-                <FluidTitle>150</FluidTitle>
+                <FluidTitle>0</FluidTitle>
                 <SubTitle>Gems</SubTitle>
               </GemTitle>
             </GemInnerBlock>
