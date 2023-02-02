@@ -6,7 +6,7 @@ import { FluidTitle } from "@/styles/reusable/elements.styled";
 
 const Header = () => {
   const user = useSelector((state) => state.auth.user);
-  const firstname = user.displayName.split(" ")[0];
+  const firstname = user.displayName?.split(" ")[0];
 
   return (
     <HeaderElement>

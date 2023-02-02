@@ -31,9 +31,11 @@ const authSlice = createSlice({
       state.user.uid = action.payload.uid;
       state.user.email = action.payload.email;
       state.user.emailVerified = action.payload.emailVerified;
-      state.user.photoURL = action.payload.photoURL;
-      state.user.displayName = action.payload.displayName;
-      state.user.bio = action.payload.data;
+      state.user.photoURL =
+        action.payload.photoURL || action.payload?.data?.photoUrl;
+      state.user.displayName =
+        action.payload.displayName || action.payload?.data?.name;
+      state.user.bio = action.payload.data?.bio;
     },
   },
   extraReducers: (builder) => {

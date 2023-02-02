@@ -9,8 +9,9 @@ import { validation } from "@/pages/auth/validation";
 
 const AccountSettings = () => {
   const user = useSelector((state) => state.auth.user);
-  const firstname = user.displayName.split(" ")[0];
 
+  const firstname = user.displayName?.split(" ")[0];
+  console.log(user);
   const initialData = {
     name: firstname,
     email: user.email,
@@ -133,12 +134,13 @@ const ProfilePhotoContainer = styled.div`
   align-items: center;
   padding-bottom: 20px;
   border-bottom: 3px solid #eeeeee;
+  width: 100%;
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
     flex-direction: column;
     img {
-      width: 30%;
-      height: 30%;
+      width: 100px;
+      height: 100px;
     }
   }
 `;
