@@ -29,6 +29,8 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async () => {
       email: auth.currentUser.email,
       timeStamp: serverTimestamp(),
       photoUrl: `https://avatars.dicebear.com/api/bottts/${auth.currentUser.uid}.svg`,
+      username: auth.currentUser?.displayName.split(" ")[0],
+      phonenumber: "",
       bio: "Hey there, I am active on Hype!",
     });
   }
@@ -53,6 +55,8 @@ export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
       email: email,
       timeStamp: serverTimestamp(),
       photoUrl: `https://avatars.dicebear.com/api/bottts/${auth.currentUser.uid}.svg`,
+      username: auth.currentUser?.displayName.split(" ")[0],
+      phonenumber: "",
       bio: "Hey there, I am active on Hype!",
     });
   }

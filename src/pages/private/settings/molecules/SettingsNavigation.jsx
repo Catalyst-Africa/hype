@@ -1,13 +1,33 @@
-import { FluidTitle } from "@/styles/reusable/elements.styled";
+import { logOut } from "@/setup/redux/slices/auth/extraReducers";
+import { FluidTitle, Button } from "@/styles/reusable/elements.styled";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const SettingsNavigation = () => {
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logOut());
+  };
+
   return (
     <>
-      <FluidTitle>Settings</FluidTitle>
+      <LogoutContainer>
+        <FluidTitle>Settings</FluidTitle>
+        <Button
+          style={{
+            background: "transparent",
+            color: "red",
+            border: "1px solid red",
+          }}
+          onClick={handleLogout}
+        >
+          Logout
+        </Button>
+      </LogoutContainer>
       <SettingsNavigationContainer>
         <Link to="/settings">
           <NavigationItem
@@ -52,6 +72,13 @@ const SettingsNavigation = () => {
 };
 
 export default SettingsNavigation;
+
+const LogoutContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 const SettingsNavigationContainer = styled.div`
   display: flex;

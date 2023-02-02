@@ -20,6 +20,7 @@ const initialState = {
     emailVerified: "",
     photoURL: "",
     displayName: "",
+    phoneNumber: "",
   },
 };
 
@@ -36,6 +37,7 @@ const authSlice = createSlice({
       state.user.displayName =
         action.payload.displayName || action.payload?.data?.name;
       state.user.bio = action.payload.data?.bio;
+      state.user.phoneNumber = action.payload.data?.phonenumber;
     },
   },
   extraReducers: (builder) => {
