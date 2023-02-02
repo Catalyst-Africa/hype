@@ -16,6 +16,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { birthdayHypes, celebrateHypes, loveHypes } from "./samplehypes";
 import { Loader } from "@/styles/reusable/elements.styled";
 import hypesent from "../../../../assets/hypesent.svg";
+import { Link } from "react-router-dom";
 
 const SendHype = () => {
   const user = useSelector((state) => state.auth.user);
@@ -233,6 +234,7 @@ const SendHype = () => {
                     onChange={handleInitialDataChange}
                     helperText={errors.selectsocial}
                     helperTextType={checkIsValid("selectsocial")}
+                    width="100%"
                   >
                     <option value="" disabled hidden>
                       Choose
@@ -343,12 +345,14 @@ const SendHype = () => {
       </SendHypeContainer>
       {toggleModal ? (
         <SentHypeModalContainer>
-          <AiFillCloseCircle
-            color="#FFB328"
-            cursor="pointer"
-            onClick={handleToggleModal}
-            size="50px"
-          />
+          <Link to="/dashboard">
+            <AiFillCloseCircle
+              color="#FFB328"
+              cursor="pointer"
+              onClick={handleToggleModal}
+              size="50px"
+            />
+          </Link>
           <Modal>
             <img src={hypesent} alt="hypesent" width="80%" />
             <br />
@@ -448,7 +452,8 @@ const SentHypeModalContainer = styled.div`
   border-radius: 10px;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12);
 
-  svg {
+  //use svg or a tag depending on if the react icon is nested inside the Link tag
+  a {
     position: absolute;
     top: 10px;
     right: 10px;

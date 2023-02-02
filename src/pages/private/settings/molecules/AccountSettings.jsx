@@ -37,6 +37,8 @@ const AccountSettings = () => {
 
   const { bio, username, phonenumber } = formData;
 
+  console.log("first", formData);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);

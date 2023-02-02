@@ -12,7 +12,7 @@ const ProfileHero = () => {
         <ProfileImage src={user.photoURL} alt={user.displayName} />
         <TitleContainer>
           <FluidTitle color="#fff">{firstname}</FluidTitle>
-          <span>@{firstname}</span>
+          <span>{user.username}</span>
         </TitleContainer>
         <FluidTitle color="#fff">Gems & Polls</FluidTitle>
       </ProfileHeroContainer>
@@ -35,7 +35,7 @@ const ProfileImage = styled.img`
   width: 98.37px;
   height: 98.37px;
   border-radius: 50%;
-  background: #000;
+  background: transparent;
   border: 4px solid #ffffff;
   box-shadow: 0px 1px 6px 1px rgba(0, 0, 0, 0.25);
 `;
