@@ -7,6 +7,7 @@ import { MdFavorite } from "react-icons/md";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { SubTitle } from "@/styles/reusable/elements.styled";
 import ProgressBar from "@/pages/private/components/ProgressBar";
+import { Link } from "react-router-dom";
 
 const TopStats = () => {
   return (
@@ -32,7 +33,9 @@ const TopStats = () => {
         <SecondCard>
           <SmallCard>
             <RiSendPlaneFill color="#FFB328" size={24} />
-            <SubTitle>Send Hypes</SubTitle>
+            <SubTitle>
+              <Link to="/send-hype">Send Hypes</Link>
+            </SubTitle>
           </SmallCard>
           <SmallCard>
             <BiTrendingUp color="#FFB328" size={24} />
