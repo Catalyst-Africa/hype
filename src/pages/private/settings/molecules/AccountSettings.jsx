@@ -65,7 +65,7 @@ const AccountSettings = () => {
   const handleImageSubmit = async (image) => {
     console.log(image);
     try {
-      const imageRef = ref(storage, "dp");
+      const imageRef = ref(storage, `profilePhoto${user.username}`);
       await uploadBytes(imageRef, image);
       const url = await getDownloadURL(imageRef);
       console.log(url);
@@ -194,6 +194,7 @@ const ProfilePhotoContainer = styled.div`
   padding-bottom: 20px;
   border-bottom: 3px solid #eeeeee;
   width: 100%;
+  position: relative;
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
     flex-direction: column;
