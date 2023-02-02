@@ -38,6 +38,8 @@ const authSlice = createSlice({
         action.payload.displayName || action.payload?.data?.name;
       state.user.bio = action.payload.data?.bio;
       state.user.phoneNumber = action.payload.data?.phonenumber;
+      state.user.createdAt = action.payload.data?.timeStamp;
+      state.user.username = action.payload.data?.username;
     },
   },
   extraReducers: (builder) => {
