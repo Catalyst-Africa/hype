@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { AiOutlineSearch, AiFillBell } from "react-icons/ai";
-
-import { FluidTitle } from "@/styles/reusable/elements.styled";
+import { Logo } from "@/components/ui";
+import { Button } from "@/styles/reusable/elements.styled";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const user = useSelector((state) => state.auth.user);
@@ -10,23 +10,38 @@ const Header = () => {
 
   return (
     <HeaderElement>
-      <Greeting>
-        <FluidTitle>
-          {document.body.clientWidth <= 960
-            ? `Hi ${firstname}`
-            : `Welcome Back, ${firstname || "User"}`}
-          !
-        </FluidTitle>
-        <span>Here's an overview of your activities</span>
-      </Greeting>
+      <div>
+        <Link to="/">
+          <Logo />
+        </Link>
+      </div>
       <Options>
-        {/* <SearchIcon /> */}
-        <BellIcon />
-        <div></div>
+        <NavMenu>
+          <Link to="/">
+            <span>Home</span>
+          </Link>
+          <span>Contact Us</span>
+          {firstname ? (
+            ""
+          ) : (
+            <Link to="/signup">
+              <Button $type="outlined">Get Started</Button>
+            </Link>
+          )}
+        </NavMenu>
         <Profile>
-          <span>{firstname}</span>
+          <span style={{ fontWeight: "bold" }}>
+            {firstname ? firstname : "Guest"}
+          </span>
           <div>
-            <img src={user.photoURL} alt={user.displayName} />
+            <img
+              src={
+                user.photoURL
+                  ? user.photoURL
+                  : "https://api.dicebear.com/5.x/fun-emoji/svg?seed=Peanut"
+              }
+              alt={user.displayName ? user.displayName : "Avatar"}
+            />
           </div>
         </Profile>
       </Options>
@@ -38,7 +53,7 @@ export default Header;
 
 const HeaderElement = styled.header`
   width: 100%;
-  background: rgba(252, 250, 255, 0.32);
+  background: transparent;
   padding: 18px 48px;
   display: flex;
   justify-content: space-between;
@@ -49,43 +64,28 @@ const HeaderElement = styled.header`
   }
 `;
 
-const Greeting = styled.div`
-  ${({ theme }) => theme.breakpoints.down("xs")} {
-    span {
-      display: none;
-    }
-  }
-
-  ${FluidTitle} {
-    ${({ theme }) => theme.breakpoints.down("md")} {
-      font-weight: 400;
-    }
-  }
-`;
-
 const Options = styled.div`
   display: flex;
-  gap: 16px;
+  gap: 50px;
   align-items: center;
   margin-left: auto;
 
-  > div:nth-of-type(1) {
+  /* > div:nth-of-type(1) {
     height: 24px;
     width: 2px;
     background: #e6e6e6;
+  } */
+`;
+
+const NavMenu = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 55px;
+
+  span {
+    cursor: pointer;
   }
 `;
-
-const SearchIcon = styled(AiOutlineSearch)`
-  width: 20px;
-  color: #393939;
-`;
-
-const BellIcon = styled(AiFillBell)`
-  width: 20px;
-  color: #393939;
-`;
-
 const Profile = styled.div`
   display: flex;
   align-items: center;

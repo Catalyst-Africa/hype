@@ -5,13 +5,15 @@ import { AiFillPieChart } from "react-icons/ai";
 import { FaUser } from "react-icons/fa";
 import { SiRubygems } from "react-icons/si";
 import { IoMdSettings } from "react-icons/io";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const SideBar = () => {
   return (
     <NavElement>
       <div>
-        <Logo />
+        <Link to="/">
+          <Logo />
+        </Link>
       </div>
       <List>
         <li>

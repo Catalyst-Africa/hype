@@ -1,16 +1,18 @@
 import { SubTitle, Title } from "@/styles/reusable/elements.styled";
 import { Button } from "@/styles/reusable/elements.styled";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { FaEdit } from "react-icons/fa";
 import { IoMdNotifications } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { BsToggleOff, BsToggleOn } from "react-icons/bs";
 
 const ProfileCard = () => {
   const user = useSelector((state) => state.auth.user);
   const firstname = user.displayName?.split(" ")[0];
+  const [toggleNotification, setToggleNotification] = useState(true);
   return (
     <>
       <ProfileContainer>
@@ -53,9 +55,21 @@ const ProfileCard = () => {
             </EditCard>
           </Link>
 
-          <EditCard>
-            <IoMdNotifications color="#F69D00" />
-            <SubTitle>Notification</SubTitle>
+          <EditCard style={{ cursor: "auto" }}>
+            <NotificationContainer>
+              <IoMdNotifications color="#F69D00" />
+              <SubTitle>Notification</SubTitle>
+            </NotificationContainer>
+            <NotificationToggler
+              style={{ cursor: "pointer" }}
+              onClick={() => setToggleNotification(!toggleNotification)}
+            >
+              {toggleNotification ? (
+                <BsToggleOn color="#F69D00"/>
+              ) : (
+                <BsToggleOff color="#F69D00" />
+              )}
+            </NotificationToggler>
           </EditCard>
         </ProfileEdit>
       </ProfileContainer>
@@ -76,6 +90,7 @@ const ProfileContainer = styled.div`
     flex-direction: column;
     margin-top: -180px;
     margin-bottom: 50px;
+    padding-bottom: 100px;
   }
 `;
 const ProfileInfo = styled.div`
@@ -161,3 +176,13 @@ const EditCard = styled.div`
   gap: 6.5px;
   cursor: pointer;
 `;
+
+const NotificationContainer = styled.div`
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  width: 100%;
+  gap: 6.5px;
+`;
+
+const NotificationToggler = styled.div``;

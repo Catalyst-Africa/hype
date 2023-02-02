@@ -110,3 +110,4 @@ export const resetPassword = createAsyncThunk(
     auth.currentUser && (await signOut(auth));
   },
 );
+
