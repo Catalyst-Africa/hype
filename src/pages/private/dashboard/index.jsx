@@ -10,7 +10,9 @@ const index = () => {
       <PrivateContainer>
         <TopStats />
         <History />
-        <Analytics />
+        <br />
+        <br />
+        {/* <Analytics /> */}
       </PrivateContainer>
     </>
   );

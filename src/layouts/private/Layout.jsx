@@ -5,6 +5,7 @@ import { Container } from "@/styles/reusable/elements.styled";
 import Header from "@/layouts/private/partials/Header";
 import SideBar from "@/layouts/private/partials/SideBar";
 import BottomBar from "@/layouts/private/partials/BottomBar";
+import { SendHypeButton } from "@/components/ui";
 
 const Layout = () => {
   return (
@@ -18,6 +19,7 @@ const Layout = () => {
           </MainContent>
         </Main>
         <BottomBar />
+        <SendHypeButton />
       </PrivateAreaContainer>
     </>
   );

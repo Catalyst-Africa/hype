@@ -22,7 +22,10 @@ const ProfileCard = () => {
             <span>@{firstname}</span>
             <div>{user.bio}</div>
           </TitleContainer>
-          <Button>Send Hypes</Button>
+          <Link to="/send-hype">
+            <Button>Send Hypes</Button>
+          </Link>
+
           <InfoContainer>
             <InfoCard>
               <SubTitle style={{ color: "#BABABA", fontSize: "14px" }}>

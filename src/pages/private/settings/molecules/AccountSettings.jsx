@@ -16,10 +16,10 @@ const AccountSettings = () => {
   console.log(user);
   const initialData = {
     name: firstname,
-    email: user?.email,
+    email: user.email,
     username: `@${firstname}`,
-    phonenumber: user?.phoneNumber || "",
-    bio: user?.bio,
+    phonenumber: user.phoneNumber || "",
+    bio: "",
   };
   const {
     formData,
@@ -42,22 +42,6 @@ const AccountSettings = () => {
       phonenumber,
     });
   };
-
-  /*
-
-  bio
-"Hey there, I am active on Hype!"
-email
-"nwakanmaprince1996@gmail.com"
-name
-"Princewill Nwakanma"
-photoUrl
-"https://avatars.dicebear.com/api/bottts/fJUxym3GMxbM71Fn0t4eVNYgdKv1.svg"
-timeStamp
-February 2, 2023 at 12:17:31 AM UTC+1
-
-
-  */
 
   return (
     <AccountSettingsContainer>
@@ -162,12 +146,13 @@ const ProfilePhotoContainer = styled.div`
   align-items: center;
   padding-bottom: 20px;
   border-bottom: 3px solid #eeeeee;
+  width: 100%;
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
     flex-direction: column;
     img {
-      width: 30%;
-      height: 30%;
+      width: 100px;
+      height: 100px;
     }
   }
 `;
