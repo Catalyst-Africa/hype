@@ -27,4 +27,6 @@ const Overlay = styled.div`
   right: 0;
   z-index: 100;
   background-color: #fff;
+  ${({ transparent }) =>
+    transparent && "background-color: rgba(255,255,255, 0.3)"}
 `;

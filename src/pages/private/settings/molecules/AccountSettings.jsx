@@ -8,18 +8,20 @@ import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "@/setup/firebase/firebase";
+import { OverlayLoader } from "@/components/ui";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 const AccountSettings = () => {
   const user = useSelector((state) => state.auth.user);
-
-  const firstname = user.displayName?.split(" ")[0];
-  console.log(user);
+  const [submitted, setSubmitted] = useState(false);
+  const firstname = user.displayName;
   const initialData = {
     name: firstname,
     email: user.email,
     username: `@${firstname}`,
     phonenumber: user.phoneNumber || "",
-    bio: "",
+    bio: user.bio,
   };
   const {
     formData,
@@ -34,13 +36,15 @@ const AccountSettings = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setSubmitted(true);
     const docRef = doc(db, "users", user.uid);
     await updateDoc(docRef, {
-      bio,
-      username,
-      phonenumber,
+      bio: bio || user?.bio,
+      username: username || user?.username,
+      phonenumber: phonenumber || user?.phonenumber || "",
     });
+    // setSubmitted(false);
+    toast.success("Profile Successfully Updated");
   };
 
   return (
@@ -101,7 +105,7 @@ const AccountSettings = () => {
           <InputContainer>
             <InputGroup
               type="tel"
-              id="number"
+              id="phonenumber"
               label="Phone number"
               placeholder="Phone number"
               value={formData.phonenumber}
@@ -126,6 +130,7 @@ const AccountSettings = () => {
         </FormGroupContainer>
         <Button style={{ maxWidth: "200px" }}>Update Profile</Button>
       </Form>
+      {submitted && <OverlayLoader transparent />}
     </AccountSettingsContainer>
   );
 };
