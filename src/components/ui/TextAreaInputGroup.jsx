@@ -9,6 +9,7 @@ const TextAreaInputGroup = ({
   label,
   className,
   disabled = false,
+  rows = 4,
   ...props
 }) => {
   return (
@@ -16,7 +17,7 @@ const TextAreaInputGroup = ({
       {label && <Label>{label}</Label>}
       <InputContainer $type={helperTextType} $disabled={disabled}>
         {startIcon && startIcon}
-        <textarea {...props} readOnly={disabled ? true : false} rows="4" />
+        <textarea {...props} readOnly={disabled ? true : false} rows={rows} />
         {endIcon && endIcon}
       </InputContainer>
       {helperText && (
@@ -89,6 +90,7 @@ const InputContainer = styled.div`
     display: flex;
     font-size: 14px;
     padding-top: 10px;
+    padding-bottom: 10px;
     resize: none;
   }
 

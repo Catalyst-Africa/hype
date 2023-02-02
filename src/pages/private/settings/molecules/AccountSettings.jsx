@@ -6,7 +6,6 @@ import { Button } from "@/styles/reusable/elements.styled";
 import { InputGroup, TextAreaInputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
-import { getDoc, doc } from "firebase/firestore";
 
 const AccountSettings = () => {
   const user = useSelector((state) => state.auth.user);
@@ -15,10 +14,10 @@ const AccountSettings = () => {
   console.log(user);
   const initialData = {
     name: firstname,
-    email: user?.email,
+    email: user.email,
     username: `@${firstname}`,
-    phonenumber: user?.phoneNumber || "",
-    bio: user?.bio,
+    phonenumber: user.phoneNumber || "",
+    bio: "",
   };
   const {
     formData,
@@ -135,12 +134,13 @@ const ProfilePhotoContainer = styled.div`
   align-items: center;
   padding-bottom: 20px;
   border-bottom: 3px solid #eeeeee;
+  width: 100%;
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
     flex-direction: column;
     img {
-      width: 30%;
-      height: 30%;
+      width: 100px;
+      height: 100px;
     }
   }
 `;

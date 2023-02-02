@@ -2,12 +2,19 @@ import { Route } from "react-router-dom";
 
 import PrivateRoute from "@/routes/routesManager/PrivateRoutes";
 import { PrivateLayout } from "@/layouts";
-import { Dashboard, GemsPolls, Profile, Settings } from "../pages/private";
+import {
+  Dashboard,
+  GemsPolls,
+  Profile,
+  Hype,
+  Settings,
+} from "../pages/private";
 import {
   AccountSettings,
   ChangePasswordSettings,
   InterfaceThemeSettings,
 } from "../pages/private/settings/molecules";
+import { SendHype } from "../pages/private/hype/molecules";
 
 const privateRoutes = (
   <Route element={<PrivateRoute />}>
@@ -20,6 +27,10 @@ const privateRoutes = (
         <Route path="interface-theme" element={<InterfaceThemeSettings />} />
         <Route path="password" element={<ChangePasswordSettings />} />
       </Route>
+      <Route path="/send-hype" element={<Hype />}>
+        <Route path="" element={<SendHype />} />
+      </Route>
+      <Route path="*" element={"Not found"} />
     </Route>
   </Route>
 );
