@@ -385,7 +385,6 @@ const SendHypeInnerContainer = styled.div`
   justify-content: center;
   gap: 54px;
   margin-top: 34px;
-  background: rgba(255, 255, 255, 0.2);
 
   ${({ theme }) => theme.breakpoints.down("lg")} {
     flex-direction: column;
@@ -418,7 +417,7 @@ const FormShareGroupContainer = styled.div`
   display: flex;
   gap: 27px;
 
-  ${({ theme }) => theme.breakpoints.down("md")} {
+  ${({ theme }) => theme.breakpoints.down("xl")} {
     flex-direction: column;
   }
 `;
