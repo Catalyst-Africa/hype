@@ -1,10 +1,24 @@
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import lovebg from "../../../assets/hypesbg/lovebg.svg";
+import lovebg1 from "../../../assets/hypesbg/lovebg1.svg";
 
 const PublicContainer = ({ children }) => {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
-    <Container style={{ backgroundImage: `url(${lovebg})` }}>
+    <Container
+      style={{ backgroundImage: `url(${width > 767 ? lovebg : lovebg1})` }}
+    >
       {children}
     </Container>
   );
@@ -25,9 +39,8 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 22px 51px;
   background-repeat: no-repeat;
-  background-position: top;
+  background-position: right top;
   background-size: cover;
-  /* background-color: transparent; */
 
   ${({ theme }) => theme.breakpoints.down("md")} {
     background-size: cover;

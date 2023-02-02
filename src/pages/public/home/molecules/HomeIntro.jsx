@@ -61,8 +61,9 @@ const HypeMessageCardContainer = styled.div`
 const HypeMessageCard = styled.div`
   width: 50%;
 
-  ${({ theme }) => theme.breakpoints.down("md")} {
+  ${({ theme }) => theme.breakpoints.down("lg")} {
     width: 100%;
+    padding: 0px 0px;
   }
 `;
 
