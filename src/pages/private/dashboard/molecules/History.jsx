@@ -12,16 +12,16 @@ const History = () => {
       <SubTitle>Hype History</SubTitle>
 
       <HistoryCardContainer>
-        <HistoryCard>
+        {/* <HistoryCard>
           <SubTitle>Draft</SubTitle>
           <SubTitleDivider style={{ background: " #4adcd3" }}></SubTitleDivider>
           <NumberStats>
             <NumberStatsIcon style={{ background: "rgba(74, 220, 211, 0.22)" }}>
               <MdEditNote color="#4ADCD3" size={16} />
             </NumberStatsIcon>
-            <FluidTitle>09</FluidTitle>
+            <FluidTitle>0</FluidTitle>
           </NumberStats>
-        </HistoryCard>
+        </HistoryCard> */}
         <HistoryCard>
           <SubTitle>Sent Hypes</SubTitle>
           <SubTitleDivider style={{ background: "#07B519" }}></SubTitleDivider>
@@ -29,7 +29,7 @@ const History = () => {
             <NumberStatsIcon style={{ background: "rgba(7, 181, 25, 0.22)" }}>
               <BsCheck color="#07B519" size={16} />
             </NumberStatsIcon>
-            <FluidTitle>60</FluidTitle>
+            <FluidTitle>0</FluidTitle>
           </NumberStats>
         </HistoryCard>
         <HistoryCard>
@@ -39,7 +39,7 @@ const History = () => {
             <NumberStatsIcon style={{ background: "rgba(238, 174, 10, 0.22)" }}>
               <BiEnvelope color="#FFB328" size={16} />
             </NumberStatsIcon>
-            <FluidTitle>12</FluidTitle>
+            <FluidTitle>0</FluidTitle>
           </NumberStats>
         </HistoryCard>
       </HistoryCardContainer>

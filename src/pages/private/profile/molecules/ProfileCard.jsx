@@ -117,11 +117,12 @@ const TopDivider = styled.div`
 `;
 
 const ProfileImage = styled.img`
-  background: #ffffff;
+  background: transparent;
   box-shadow: 0px 0px 32px 2px rgba(0, 0, 0, 0.12);
   border-radius: 50%;
   width: 130px;
   height: 130px;
+  border: 4px solid #f69d00;
 `;
 
 const TitleContainer = styled.div`
