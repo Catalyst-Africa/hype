@@ -3,9 +3,9 @@ import styled from "styled-components";
 import { Loader } from "@/styles/reusable/elements.styled";
 import Logo from "@/components/ui/Logo";
 
-const OverlayLoader = () => {
+const OverlayLoader = ({ transparent }) => {
   return (
-    <Overlay>
+    <Overlay transparent={transparent}>
       <Logo />
       <Loader />
     </Overlay>
@@ -26,7 +26,6 @@ const Overlay = styled.div`
   left: 0;
   right: 0;
   z-index: 100;
-  background-color: #fff;
-  ${({ transparent }) =>
-    transparent && "background-color: rgba(255,255,255, 0.3)"}
+  background-color: ${(props) =>
+    props.transparent ? "rgba(0, 0, 0, .65)" : "#fff"};
 `;

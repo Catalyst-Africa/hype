@@ -43,7 +43,7 @@ const AccountSettings = () => {
       username: username || user?.username,
       phonenumber: phonenumber || user?.phonenumber || "",
     });
-    // setSubmitted(false);
+    setSubmitted(false);
     toast.success("Profile Successfully Updated");
   };
 
@@ -121,7 +121,6 @@ const AccountSettings = () => {
               id="bio"
               label="Bio"
               placeholder="Bio"
-              // defaultValue={user.bio ? user.bio : ""}
               value={formData.bio}
               onBlur={(e) => handleBlur(e)}
               onChange={(e) => handleChange(e)}
