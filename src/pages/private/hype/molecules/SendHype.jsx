@@ -77,6 +77,7 @@ const SendHype = () => {
       twitterusername: "",
       smsnumber: "",
     });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   useEffect(() => {
