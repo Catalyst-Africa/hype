@@ -18,6 +18,7 @@ import { db } from "./setup/firebase/firebase";
 const App = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.app.loading);
+  const currentUser = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -32,7 +33,7 @@ const App = () => {
         dispatch(updateAuth(false));
       }
     });
-  }, [auth]);
+  }, [auth, currentUser]);
 
   if (loading) {
     return <OverlayLoader />;

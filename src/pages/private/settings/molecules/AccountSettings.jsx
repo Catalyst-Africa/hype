@@ -1,5 +1,5 @@
 import { SubTitle } from "@/styles/reusable/elements.styled";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/styles/reusable/elements.styled";
@@ -7,12 +7,13 @@ import { InputGroup, TextAreaInputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
-import { db } from "@/setup/firebase/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db, storage } from "@/setup/firebase/firebase";
 import { OverlayLoader } from "@/components/ui";
-import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { updateAuth } from "@/setup/redux/slices/app/appSlice";
 import { updateUser } from "@/setup/redux/slices/auth/authSlice";
+import { extractErrorMessage } from "@/helpers/helpers";
 
 const AccountSettings = () => {
   const user = useSelector((state) => state.auth.user);
@@ -35,8 +36,10 @@ const AccountSettings = () => {
     validateOnSubmit,
   } = useFormValidation(initialData, validation);
 
+  // Destructured form data
   const { bio, username, phonenumber } = formData;
 
+  // Handle Submit for changes to user information
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitted(true);
@@ -49,15 +52,31 @@ const AccountSettings = () => {
     });
     setSubmitted(false);
     toast.success("Profile Successfully Updated");
+  };
 
-    if (user) {
+  // Function to Pop-up browse computer
+  const handleImageChange = (e) => {
+    if (e.target.files[0]) {
+      handleImageSubmit(e.target.files[0]);
+    }
+  };
+
+  // Function to instruct the browser how to save image
+  const handleImageSubmit = async (image) => {
+    console.log(image);
+    try {
+      const imageRef = ref(storage, "dp");
+      await uploadBytes(imageRef, image);
+      const url = await getDownloadURL(imageRef);
+      console.log(url);
+
       const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-      const data = docSnap.data();
-      dispatch(updateAuth(true));
-      dispatch(updateUser({ ...user, data }));
-    } else {
-      dispatch(updateAuth(false));
+      await updateDoc(docRef, {
+        photoUrl: url,
+      });
+    } catch (err) {
+      console.log(err);
+      // toast.error(extractErrorMessage(err.msg));
     }
   };
 
@@ -66,7 +85,17 @@ const AccountSettings = () => {
       <SubTitle style={{ color: "#9D9D9D" }}>Your Profile Picture</SubTitle>
       <ProfilePhotoContainer>
         <ProfilePhoto src={user.photoURL} alt={user.displayName} />
-        <Button>Upload New</Button>
+        <label htmlFor="upload">
+          Upload New
+          <input
+            id="upload"
+            type="file"
+            accept="image/png, image/jpg, image/jpeg"
+            onChange={(e) => {
+              handleImageChange(e);
+            }}
+          />
+        </label>
         <Button style={{ backgroundColor: "#D0D0D0" }}>
           Remove Profile Photo
         </Button>
@@ -172,6 +201,34 @@ const ProfilePhotoContainer = styled.div`
       width: 100px;
       height: 100px;
     }
+  }
+
+  label {
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    border-radius: 6px;
+    padding: 0px 8px;
+    min-width: 100px;
+    min-height: 38px;
+    font-size: 14px;
+    font-weight: 700;
+    -webkit-transition: ease-in 0.3s;
+    transition: ease-in 0.3s;
+    cursor: pointer;
+    background: #f69d00;
+    color: #fff;
+
+    &:hover {
+      box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3),
+        0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  input[type="file"] {
+    display: none;
   }
 `;
 

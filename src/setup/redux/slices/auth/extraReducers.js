@@ -9,6 +9,7 @@ import {
   signOut,
   signInWithPopup,
   GoogleAuthProvider,
+  updatePassword,
 } from "firebase/auth";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { toast } from "react-hot-toast";
@@ -29,7 +30,7 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async () => {
       email: auth.currentUser.email,
       timeStamp: serverTimestamp(),
       photoUrl: `https://avatars.dicebear.com/api/bottts/${auth.currentUser.uid}.svg`,
-      username: auth.currentUser?.displayName.split(" ")[0],
+      username: `@${auth.currentUser?.displayName.toLowerCase().split(" ")[0]}`,
       phonenumber: "",
       bio: "Hey there, I am active on Hype!",
     });
@@ -108,5 +109,12 @@ export const resetPassword = createAsyncThunk(
   async (oobCode, password) => {
     await confirmPasswordReset(auth, oobCode, password);
     auth.currentUser && (await signOut(auth));
+  },
+);
+
+export const updateUserPassword = createAsyncThunk(
+  "auth/updateUserPassword",
+  async () => {
+    updatePassword();
   },
 );

@@ -19,7 +19,7 @@ const ProfileCard = () => {
           <ProfileImage src={user.photoURL} alt={user.displayName} />
           <TitleContainer>
             <FluidTitle>{firstname}</FluidTitle>
-            <span>@{firstname}</span>
+            <span>{user.username}</span>
             <div>{user.bio}</div>
           </TitleContainer>
           <Link to="/send-hype">
