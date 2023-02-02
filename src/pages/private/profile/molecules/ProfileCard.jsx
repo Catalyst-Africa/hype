@@ -21,7 +21,10 @@ const ProfileCard = () => {
             <FluidTitle>{firstname}</FluidTitle>
             <span>@{firstname}</span>
           </TitleContainer>
-          <Button>Send Hypes</Button>
+          <Link to="/send-hype">
+            <Button>Send Hypes</Button>
+          </Link>
+
           <InfoContainer>
             <InfoCard>
               <SubTitle style={{ color: "#BABABA", fontSize: "14px" }}>

@@ -6,18 +6,17 @@ import { Button } from "@/styles/reusable/elements.styled";
 import { InputGroup, TextAreaInputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
-import { getDoc, doc } from "firebase/firestore";
 
 const AccountSettings = () => {
   const user = useSelector((state) => state.auth.user);
-
   const firstname = user.displayName.split(" ")[0];
+
   const initialData = {
     name: firstname,
-    email: user?.email,
+    email: user.email,
     username: `@${firstname}`,
-    phonenumber: user?.phoneNumber || "",
-    bio: user?.bio,
+    phonenumber: user.phoneNumber || "",
+    bio: "",
   };
   const {
     formData,
