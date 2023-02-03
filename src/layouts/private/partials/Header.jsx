@@ -42,10 +42,16 @@ export default Header;
 const HeaderElement = styled.header`
   width: 100%;
   background: rgba(252, 250, 255, 0.32);
+  background: rgba(243, 243, 243, 1);
+
   padding: 18px 48px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 70px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
     padding: 24px;

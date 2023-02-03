@@ -42,6 +42,7 @@ const BottomBarElement = styled.div`
   bottom: 0;
   padding: 16px 24px;
   background: #fff;
+  z-index: 999;
 
   ${({ theme }) => theme.breakpoints.up("sm")} {
     display: none;

@@ -15,11 +15,12 @@ const Layout = () => {
           <SideBar />
           <MainContent>
             <Header />
+
             <Outlet />
           </MainContent>
+          <SendHypeButton />
         </Main>
         <BottomBar />
-        <SendHypeButton />
       </PrivateAreaContainer>
     </>
   );
@@ -34,6 +35,7 @@ const Main = styled.main`
   width: 100%;
   height: 100vh;
   display: grid;
+  overflow: hidden;
   grid-template-columns: 240px 1fr;
   background: rgba(243, 243, 243, 1);
 
@@ -46,6 +48,8 @@ const MainContent = styled.div`
   min-height: 100%;
   width: 100%;
   flex: 0 0 calc(100% - 220px);
+  /* z-index: 10; */
+  overflow: scroll;
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
     width: 100%;

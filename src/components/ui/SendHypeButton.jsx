@@ -9,8 +9,7 @@ const SendHypeButton = () => {
     <Link to="/send-hype">
       <SendHypeButtonContainer>
         <Button>
-          <RiSendPlaneFill />{" "}
-          <span>Send Hype</span>
+          <RiSendPlaneFill /> <span>Send Hype</span>
         </Button>
       </SendHypeButtonContainer>
     </Link>
@@ -24,6 +23,7 @@ const SendHypeButtonContainer = styled.div`
   position: fixed;
   bottom: 84px;
   right: 49px;
+  z-index: 100;
   button {
     min-height: 63px;
     min-width: 172px;
