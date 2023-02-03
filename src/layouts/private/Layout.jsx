@@ -18,9 +18,9 @@ const Layout = () => {
 
             <Outlet />
           </MainContent>
+          <SendHypeButton />
         </Main>
         <BottomBar />
-        <SendHypeButton />
       </PrivateAreaContainer>
     </>
   );
@@ -48,7 +48,7 @@ const MainContent = styled.div`
   min-height: 100%;
   width: 100%;
   flex: 0 0 calc(100% - 220px);
-  z-index: 9999;
+  /* z-index: 10; */
   overflow: scroll;
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
