@@ -1,4 +1,4 @@
-export const ValentineHypes = [
+export const valentineHypes = [
   {
     id: 1,
     message: `On this Valentine's Day, I just wanted to let you know how much you mean to me. You bring so much joy and happiness into my life, and I am so grateful to have you by my side. Your love and support mean the world to me, and I am so lucky to have such an amazing partner.
@@ -39,9 +39,7 @@ Sincerely,
 
   {
     id: 2,
-    message: `
-
-Hey, I just heard the amazing news that you got your dream job! I am so happy for you and I know you deserve it. All the hard work and dedication you put into your career has paid off.
+    message: `Hey, I just heard the amazing news that you got your dream job! I am so happy for you and I know you deserve it. All the hard work and dedication you put into your career has paid off.
 
 I can't wait to hear all about your new position and see all the amazing things you will accomplish in your new role. I am sure you will thrive and excel in your new job.
 
@@ -56,17 +54,15 @@ Best,
 export const birthdayHypes = [
   {
     id: 1,
-    message: `
+    message: `Happy birthday to my love! I hope your special day is filled with all of your favorite things and surrounded by the people you love most. You deserve all the happiness and success in the world, and I am so grateful to have you in my life. Here's to another year of friendship, laughter, and making unforgettable memories together. Wishing you all the best on your big day and in the year ahead!
     
-Happy birthday to my love! I hope your special day is filled with all of your favorite things and surrounded by the people you love most. You deserve all the happiness and success in the world, and I am so grateful to have you in my life. Here's to another year of friendship, laughter, and making unforgettable memories together. Wishing you all the best on your big day and in the year ahead!
-    
-    `,
+`,
   },
   {
     id: 2,
     message: `Happy birthday, I hope this day is as special as you are and that you get to celebrate in all your favorite ways. You are such an incredible person and I am so grateful to have you in my life. You always know how to brighten my day and bring a smile to my face, and I am grateful for your unwavering support and kindness. I hope your birthday is full of love, laughter, and all the things that bring you joy. Here's to another year of growth, happiness, and making memories together. Cheers to you on your special day!
     
-    `,
+`,
   },
 ];
 

@@ -19,7 +19,7 @@ import {
   christianloveHypes,
   jobHypes,
   loveHypes,
-  ValentineHypes,
+  valentineHypes,
 } from "./samplehypes";
 import { Loader } from "@/styles/reusable/elements.styled";
 import hypesent from "../../../../assets/hypesent.svg";
@@ -49,7 +49,7 @@ const SendHype = () => {
   });
 
   const [hypeMessage, sethypeMessage] = useState({
-    valentineHypeMessage: ValentineHypes[0].message,
+    valentineHypeMessage: valentineHypes[0].message,
     jobHypesMessage: jobHypes[0].message,
     birthdayHypesMessage: birthdayHypes[0].message,
     loveHypesMessage: loveHypes[0].message,
@@ -181,7 +181,7 @@ const SendHype = () => {
                         onClick={() =>
                           sethypeMessage({
                             valentineHypeMessage:
-                              getRandomHypeMessage(ValentineHypes),
+                              getRandomHypeMessage(valentineHypes),
                           })
                         }
                       />
@@ -270,23 +270,29 @@ const SendHype = () => {
                     placeholder="Hype message"
                     value={
                       initialData.selecthype === "valentine"
-                        ? hypeMessage.valentineHypeMessage +
-                          (displayName ? "(" + firstname + ")" : "")
+                        ? hypeMessage.valentineHypeMessage ||
+                          valentineHypes[0].message +
+                            (displayName ? "(" + firstname + ")" : "")
                         : initialData.selecthype === "job"
-                        ? hypeMessage.jobHypesMessage +
-                          (displayName ? "(" + firstname + ")" : "")
+                        ? hypeMessage.jobHypesMessage ||
+                          jobHypes[0].message +
+                            (displayName ? "(" + firstname + ")" : "")
                         : initialData.selecthype === "birthday"
-                        ? hypeMessage.birthdayHypesMessage +
-                          (displayName ? "(" + firstname + ")" : "")
+                        ? hypeMessage.birthdayHypesMessage ||
+                          birthdayHypes[0].message +
+                            (displayName ? "(" + firstname + ")" : "")
                         : initialData.selecthype === "love"
-                        ? hypeMessage.loveHypesMessage +
-                          (displayName ? "(" + firstname + ")" : "")
+                        ? hypeMessage.loveHypesMessage ||
+                          loveHypes[0].message +
+                            (displayName ? "(" + firstname + ")" : "")
                         : initialData.selecthype === "christian-love"
-                        ? hypeMessage.christianloveHypesMessage +
-                          (displayName ? "(" + firstname + ")" : "")
+                        ? hypeMessage.christianloveHypesMessage ||
+                          christianloveHypes[0].message +
+                            (displayName ? "(" + firstname + ")" : "")
                         : initialData.selecthype === "appreciation-love"
-                        ? hypeMessage.appreciationloveHypesMessage +
-                          (displayName ? "(" + firstname + ")" : "")
+                        ? hypeMessage.appreciationloveHypesMessage ||
+                          appreciationloveHypes[0].message +
+                            (displayName ? "(" + firstname + ")" : "")
                         : initialData.hype
                     }
                     onBlur={(e) => handleBlur(e)}
