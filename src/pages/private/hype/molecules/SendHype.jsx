@@ -13,24 +13,27 @@ import { Button } from "@/styles/reusable/elements.styled";
 import sendhypebg from "@/assets/sendhypebg.svg";
 import { BiRefresh } from "react-icons/bi";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { birthdayHypes, celebrateHypes, loveHypes } from "./samplehypes";
+import {
+  appreciationloveHypes,
+  birthdayHypes,
+  christianloveHypes,
+  jobHypes,
+  loveHypes,
+  ValentineHypes,
+} from "./samplehypes";
 import { Loader } from "@/styles/reusable/elements.styled";
 import hypesent from "../../../../assets/hypesent.svg";
 import { Link } from "react-router-dom";
+import { BiCheckbox, BiCheckboxSquare } from "react-icons/bi";
 
 const SendHype = () => {
   const user = useSelector((state) => state.auth.user);
   const firstname = user?.displayName?.split(" ")[0];
 
-  const [toggleModal, setToggleModal] = useState(false);
+  const [displayName, setDisplayName] = useState(true);
+  const [displayRecipientName, setDisplayRecipientName] = useState(true);
 
-  const [hypeLoveMessage, setHypeLoveMessage] = useState(loveHypes[0].message);
-  const [hypeBirthdayMessage, setHypeBirthdayMessage] = useState(
-    birthdayHypes[0].message,
-  );
-  const [hypeCelebrateMessage, setHypeCelebrateMessage] = useState(
-    celebrateHypes[0].message,
-  );
+  const [toggleModal, setToggleModal] = useState(false);
 
   const [loader, setLoader] = useState(false);
   const [loaderSend, setLoaderSend] = useState(false);
@@ -43,6 +46,15 @@ const SendHype = () => {
     whatsappnumber: "",
     twitterusername: "",
     smsnumber: "",
+  });
+
+  const [hypeMessage, sethypeMessage] = useState({
+    valentineHypeMessage: ValentineHypes[0].message,
+    jobHypesMessage: jobHypes[0].message,
+    birthdayHypesMessage: birthdayHypes[0].message,
+    loveHypesMessage: loveHypes[0].message,
+    christianloveHypesMessage: christianloveHypes[0].message,
+    appreciationloveHypesMessage: appreciationloveHypes[0].message,
   });
 
   const { errors, handleBlur, checkIsValid } = useFormValidation(
@@ -107,7 +119,7 @@ const SendHype = () => {
     const randomIndex = Math.floor(Math.random() * arr.length);
     return arr[randomIndex].message;
   };
-  
+
   return (
     <>
       <SendHypeContainer style={{ opacity: toggleModal ? "0.1" : "" }}>
@@ -148,13 +160,18 @@ const SendHype = () => {
                     <option value="" disabled hidden>
                       Select your hype
                     </option>
-                    <option value="love">❤️ For that special someone</option>
-                    <option value="birthday">
-                      🎂 On a special day for the special one
+                    <option value="valentine">🌷 Valentine wishes</option>
+                    <option value="job"> 🎉 Congratulations on Job</option>
+                    <option value="birthday"> 🎂 Birthday Messages</option>
+                    <option value="love"> 💕 Love Hypes</option>
+                    <option value="christian-love">
+                      ❤️ Christian love messages
                     </option>
-                    <option value="celebrate"> 🎉 Celebrate a friend</option>
+                    <option value="appreciation-love">
+                      🙏 Appreciation love message
+                    </option>
                   </SelectInputGroup>
-                  {initialData.selecthype === "love" &&
+                  {initialData.selecthype === "valentine" &&
                     (loader ? (
                       <Loader style={{ width: "20px", height: "20px" }} />
                     ) : (
@@ -162,7 +179,24 @@ const SendHype = () => {
                         color="#F69D00"
                         cursor="pointer"
                         onClick={() =>
-                          setHypeLoveMessage(getRandomHypeMessage(loveHypes))
+                          sethypeMessage({
+                            valentineHypeMessage:
+                              getRandomHypeMessage(ValentineHypes),
+                          })
+                        }
+                      />
+                    ))}
+                  {initialData.selecthype === "job" &&
+                    (loader ? (
+                      <Loader style={{ width: "20px", height: "20px" }} />
+                    ) : (
+                      <BiRefresh
+                        color="#F69D00"
+                        cursor="pointer"
+                        onClick={() =>
+                          sethypeMessage({
+                            jobHypesMessage: getRandomHypeMessage(jobHypes),
+                          })
                         }
                       />
                     ))}
@@ -174,13 +208,14 @@ const SendHype = () => {
                         color="#F69D00"
                         cursor="pointer"
                         onClick={() =>
-                          setHypeBirthdayMessage(
-                            getRandomHypeMessage(birthdayHypes),
-                          )
+                          sethypeMessage({
+                            birthdayHypesMessage:
+                              getRandomHypeMessage(birthdayHypes),
+                          })
                         }
                       />
                     ))}
-                  {initialData.selecthype === "celebrate" &&
+                  {initialData.selecthype === "love" &&
                     (loader ? (
                       <Loader style={{ width: "20px", height: "20px" }} />
                     ) : (
@@ -188,9 +223,40 @@ const SendHype = () => {
                         color="#F69D00"
                         cursor="pointer"
                         onClick={() =>
-                          setHypeCelebrateMessage(
-                            getRandomHypeMessage(celebrateHypes),
-                          )
+                          sethypeMessage({
+                            loveHypesMessage: getRandomHypeMessage(loveHypes),
+                          })
+                        }
+                      />
+                    ))}
+                  {initialData.selecthype === "christian-love" &&
+                    (loader ? (
+                      <Loader style={{ width: "20px", height: "20px" }} />
+                    ) : (
+                      <BiRefresh
+                        color="#F69D00"
+                        cursor="pointer"
+                        onClick={() =>
+                          sethypeMessage({
+                            christianloveHypesMessage:
+                              getRandomHypeMessage(christianloveHypes),
+                          })
+                        }
+                      />
+                    ))}
+                  {initialData.selecthype === "appreciation-love" &&
+                    (loader ? (
+                      <Loader style={{ width: "20px", height: "20px" }} />
+                    ) : (
+                      <BiRefresh
+                        color="#F69D00"
+                        cursor="pointer"
+                        onClick={() =>
+                          sethypeMessage({
+                            appreciationloveHypesMessage: getRandomHypeMessage(
+                              appreciationloveHypes,
+                            ),
+                          })
                         }
                       />
                     ))}
@@ -203,12 +269,24 @@ const SendHype = () => {
                     id="hype"
                     placeholder="Hype message"
                     value={
-                      initialData.selecthype === "love"
-                        ? hypeLoveMessage || loveHypes[0].message
+                      initialData.selecthype === "valentine"
+                        ? hypeMessage.valentineHypeMessage +
+                          (displayName ? "(" + firstname + ")" : "")
+                        : initialData.selecthype === "job"
+                        ? hypeMessage.jobHypesMessage +
+                          (displayName ? "(" + firstname + ")" : "")
                         : initialData.selecthype === "birthday"
-                        ? hypeBirthdayMessage || birthdayHypes[0].message
-                        : initialData.selecthype === "celebrate"
-                        ? hypeCelebrateMessage || celebrateHypes[0].message
+                        ? hypeMessage.birthdayHypesMessage +
+                          (displayName ? "(" + firstname + ")" : "")
+                        : initialData.selecthype === "love"
+                        ? hypeMessage.loveHypesMessage +
+                          (displayName ? "(" + firstname + ")" : "")
+                        : initialData.selecthype === "christian-love"
+                        ? hypeMessage.christianloveHypesMessage +
+                          (displayName ? "(" + firstname + ")" : "")
+                        : initialData.selecthype === "appreciation-love"
+                        ? hypeMessage.appreciationloveHypesMessage +
+                          (displayName ? "(" + firstname + ")" : "")
                         : initialData.hype
                     }
                     onBlur={(e) => handleBlur(e)}
@@ -220,6 +298,26 @@ const SendHype = () => {
                       pointerEvents: initialData.selecthype ? "" : "none",
                     }}
                   />
+                  <CheckContainer onClick={() => setDisplayName(!displayName)}>
+                    {displayName ? (
+                      <BiCheckbox cursor="pointer" color="#F69D00" />
+                    ) : (
+                      <BiCheckboxSquare cursor="pointer" color="#F69D00" />
+                    )}
+                    <span>Send Anonymously</span>
+                  </CheckContainer>
+                  <CheckContainer
+                    onClick={() =>
+                      setDisplayRecipientName(!displayRecipientName)
+                    }
+                  >
+                    {displayRecipientName ? (
+                      <BiCheckboxSquare cursor="pointer" color="#F69D00" />
+                    ) : (
+                      <BiCheckbox cursor="pointer" color="#F69D00" />
+                    )}
+                    <span>Include recipient name</span>
+                  </CheckContainer>
                 </InputContainer>
               </FormGroupContainer>
               <FormShareGroupContainer>
@@ -296,9 +394,7 @@ const SendHype = () => {
                   backgroundColor:
                     initialData.name &&
                     initialData.selecthype &&
-                    (hypeLoveMessage ||
-                      hypeBirthdayMessage ||
-                      hypeLoveMessage) &&
+                    hypeMessage &&
                     initialData.selectsocial &&
                     (initialData.whatsappnumber ||
                       initialData.twitterusername ||
@@ -309,7 +405,7 @@ const SendHype = () => {
                 disabled={
                   initialData.name &&
                   initialData.selecthype &&
-                  (hypeLoveMessage || hypeBirthdayMessage || hypeLoveMessage) &&
+                  hypeMessage &&
                   initialData.selectsocial &&
                   (initialData.whatsappnumber ||
                     initialData.twitterusername ||
@@ -464,4 +560,14 @@ const Modal = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const CheckContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 10px 0px;
+  span {
+    cursor: pointer;
+  }
 `;
