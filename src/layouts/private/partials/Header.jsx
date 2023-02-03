@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { AiOutlineSearch, AiFillBell } from "react-icons/ai";
 
 import { FluidTitle } from "@/styles/reusable/elements.styled";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const user = useSelector((state) => state.auth.user);
@@ -14,7 +15,7 @@ const Header = () => {
         <FluidTitle>
           {document.body.clientWidth <= 960
             ? `Hi ${firstname}`
-            : `Welcome Back, ${firstname || "User"}`}
+            : `Welcome, ${firstname || "User"}`}
           !
         </FluidTitle>
         <span>Here's an overview of your activities</span>
@@ -23,12 +24,14 @@ const Header = () => {
         {/* <SearchIcon /> */}
         <BellIcon />
         <div></div>
-        <Profile>
-          <span>{firstname}</span>
-          <div>
-            <img src={user.photoURL} alt={user.displayName} />
-          </div>
-        </Profile>
+        <Link to="/settings">
+          <Profile>
+            <span>{firstname}</span>
+            <div>
+              <img src={user.photoURL} alt={user.displayName} />
+            </div>
+          </Profile>
+        </Link>
       </Options>
     </HeaderElement>
   );
@@ -98,7 +101,9 @@ const Profile = styled.div`
   gap: 16px;
 
   ${({ theme }) => theme.breakpoints.down("md")} {
-    display: none;
+    span {
+      display: none;
+    }
   }
 
   div {
