@@ -21,8 +21,10 @@ const ProfileCard = () => {
           <ProfileImage src={user.photoURL} alt={user.displayName} />
           <TitleContainer>
             <FluidTitle>{firstname}</FluidTitle>
-            <span>{user.username}</span>
-            <div>{user.bio}</div>
+            <ProfileBio>
+              <p>{user.username}</p>
+              <p>{user.bio}</p>
+            </ProfileBio>
           </TitleContainer>
           <Link to="/send-hype">
             <Button>Send Hypes</Button>
@@ -65,7 +67,7 @@ const ProfileCard = () => {
               onClick={() => setToggleNotification(!toggleNotification)}
             >
               {toggleNotification ? (
-                <BsToggleOn color="#F69D00"/>
+                <BsToggleOn color="#F69D00" />
               ) : (
                 <BsToggleOff color="#F69D00" />
               )}
@@ -138,6 +140,14 @@ const ProfileImage = styled.img`
   width: 130px;
   height: 130px;
   border: 4px solid #f69d00;
+`;
+
+const ProfileBio = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 30px;
 `;
 
 const TitleContainer = styled.div`
