@@ -20,7 +20,7 @@ const Header = () => {
         <span>Here's an overview of your activities</span>
       </Greeting>
       <Options>
-        <SearchIcon />
+        {/* <SearchIcon /> */}
         <BellIcon />
         <div></div>
         <Profile>

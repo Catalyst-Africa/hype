@@ -377,6 +377,7 @@ const SendHypeContainer = styled.div`
 
   ${({ theme }) => theme.breakpoints.down("lg")} {
     padding: 18px 20px;
+    margin-bottom: 100px;
   }
 `;
 

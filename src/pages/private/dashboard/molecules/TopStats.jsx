@@ -39,27 +39,33 @@ const TopStats = () => {
           </SmallCard>
           <SmallCard>
             <BiTrendingUp color="#FFB328" size={24} />
-            <SubTitle>Trending Hypes</SubTitle>
+            <SubTitle>
+              <Link to="">Trending Hypes</Link>
+            </SubTitle>
           </SmallCard>
-          <SmallCard>
+          {/* <SmallCard>
             <MdFavorite color="#FFB328" size={24} />
             <SubTitle>Favourites</SubTitle>
-          </SmallCard>
+          </SmallCard> */}
         </SecondCard>
       </StatsContainer>
       <SecondCardMobile>
         <SmallCard>
           <RiSendPlaneFill color="#FFB328" size={24} />
-          <SubTitle>Send Hypes</SubTitle>
+          <SubTitle>
+            <Link to="/send-hype">Send Hypes</Link>
+          </SubTitle>
         </SmallCard>
         <SmallCard>
           <BiTrendingUp color="#FFB328" size={24} />
-          <SubTitle>Trending Hypes</SubTitle>
+          <SubTitle>
+            <Link to="">Trending Hypes</Link>
+          </SubTitle>
         </SmallCard>
-        <SmallCard>
+        {/* <SmallCard>
           <MdFavorite color="#FFB328" size={24} />
           <SubTitle>Favourites</SubTitle>
-        </SmallCard>
+        </SmallCard> */}
       </SecondCardMobile>
     </>
   );
@@ -96,7 +102,8 @@ const FirstCard = styled.div`
 const SecondCard = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 40px;
   padding: 10px 0px;
 
   align-items: center;
