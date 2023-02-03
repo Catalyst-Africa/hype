@@ -270,29 +270,28 @@ const SendHype = () => {
                     placeholder="Hype message"
                     value={
                       initialData.selecthype === "valentine"
-                        ? hypeMessage.valentineHypeMessage ||
-                          valentineHypes[0].message +
-                            (displayName ? "(" + firstname + ")" : "")
+                        ? (hypeMessage.valentineHypeMessage ||
+                            valentineHypes[0].message) +
+                          (displayName ? "(" + firstname + ")" : "")
                         : initialData.selecthype === "job"
-                        ? hypeMessage.jobHypesMessage ||
-                          jobHypes[0].message +
-                            (displayName ? "(" + firstname + ")" : "")
+                        ? (hypeMessage.jobHypesMessage || jobHypes[0].message) +
+                          (displayName ? "(" + firstname + ")" : "")
                         : initialData.selecthype === "birthday"
-                        ? hypeMessage.birthdayHypesMessage ||
-                          birthdayHypes[0].message +
-                            (displayName ? "(" + firstname + ")" : "")
+                        ? (hypeMessage.birthdayHypesMessage ||
+                            birthdayHypes[0].message) +
+                          (displayName ? "(" + firstname + ")" : "")
                         : initialData.selecthype === "love"
-                        ? hypeMessage.loveHypesMessage ||
-                          loveHypes[0].message +
-                            (displayName ? "(" + firstname + ")" : "")
+                        ? (hypeMessage.loveHypesMessage ||
+                            loveHypes[0].message) +
+                          (displayName ? "(" + firstname + ")" : "")
                         : initialData.selecthype === "christian-love"
-                        ? hypeMessage.christianloveHypesMessage ||
-                          christianloveHypes[0].message +
-                            (displayName ? "(" + firstname + ")" : "")
+                        ? (hypeMessage.christianloveHypesMessage ||
+                            christianloveHypes[0].message) +
+                          (displayName ? "(" + firstname + ")" : "")
                         : initialData.selecthype === "appreciation-love"
-                        ? hypeMessage.appreciationloveHypesMessage ||
-                          appreciationloveHypes[0].message +
-                            (displayName ? "(" + firstname + ")" : "")
+                        ? (hypeMessage.appreciationloveHypesMessage ||
+                            appreciationloveHypes[0].message) +
+                          (displayName ? "(" + firstname + ")" : "")
                         : initialData.hype
                     }
                     onBlur={(e) => handleBlur(e)}
@@ -573,6 +572,7 @@ const CheckContainer = styled.div`
   align-items: center;
   gap: 4px;
   margin: 10px 0px;
+  width: fit-content;
   span {
     cursor: pointer;
   }

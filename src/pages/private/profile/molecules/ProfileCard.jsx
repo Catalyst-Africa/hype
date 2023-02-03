@@ -50,12 +50,12 @@ const ProfileCard = () => {
           </InfoContainer>
         </ProfileInfo>
         <ProfileEdit>
-          <Link to="/settings">
-            <EditCard>
-              <FaEdit color="#F69D00" />
-              <SubTitle>Edit Profile</SubTitle>
-            </EditCard>
-          </Link>
+          <EditCard>
+            <FaEdit color="#F69D00" />
+            <SubTitle>
+              <Link to="/settings">Edit Profile</Link>
+            </SubTitle>
+          </EditCard>
 
           <EditCard style={{ cursor: "auto" }}>
             <NotificationContainer>
@@ -184,7 +184,6 @@ const EditCard = styled.div`
   border-radius: 11px;
   padding: 20px 24px;
   gap: 6.5px;
-  cursor: pointer;
 `;
 
 const NotificationContainer = styled.div`
