@@ -10,6 +10,7 @@ import {
   forgotPassword,
   resetPassword,
   googleAuth,
+  updateUserPassword,
 } from "./extraReducers";
 
 const initialState = {
@@ -126,6 +127,17 @@ const authSlice = createSlice({
         toast.success("Password reset successful. You can proceed to login");
       })
       .addCase(resetPassword.rejected, (state, action) => {
+        state.loading = false;
+        toast.error(extractErrorMessage(action.error.message));
+      })
+      .addCase(updateUserPassword.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUserPassword.fulfilled, (state) => {
+        state.loading = false;
+        toast.success("Your password has been changed successfully");
+      })
+      .addCase(updateUserPassword.rejected, (state, action) => {
         state.loading = false;
         toast.error(extractErrorMessage(action.error.message));
       });

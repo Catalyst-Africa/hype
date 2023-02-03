@@ -6,13 +6,19 @@ import { validation } from "@/pages/auth/validation";
 import { InputGroup } from "@/components/ui";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Button } from "@/styles/reusable/elements.styled";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserPassword } from "@/setup/redux/slices/auth/extraReducers";
+import { OverlayLoader } from "@/components/ui";
 
 const ChangePasswordSettings = () => {
   const [passwordType, setPasswordType] = useState(true);
+  const loading = useSelector((state) => state.auth.loading);
+  const dispatch = useDispatch();
+
   const initialData = {
     oldpassword: "",
-    newpassword: "",
-    confirmpassword: "",
+    password: "",
+    confirm_password: "",
   };
   const {
     formData,
@@ -23,8 +29,9 @@ const ChangePasswordSettings = () => {
     validateOnSubmit,
   } = useFormValidation(initialData, validation);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    validateOnSubmit() && dispatch(await updateUserPassword(formData));
   };
   return (
     <ChangePasswordSettingsContainer>
@@ -56,7 +63,7 @@ const ChangePasswordSettings = () => {
           <InputContainer>
             <InputGroup
               type={passwordType ? "password" : "text"}
-              id="newpassword"
+              id="password"
               label="New Password"
               placeholder="Enter Password"
               endIcon={
@@ -70,14 +77,14 @@ const ChangePasswordSettings = () => {
               }
               onBlur={(e) => handleBlur(e)}
               onChange={(e) => handleChange(e)}
-              helperText={errors.newpassword}
-              helperTextType={checkIsValid("newpassword")}
+              helperText={errors.password}
+              helperTextType={checkIsValid("password")}
             />
           </InputContainer>
           <InputContainer>
             <InputGroup
               type={passwordType ? "password" : "text"}
-              id="confirmnewpassword"
+              id="confirm_password"
               label="Confirm New Password"
               placeholder="Enter Password"
               endIcon={
@@ -91,13 +98,16 @@ const ChangePasswordSettings = () => {
               }
               onBlur={(e) => handleBlur(e)}
               onChange={(e) => handleChange(e)}
-              helperText={errors.confirmnewpassword}
-              helperTextType={checkIsValid("confirmnewpassword")}
+              helperText={errors.confirm_password}
+              helperTextType={checkIsValid("confirm_password")}
             />
           </InputContainer>
         </FormGroupContainer>
-        <Button style={{ maxWidth: "200px" }}>Change Password</Button>
+        <Button type="submit" style={{ maxWidth: "200px" }}>
+          Change Password
+        </Button>
       </Form>
+      {loading && <OverlayLoader transparent />}
     </ChangePasswordSettingsContainer>
   );
 };
