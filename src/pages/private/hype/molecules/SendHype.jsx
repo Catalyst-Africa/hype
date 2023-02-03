@@ -67,7 +67,7 @@ const SendHype = () => {
     setLoaderSend(true);
     setInitialData({
       ...initialData,
-      hype: hypeLoveMessage || birthdayHypes || hypeCelebrateMessage,
+      hype: hypeMessage,
     });
 
     setTimeout(() => {
