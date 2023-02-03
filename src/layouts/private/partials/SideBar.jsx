@@ -5,6 +5,7 @@ import { AiFillPieChart } from "react-icons/ai";
 import { FaUser } from "react-icons/fa";
 import { SiRubygems } from "react-icons/si";
 import { IoMdSettings } from "react-icons/io";
+import { BiGroup } from "react-icons/bi";
 import { Link, NavLink } from "react-router-dom";
 
 const SideBar = () => {
@@ -37,6 +38,10 @@ const SideBar = () => {
           </NavLink>
         </li>
       </List>
+      <Member>
+        <BiGroup />
+        <p>Member since Sep 2023</p>
+      </Member>
     </NavElement>
   );
 };
@@ -51,6 +56,7 @@ const NavElement = styled.nav`
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0px 6px -2px rgba(0, 0, 0, 0.16);
+  position: relative;
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
     display: none;
@@ -120,5 +126,27 @@ const List = styled.ul`
         margin-left: auto;
       }
     }
+  }
+`;
+
+const Member = styled.div`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  bottom: 0;
+  width: 100%;
+  padding: 24px 0;
+
+  svg {
+    color: ${({ theme }) => theme.color.main.default};
+  }
+
+  p {
+    font-size: 12px;
+    color: #393939;
+    transition: ease-in-out 0.3s;
+    font-weight: 600;
   }
 `;
