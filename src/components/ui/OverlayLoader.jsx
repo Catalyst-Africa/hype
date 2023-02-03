@@ -25,7 +25,7 @@ const Overlay = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 999;
   background-color: ${(props) =>
     props.transparent ? "rgba(0, 0, 0, .65)" : "#fff"};
 `;

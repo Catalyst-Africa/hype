@@ -23,7 +23,7 @@ const SendHypeButtonContainer = styled.div`
   position: fixed;
   bottom: 84px;
   right: 49px;
-  z-index: 9999;
+  z-index: 100;
   button {
     min-height: 63px;
     min-width: 172px;
