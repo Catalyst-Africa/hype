@@ -6,14 +6,13 @@ import { Button } from "@/styles/reusable/elements.styled";
 import { InputGroup, TextAreaInputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
-import { getDoc, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "@/setup/firebase/firebase";
 import { OverlayLoader } from "@/components/ui";
 import { toast } from "react-hot-toast";
-import { updateAuth } from "@/setup/redux/slices/app/appSlice";
-import { updateUser } from "@/setup/redux/slices/auth/authSlice";
 import { extractErrorMessage } from "@/helpers/helpers";
+import { updateLoading } from "@/setup/redux/slices/auth/authSlice";
 
 const AccountSettings = () => {
   const user = useSelector((state) => state.auth.user);
@@ -50,6 +49,8 @@ const AccountSettings = () => {
         username[0] === "@" ? username : `@${username}` || user?.username,
       phonenumber: phonenumber || user?.phonenumber || "",
     });
+
+    dispatch(updateLoading());
     setSubmitted(false);
     toast.success("Profile Successfully Updated");
   };
@@ -74,6 +75,7 @@ const AccountSettings = () => {
       await updateDoc(docRef, {
         photoUrl: url,
       });
+      dispatch(updateLoading());
     } catch (err) {
       console.log(err);
       // toast.error(extractErrorMessage(err.msg));

@@ -7,8 +7,15 @@ import { SiRubygems } from "react-icons/si";
 import { IoMdSettings } from "react-icons/io";
 import { BiGroup } from "react-icons/bi";
 import { Link, NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const SideBar = () => {
+  const currentUser = useSelector((state) => state.auth.user);
+
+  const creationTime = new Date(
+    currentUser.createdAt?.seconds * 1000,
+  ).toDateString();
+  const date = [creationTime.split(" ")[1], creationTime.split(" ")[3]];
   return (
     <NavElement>
       <div>
@@ -40,7 +47,7 @@ const SideBar = () => {
       </List>
       <Member>
         <BiGroup />
-        <p>Member since Sep 2023</p>
+        <p>Member since {date.join(" ")}</p>
       </Member>
     </NavElement>
   );
