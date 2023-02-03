@@ -21,6 +21,9 @@ const initialState = {
     photoURL: "",
     displayName: "",
     phoneNumber: "",
+    bio: "",
+    createdAt: "",
+    username: "",
   },
 };
 
@@ -36,10 +39,13 @@ const authSlice = createSlice({
         action.payload.photoURL || action.payload?.data?.photoUrl;
       state.user.displayName =
         action.payload.displayName || action.payload?.data?.name;
-      state.user.bio = action.payload.data?.bio;
       state.user.phoneNumber = action.payload.data?.phonenumber;
+      state.user.bio = action.payload.data?.bio;
       state.user.createdAt = action.payload.data?.timeStamp;
       state.user.username = action.payload.data?.username;
+    },
+    updateLoading: (state) => {
+      state.loading = !state.loading;
     },
   },
   extraReducers: (builder) => {
@@ -128,5 +134,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { updateUser } = authSlice.actions;
+export const { updateUser, updateLoading } = authSlice.actions;
 export default authSlice.reducer;
