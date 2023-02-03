@@ -10,6 +10,8 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   updatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
 } from "firebase/auth";
 import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { toast } from "react-hot-toast";
@@ -114,7 +116,16 @@ export const resetPassword = createAsyncThunk(
 
 export const updateUserPassword = createAsyncThunk(
   "auth/updateUserPassword",
-  async () => {
-    updatePassword();
+  async (formData) => {
+    const credential = EmailAuthProvider.credential(
+      auth.currentUser.email,
+      formData.oldpassword,
+    );
+    const result = await reauthenticateWithCredential(
+      auth.currentUser,
+      credential,
+    );
+
+    result && (await updatePassword(auth.currentUser, formData.password));
   },
 );
