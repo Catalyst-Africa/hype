@@ -107,8 +107,7 @@ const SendHype = () => {
     const randomIndex = Math.floor(Math.random() * arr.length);
     return arr[randomIndex].message;
   };
-
-  console.log(initialData);
+  
   return (
     <>
       <SendHypeContainer style={{ opacity: toggleModal ? "0.1" : "" }}>
