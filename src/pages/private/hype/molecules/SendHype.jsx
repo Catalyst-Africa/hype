@@ -538,7 +538,7 @@ const Form = styled.form`
 const SentHypeModalContainer = styled.div`
   display: flex;
   justify-content: center;
-  z-index: 300;
+  z-index: 1000;
   position: fixed;
   width: 100%;
   height: 100%;
