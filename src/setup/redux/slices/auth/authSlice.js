@@ -11,10 +11,13 @@ import {
   resetPassword,
   googleAuth,
   updateUserPassword,
+  updateUserData,
+  updateUserDP,
 } from "./extraReducers";
 
 const initialState = {
   loading: false,
+  rerender: false,
   user: {
     uid: "",
     email: "",
@@ -44,7 +47,7 @@ const authSlice = createSlice({
       state.user.username = action.payload.data?.username;
     },
     updateLoading: (state) => {
-      state.loading = !state.loading;
+      state.rerender = !state.rerender;
     },
   },
   extraReducers: (builder) => {
@@ -139,6 +142,30 @@ const authSlice = createSlice({
       })
       .addCase(updateUserPassword.rejected, (state, action) => {
         state.loading = false;
+        toast.error(extractErrorMessage(action.error.message));
+      })
+      .addCase(updateUserData.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUserData.fulfilled, (state) => {
+        state.loading = false;
+        toast.success("Profile Successfully Updated");
+      })
+      .addCase(updateUserData.rejected, (state, action) => {
+        state.loading = false;
+        console.log(action.error);
+        toast.error(extractErrorMessage(action.error.message));
+      })
+      .addCase(updateUserDP.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUserDP.fulfilled, (state) => {
+        state.loading = false;
+        toast.success("Profile Picture Successfully Updated");
+      })
+      .addCase(updateUserDP.rejected, (state, action) => {
+        state.loading = false;
+        console.log(action.error);
         toast.error(extractErrorMessage(action.error.message));
       });
   },

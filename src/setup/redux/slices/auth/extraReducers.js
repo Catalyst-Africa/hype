@@ -13,7 +13,13 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
 } from "firebase/auth";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { toast } from "react-hot-toast";
 
 import { auth } from "@/setup/firebase/firebase";
@@ -41,8 +47,6 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async () => {
 
 export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
   const { email, password, name } = formData;
-
-  console.log(formData);
 
   await createUserWithEmailAndPassword(auth, email, password);
   await sendEmailVerification(auth.currentUser);
@@ -127,5 +131,28 @@ export const updateUserPassword = createAsyncThunk(
     );
 
     result && (await updatePassword(auth.currentUser, formData.password));
+  },
+);
+
+export const updateUserData = createAsyncThunk(
+  "auth/updateUserData",
+  async ({ user, bio, username, phonenumber }) => {
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    await updateDoc(docRef, {
+      bio: bio || user?.bio,
+      username:
+        username?.[0] === "@" ? username : `@${username}` || user.username,
+      phonenumber: phonenumber || user?.phonenumber || "",
+    });
+  },
+);
+
+export const updateUserDP = createAsyncThunk(
+  "auth/updateUserDP",
+  async (imgUrl) => {
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    await updateDoc(docRef, {
+      photoUrl: imgUrl,
+    });
   },
 );
