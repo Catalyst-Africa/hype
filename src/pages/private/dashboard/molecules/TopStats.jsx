@@ -31,18 +31,20 @@ const TopStats = () => {
           </GemBlock>
         </FirstCard>
         <SecondCard>
-          <SmallCard>
-            <RiSendPlaneFill color="#FFB328" size={24} />
-            <SubTitle>
-              <Link to="/send-hype">Send Hypes</Link>
-            </SubTitle>
-          </SmallCard>
-          <SmallCard>
-            <BiTrendingUp color="#FFB328" size={24} />
-            <SubTitle>
-              <Link to="">Trending Hypes</Link>
-            </SubTitle>
-          </SmallCard>
+          <Link to="/send-hype">
+            <SmallCard>
+              <RiSendPlaneFill color="#FFB328" size={24} />
+              <SubTitle>Send Hypes</SubTitle>
+            </SmallCard>
+          </Link>
+
+          <Link to="">
+            <SmallCard>
+              <BiTrendingUp color="#FFB328" size={24} />
+              <SubTitle>Trending Hypes</SubTitle>
+            </SmallCard>
+          </Link>
+
           {/* <SmallCard>
             <MdFavorite color="#FFB328" size={24} />
             <SubTitle>Favourites</SubTitle>
@@ -50,18 +52,19 @@ const TopStats = () => {
         </SecondCard>
       </StatsContainer>
       <SecondCardMobile>
-        <SmallCard>
-          <RiSendPlaneFill color="#FFB328" size={24} />
-          <SubTitle>
-            <Link to="/send-hype">Send Hypes</Link>
-          </SubTitle>
-        </SmallCard>
-        <SmallCard>
-          <BiTrendingUp color="#FFB328" size={24} />
-          <SubTitle>
-            <Link to="">Trending Hypes</Link>
-          </SubTitle>
-        </SmallCard>
+        <Link to="/send-hype">
+          <SmallCard>
+            <RiSendPlaneFill color="#FFB328" size={24} />
+            <SubTitle>Send Hypes</SubTitle>
+          </SmallCard>
+        </Link>
+        <Link to="">
+          <SmallCard>
+            <BiTrendingUp color="#FFB328" size={24} />
+            <SubTitle>Trending Hypes</SubTitle>
+          </SmallCard>
+        </Link>
+
         {/* <SmallCard>
           <MdFavorite color="#FFB328" size={24} />
           <SubTitle>Favourites</SubTitle>
