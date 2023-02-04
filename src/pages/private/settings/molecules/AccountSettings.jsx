@@ -145,11 +145,12 @@ const AccountSettings = () => {
               onChange={(e) => handleChange(e)}
               helperText={errors.username}
               helperTextType={checkIsValid("username")}
+              maxLength="20"
             />
           </InputContainer>
           <InputContainer>
             <InputGroup
-              type="tel"
+              type="number"
               id="phonenumber"
               label="Phone number"
               placeholder="Phone number"
@@ -169,6 +170,7 @@ const AccountSettings = () => {
               value={formData.bio}
               onBlur={(e) => handleBlur(e)}
               onChange={(e) => handleChange(e)}
+              maxLength="200"
             />
           </InputContainer>
         </FormGroupContainer>

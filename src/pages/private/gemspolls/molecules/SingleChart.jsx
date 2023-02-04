@@ -105,13 +105,16 @@ const ChartStats = styled.div`
 `;
 
 const ComingSoonBanner = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background: rgba(246, 157, 0, 0.7);
   box-shadow: 0px 2px 27px 4px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   padding: 18px 18px;
   width: 100%;
   height: 76px;
-  text-align: center;
   position: absolute;
   left: 0;
   right: 0;

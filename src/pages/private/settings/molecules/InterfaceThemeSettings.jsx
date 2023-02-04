@@ -5,6 +5,7 @@ import { BiCheckbox, BiCheckboxSquare } from "react-icons/bi";
 import theme1 from "../../../../assets/theme1.svg";
 import theme2 from "../../../../assets/theme2.svg";
 import { Button } from "@/styles/reusable/elements.styled";
+import { FluidTitle } from "@/styles/reusable/elements.styled";
 
 const InterfaceThemeSettings = () => {
   const [checkBoxToggle, setCheckBoxToggle] = useState(false);
@@ -27,7 +28,7 @@ const InterfaceThemeSettings = () => {
       </SubTitle>
 
       <SubTitle style={{ color: "#5B5A5B" }}>
-        <Legend onClick={() => setCheckBoxToggle(!checkBoxToggle)}>
+        {/* <Legend onClick={() => setCheckBoxToggle(!checkBoxToggle)}>
           {checkBoxToggle ? (
             <BiCheckboxSquare size={34} color="#FFB328" />
           ) : (
@@ -37,7 +38,7 @@ const InterfaceThemeSettings = () => {
             Automatically switch between light and dark themes when your system
             does.
           </em>
-        </Legend>
+        </Legend> */}
       </SubTitle>
       <ThemesContainer>
         <Theme1
@@ -55,10 +56,15 @@ const InterfaceThemeSettings = () => {
           }}
         >
           <img src={theme2} alt="dark theme" />
+          <ComingSoonBanner>
+            <p>Coming Soon</p>
+          </ComingSoonBanner>
         </Theme2>
       </ThemesContainer>
       <br />
-      <Button style={{ maxWidth: "200px" }}>Change Theme</Button>
+      <Button style={{ maxWidth: "200px", cursor: "auto" }} disabled>
+        Change Theme
+      </Button>
     </InterfaceThemeSettingsContainer>
   );
 };
@@ -100,8 +106,9 @@ const Theme1 = styled.div`
   padding: 20px 28px;
   background: #fcfcfc;
   border-radius: 17px;
+  border: 2px solid #f69d00;
   /* min-height: 225.56px; */
-  cursor: pointer;
+  /* cursor: pointer; */
   width: 100%;
   :hover {
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12);
@@ -113,13 +120,14 @@ const Theme1 = styled.div`
 
 const Theme2 = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
   justify-content: center;
   padding: 20px 28px;
   background: #252728;
   border-radius: 17px;
   /* min-height: 225.56px; */
-  cursor: pointer;
+  /* cursor: pointer; */
   width: 100%;
   :hover {
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12);
@@ -127,4 +135,22 @@ const Theme2 = styled.div`
   img {
     width: 100%;
   }
+`;
+
+const ComingSoonBanner = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #f69d00;
+  padding: 18px 18px;
+  width: 100%;
+  height: 20px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: #fff;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
 `;

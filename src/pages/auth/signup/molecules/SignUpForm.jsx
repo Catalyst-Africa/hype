@@ -50,6 +50,7 @@ const SignUpForm = () => {
             onChange={(e) => handleChange(e)}
             helperText={errors.name}
             helperTextType={checkIsValid("name")}
+            maxLength="50"
           />
           <InputGroup
             type="email"
@@ -60,6 +61,7 @@ const SignUpForm = () => {
             onChange={(e) => handleChange(e)}
             helperText={errors.email}
             helperTextType={checkIsValid("email")}
+            maxLength="50"
           />
           <InputGroup
             type={passwordType ? "password" : "text"}
