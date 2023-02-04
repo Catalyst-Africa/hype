@@ -10,12 +10,16 @@ import { doc, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "@/setup/firebase/firebase";
 import { OverlayLoader } from "@/components/ui";
-import { toast } from "react-hot-toast";
 import { extractErrorMessage } from "@/helpers/helpers";
+import {
+  updateUserData,
+  updateUserDP,
+} from "@/setup/redux/slices/auth/extraReducers";
 import { updateLoading } from "@/setup/redux/slices/auth/authSlice";
 
 const AccountSettings = () => {
   const user = useSelector((state) => state.auth.user);
+  const loading = useSelector((state) => state.auth.loading);
   const [submitted, setSubmitted] = useState(false);
   const dispatch = useDispatch();
   const firstname = user.displayName;
@@ -41,18 +45,8 @@ const AccountSettings = () => {
   // Handle Submit for changes to user information
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    const docRef = doc(db, "users", user.uid);
-    await updateDoc(docRef, {
-      bio: bio || user?.bio,
-      username:
-        username[0] === "@" ? username : `@${username}` || user?.username,
-      phonenumber: phonenumber || user?.phonenumber || "",
-    });
-
+    dispatch(updateUserData({ user, bio, username, phonenumber }));
     dispatch(updateLoading());
-    setSubmitted(false);
-    toast.success("Profile Successfully Updated");
   };
 
   // Function to Pop-up browse computer
@@ -64,21 +58,15 @@ const AccountSettings = () => {
 
   // Function to instruct the browser how to save image
   const handleImageSubmit = async (image) => {
-    console.log(image);
     try {
       const imageRef = ref(storage, `profilePhoto${user.username}`);
       await uploadBytes(imageRef, image);
       const url = await getDownloadURL(imageRef);
       console.log(url);
-
-      const docRef = doc(db, "users", user.uid);
-      await updateDoc(docRef, {
-        photoUrl: url,
-      });
+      dispatch(updateUserDP(url));
       dispatch(updateLoading());
     } catch (err) {
       console.log(err);
-      // toast.error(extractErrorMessage(err.msg));
     }
   };
 
@@ -176,7 +164,7 @@ const AccountSettings = () => {
         </FormGroupContainer>
         <Button style={{ maxWidth: "200px" }}>Update Profile</Button>
       </Form>
-      {submitted && <OverlayLoader transparent />}
+      {loading && <OverlayLoader transparent />}
     </AccountSettingsContainer>
   );
 };

@@ -18,10 +18,11 @@ import { db } from "./setup/firebase/firebase";
 const App = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.app.loading);
-  const userUpdateLoading = useSelector((state) => state.auth.loading);
+  const userUpdateLoading = useSelector((state) => state.auth.rerender);
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
+      console.log(user);
       if (user) {
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
