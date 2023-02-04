@@ -29,8 +29,6 @@ const Layout = () => {
 export default Layout;
 const PrivateAreaContainer = styled(Container)`
   padding: 0;
-  overflow-y: scroll;
-  height: calc(100vh);
 `;
 
 const Main = styled.main`
