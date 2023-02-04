@@ -389,7 +389,7 @@ const SendHype = () => {
                       value={initialData.smsnumber}
                       onBlur={(e) => handleBlur(e)}
                       onChange={handleInitialDataChange}
-                      helperText={errors.whatsappnumber}
+                      helperText={errors.smsnumber}
                       helperTextType={checkIsValid("smsnumber")}
                     />
                   )}
