@@ -139,6 +139,7 @@ const SendHype = () => {
                     onChange={handleInitialDataChange}
                     helperText={errors.name}
                     helperTextType={checkIsValid("name")}
+                    maxLength="50"
                   />
                 </InputContainer>
                 <InputContainer
@@ -309,7 +310,7 @@ const SendHype = () => {
                     ) : (
                       <BiCheckboxSquare cursor="pointer" color="#F69D00" />
                     )}
-                    <span>Send Anonymously</span>
+                    <span>Send anonymously</span>
                   </CheckContainer>
                   <CheckContainer
                     onClick={() =>
@@ -374,6 +375,7 @@ const SendHype = () => {
                       onChange={handleInitialDataChange}
                       helperText={errors.twitterusername}
                       helperTextType={checkIsValid("twitterusername")}
+                      maxLength="15"
                     />
                   )}
 

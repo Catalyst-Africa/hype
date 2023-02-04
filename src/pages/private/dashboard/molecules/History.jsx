@@ -77,7 +77,6 @@ const HistoryCard = styled.div`
   width: 100%;
   padding: 15px 38px;
   display: inline-block;
-  cursor: pointer;
   h6 {
     font-size: 16px;
   }
