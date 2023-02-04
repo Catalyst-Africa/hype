@@ -38,7 +38,7 @@ export default BottomBar;
 
 const BottomBarElement = styled.div`
   width: 100%;
-  position: sticky;
+  position: fixed;
   bottom: 0;
   padding: 16px 24px;
   background: #fff;
