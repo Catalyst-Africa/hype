@@ -55,7 +55,7 @@ const SendHype = () => {
   //Hypes Initial Data
   const [initialData, setInitialData] = useState({
     name: "",
-    selecthype: "",
+    selecthype: "select",
     hype: "",
     selectsocial: "",
     whatsappnumber: "",
@@ -78,6 +78,14 @@ const SendHype = () => {
   const handleInitialDataChange = (event) => {
     if (event.target.name === "selecthype") {
       switch (event.target.value) {
+        case "select":
+          setInitialData({
+            ...initialData,
+            hype: "",
+            selecthype: "select",
+          });
+          setSelectedHypesCategories({});
+          break;
         case "valentineHypes":
           setSelectedHypesCategories(valentineHypes);
           setInitialData({
@@ -246,12 +254,14 @@ const SendHype = () => {
 
                   {loading ? (
                     <Loader style={{ width: "20px", height: "20px" }} />
-                  ) : (
+                  ) : initialData.selecthype !== "select" ? (
                     <BiRefresh
                       color="#F69D00"
                       cursor="pointer"
                       onClick={handleRandomHypes}
                     />
+                  ) : (
+                    ""
                   )}
                 </InputContainer>
               </FormGroupContainer>
