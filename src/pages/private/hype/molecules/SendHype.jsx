@@ -14,14 +14,6 @@ import { Button } from "@/styles/reusable/elements.styled";
 import sendhypebg from "@/assets/sendhypebg.svg";
 import { BiRefresh } from "react-icons/bi";
 import { AiFillCloseCircle } from "react-icons/ai";
-import {
-  appreciationloveHypes,
-  birthdayHypes,
-  christianloveHypes,
-  jobHypes,
-  loveHypes,
-  valentineHypes,
-} from "./samplehypes";
 import { Loader } from "@/styles/reusable/elements.styled";
 import hypesent from "../../../../assets/hypesent.svg";
 import { Link } from "react-router-dom";
@@ -29,9 +21,6 @@ import { BiCheckbox, BiCheckboxSquare } from "react-icons/bi";
 import { AiFillBackward, AiFillForward } from "react-icons/ai";
 import { db } from "@/setup/firebase/firebase";
 import { useEffect } from "react";
-import { useMemo } from "react";
-import { useCallback } from "react";
-import { object } from "prop-types";
 
 const SendHype = () => {
   const user = useSelector((state) => state.auth.user);
@@ -69,7 +58,6 @@ const SendHype = () => {
         const querySnapshot = await getDocs(collection(db, "hype"));
         querySnapshot.forEach((doc) => {
           const id = doc.id;
-          // const data = doc.data();
           x.push({ id, ...doc.data() });
         });
         setHype(x);
@@ -80,8 +68,6 @@ const SendHype = () => {
     getAllHype();
   }, []);
 
-  console.log(hypes);
-
   useEffect(() => {}, []);
 
   //Hypes Initial Data
@@ -89,6 +75,7 @@ const SendHype = () => {
     name: "",
     selecthype: "select",
     hype: "",
+    hypeId: "",
     selectsocial: "",
     whatsappnumber: "",
     twitterusername: "",
@@ -108,75 +95,110 @@ const SendHype = () => {
 
   //Handle Hypes Changes
   const handleInitialDataChange = (event) => {
-    if (event.target.name === "selecthype") {
-      switch (event.target.value) {
-        case "select":
+    hypes?.forEach((hype) => {
+      console.log(hype);
+      if (event.target.name === "selecthype") {
+        if (event.target.value === "select") {
           setInitialData({
             ...initialData,
             hype: "",
             selecthype: "select",
           });
           setSelectedHypesCategories({});
-          break;
-        case "valentineHypes":
-          setSelectedHypesCategories(valentineHypes);
+        } else if (event.target.value === Object.keys(hype)[1]) {
+          setSelectedHypesCategories(Object.values(hype)[1]);
           setInitialData({
             ...initialData,
-            hype: valentineHypes[0].message,
-            selecthype: "valentineHypes",
+            hype:
+              Object.values(hype)[1][1]?.message === undefined
+                ? //Returns message for array that are equal to 1
+                  Object.values(hype)[1][0].message
+                : //Returns message for array that are more than 1
+                  Object.values(hype)[1][1]?.message,
+            hypeId: hype.id,
+            selecthype: Object.keys(hype)[1],
           });
-          break;
-        case "jobHypes":
-          setSelectedHypesCategories(jobHypes);
-          setInitialData({
-            ...initialData,
-            hype: jobHypes[0].message,
-            selecthype: "jobHypes",
-          });
-          break;
-        case "birthdayHypes":
-          setSelectedHypesCategories(birthdayHypes);
-          setInitialData({
-            ...initialData,
-            hype: birthdayHypes[0].message,
-            selecthype: "birthdayHypes",
-          });
-          break;
-        case "loveHypes":
-          setSelectedHypesCategories(loveHypes);
-          setInitialData({
-            ...initialData,
-            hype: loveHypes[0].message,
-            selecthype: "loveHypes",
-          });
-          break;
-        case "christianloveHypes":
-          setSelectedHypesCategories(christianloveHypes);
-          setInitialData({
-            ...initialData,
-            hype: christianloveHypes[0].message,
-            selecthype: "christianloveHypes",
-          });
-          break;
-        case "appreciationloveHypes":
-          setSelectedHypesCategories(appreciationloveHypes);
-          setInitialData({
-            ...initialData,
-            hype: appreciationloveHypes[0].message,
-            selecthype: "appreciationloveHypes",
-          });
-          break;
-        default:
-          setSelectedHypesCategories({});
-          break;
+        }
+      } else {
+        setInitialData({
+          ...initialData,
+          [event.target.name]: event.target.value,
+        });
       }
-    } else {
-      setInitialData({
-        ...initialData,
-        [event.target.name]: event.target.value,
-      });
-    }
+    });
   };
+
+  console.log(initialData);
+
+  //   if (event.target.name === "selecthype") {
+  //     switch (event.target.value) {
+  //       case "select":
+  //         setInitialData({
+  //           ...initialData,
+  //           hype: "",
+  //           selecthype: "select",
+  //         });
+  //         setSelectedHypesCategories({});
+  //         break;
+  //       case "valentineHypes":
+  //         setSelectedHypesCategories(hypes[5]?.valentineHypes);
+  //         setInitialData({
+  //           ...initialData,
+  //           hype: valentineHypes[0].message,
+  //           selecthype: "valentineHypes",
+  //         });
+  //         break;
+  //       case "jobHypes":
+  //         setSelectedHypesCategories(jobHypes);
+  //         setInitialData({
+  //           ...initialData,
+  //           hype: jobHypes[0].message,
+  //           selecthype: "jobHypes",
+  //         });
+  //         break;
+  //       case "birthdayHypes":
+  //         setSelectedHypesCategories(birthdayHypes);
+  //         setInitialData({
+  //           ...initialData,
+  //           hype: birthdayHypes[0].message,
+  //           selecthype: "birthdayHypes",
+  //         });
+  //         break;
+  //       case "loveHypes":
+  //         setSelectedHypesCategories(loveHypes);
+  //         setInitialData({
+  //           ...initialData,
+  //           hype: loveHypes[0].message,
+  //           selecthype: "loveHypes",
+  //         });
+  //         break;
+  //       case "christianloveHypes":
+  //         setSelectedHypesCategories(christianloveHypes);
+  //         setInitialData({
+  //           ...initialData,
+  //           hype: christianloveHypes[0].message,
+  //           selecthype: "christianloveHypes",
+  //         });
+  //         break;
+  //       case "appreciationLoveHypes":
+  //         setSelectedHypesCategories(appreciationLoveHypes);
+  //         setInitialData({
+  //           ...initialData,
+  //           hype: appreciationLoveHypes[0].message,
+  //           selecthype: "appreciationLoveHypes",
+  //         });
+  //         break;
+  //       default:
+  //         setSelectedHypesCategories({});
+  //         break;
+  //     }
+  //   } else {
+  //     setInitialData({
+  //       ...initialData,
+  //       [event.target.name]: event.target.value,
+  //     });
+  //   }
+  // };
 
   //Handle Hypes Previous Pagination
   const handleHypesPrevious = () => {
@@ -273,7 +295,10 @@ const SendHype = () => {
                   >
                     <option value="select"> Select your hype</option>
                     {hypes?.map((hype) => (
-                      <option value={Object.keys(hype)[1]}>
+                      <option
+                        key={Object.values(hype)[0]}
+                        value={Object.keys(hype)[1]}
+                      >
                         {Object.keys(hype)[1] === "valentineHypes"
                           ? "🌷 Valentine wishes"
                           : Object.keys(hype)[1] === "jobHypes"
@@ -287,16 +312,6 @@ const SendHype = () => {
                           : " 🙏 Appreciation love message"}
                       </option>
                     ))}
-                    {/* <option value="valentineHypes"></option>
-                    <option value="jobHypes"> </option>
-                    <option value="birthdayHypes"> </option>
-                    <option value="loveHypes"> </option>
-                    <option value="christianloveHypes">
-                      
-                    </option>
-                    <option value="appreciationloveHypes">
-                      🙏 Appreciation love message
-                    </option> */}
                   </SelectInputGroup>
 
                   {loading ? (

@@ -178,7 +178,7 @@ I love you, babe.
   },
 ];
 
-export const appreciationloveHypes = [
+export const appreciationLoveHypes = [
   {
     id: 1,
     message: `The last few weeks at work were so stressful. With the events and all, my haven this period was your bosom.
