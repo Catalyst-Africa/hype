@@ -239,7 +239,7 @@ const SendHype = () => {
                           ? "🎂 Birthday Messages"
                           : Object.keys(hype)[1] === "loveHypes"
                           ? "💕 Love Hypes"
-                          : Object.keys(hype)[1] === "christianloveHypes"
+                          : Object.keys(hype)[1] === "christianLoveHypes"
                           ? "❤️ Christian love messages"
                           : " 🙏 Appreciation love message"}
                       </option>
@@ -273,10 +273,10 @@ const SendHype = () => {
                       selectedHypesCategories[currentIndex]?.message
                         ? selectedHypesCategories[currentIndex]?.message
                         : ""
-                    }\n${
+                    }${
                       selectedHypesCategories[currentIndex]?.message &&
                       displayName
-                        ? firstname
+                        ? "\n\n" + firstname
                         : ""
                     }`}
                     onBlur={(e) => handleBlur(e)}
