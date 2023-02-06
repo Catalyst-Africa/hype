@@ -1,12 +1,38 @@
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { SubTitle } from "@/styles/reusable/elements.styled";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { MdEditNote } from "react-icons/md";
 import { BsCheck } from "react-icons/bs";
 import { BiEnvelope } from "react-icons/bi";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { useSelector } from "react-redux";
+import { db } from "@/setup/firebase/firebase";
+import { useState } from "react";
 
 const History = () => {
+  const user = useSelector((state) => state.auth.user);
+  const [hype, setHype] = useState();
+  useEffect(() => {
+    const sentHype = [];
+    const getUserSentHype = async () => {
+      // Create a reference to the cities collection
+      const q = query(
+        collection(db, "sentHypes"),
+        where("userId", "==", user?.uid),
+      );
+
+      // Create a query against the collection.
+      const hypeCountDoc = await getDocs(q);
+      hypeCountDoc.forEach((doc) => {
+        sentHype.push(doc.data());
+      });
+
+      setHype(sentHype);
+    };
+    getUserSentHype();
+  }, []);
+
   return (
     <HistoryContainer>
       <SubTitle>Hype History</SubTitle>
@@ -29,7 +55,7 @@ const History = () => {
             <NumberStatsIcon style={{ background: "rgba(7, 181, 25, 0.22)" }}>
               <BsCheck color="#07B519" size={16} />
             </NumberStatsIcon>
-            <FluidTitle>0</FluidTitle>
+            <FluidTitle>{hype?.length}</FluidTitle>
           </NumberStats>
         </HistoryCard>
         <HistoryCard>

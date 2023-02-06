@@ -175,9 +175,8 @@ const SendHype = () => {
       userId: user.uid,
       ...initialData,
     });
-    console.log("Document written with ID: ", docRef.id);
+
     console.log(`https://hype-dev.netlify.app/hype/message/${docRef.id}`);
-    console.log(`http:localhost:5173/hype/message/${docRef.id}`);
 
     // set the submitted data here. example console.log("the submited data", initialData);
     setInitialData({
