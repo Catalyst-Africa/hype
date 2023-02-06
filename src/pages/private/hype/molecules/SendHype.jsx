@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import {
@@ -170,7 +170,15 @@ const SendHype = () => {
     e.preventDefault();
     setLoadingSend(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Add a new document with a generated id.
+    const docRef = await addDoc(collection(db, "sentHypes"), {
+      userId: user.uid,
+      ...initialData,
+    });
+    console.log("Document written with ID: ", docRef.id);
+    console.log(`https://hype-dev.netlify.app/hype/message/${docRef.id}`);
+    console.log(`http:localhost:5173/hype/message/${docRef.id}`);
+
     // set the submitted data here. example console.log("the submited data", initialData);
     setInitialData({
       name: "",

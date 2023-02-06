@@ -1,26 +1,36 @@
 import { Button } from "@/styles/reusable/elements.styled";
 import { SubTitle } from "@/styles/reusable/elements.styled";
 import React, { useEffect } from "react";
+import { doc, getDoc } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { toast } from "react-hot-toast";
 
 const HypeMessageView = () => {
+  const [hype, setHype] = useState();
   const user = useSelector((state) => state.auth.user);
   const firstname = user.displayName?.split(" ")[0];
 
   const navigate = useNavigate();
 
   const { id } = useParams();
-  const idNumber = Number(id);
+  console.log(hype);
+  // const idNumber = Number(id);
 
   useEffect(() => {
-    if (idNumber === 10101010) {
-      return;
-    } else {
-      navigate("*");
-    }
-  }, [idNumber]);
+    const getSentHype = async () => {
+      const sentHypeRef = doc(db, "sentHypes", id);
+      const sentHypeSnap = await getDoc(sentHypeRef);
+      console.log(sentHypeSnap.data());
+      if (sentHypeSnap.exists()) {
+        setHype(sentHypeSnap.data());
+      } else {
+        toast.error("Hype does not exist in our database. :)");
+      }
+    };
+    getSentHype();
+  }, []);
 
   console.log(123);
   return (
