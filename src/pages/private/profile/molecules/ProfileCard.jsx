@@ -148,6 +148,7 @@ const ProfileBio = styled.div`
   justify-content: center;
   align-items: center;
   padding: 0px 30px;
+  word-break: break-word;
 `;
 
 const TitleContainer = styled.div`
@@ -174,6 +175,7 @@ const InfoCard = styled.div`
   padding: 20px 14px;
   width: 100%;
   min-height: 80px;
+  word-break: break-word;
 `;
 
 const EditCard = styled.div`

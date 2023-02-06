@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import {
@@ -25,22 +25,37 @@ import { Loader } from "@/styles/reusable/elements.styled";
 import hypesent from "../../../../assets/hypesent.svg";
 import { Link } from "react-router-dom";
 import { BiCheckbox, BiCheckboxSquare } from "react-icons/bi";
+import { AiFillBackward, AiFillForward } from "react-icons/ai";
 
 const SendHype = () => {
   const user = useSelector((state) => state.auth.user);
   const firstname = user?.displayName?.split(" ")[0];
 
+  //Displayname toggle Send annonymous hype
   const [displayName, setDisplayName] = useState(true);
+
+  //DisplayReciepentName toggle Include recipient name
   const [displayRecipientName, setDisplayRecipientName] = useState(true);
 
+  //The Hypes Selected Categories
+  const [selectedHypesCategories, setSelectedHypesCategories] = useState({});
+
+  //Current Hype Index
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  //Success Hype Modal
   const [toggleModal, setToggleModal] = useState(false);
 
-  const [loader, setLoader] = useState(false);
-  const [loaderSend, setLoaderSend] = useState(false);
+  //Loading for random hypes
+  const [loading, setLoading] = useState(false);
 
+  //Loading for when sending hypes
+  const [loadingSend, setLoadingSend] = useState(false);
+
+  //Hypes Initial Data
   const [initialData, setInitialData] = useState({
     name: "",
-    selecthype: "",
+    selecthype: "select",
     hype: "",
     selectsocial: "",
     whatsappnumber: "",
@@ -48,39 +63,130 @@ const SendHype = () => {
     smsnumber: "",
   });
 
-  const [hypeMessage, sethypeMessage] = useState({
-    valentineHypeMessage: valentineHypes[0].message,
-    jobHypesMessage: jobHypes[0].message,
-    birthdayHypesMessage: birthdayHypes[0].message,
-    loveHypesMessage: loveHypes[0].message,
-    christianloveHypesMessage: christianloveHypes[0].message,
-    appreciationloveHypesMessage: appreciationloveHypes[0].message,
-  });
-
   const { errors, handleBlur, checkIsValid } = useFormValidation(
     initialData,
     validation,
   );
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoaderSend(true);
-    setInitialData({
-      ...initialData,
-      hype: hypeMessage,
-    });
-
-    setTimeout(() => {
-      setToggleModal(true);
-    }, 1000);
-  };
-
-  const handleInitialDataChange = (e) => {
-    setInitialData({ ...initialData, [e.target.name]: e.target.value });
-  };
-
+  //Open Hype Sent Successful Modal
   const handleToggleModal = () => {
     setToggleModal(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  //Handle Hypes Changes
+  const handleInitialDataChange = (event) => {
+    if (event.target.name === "selecthype") {
+      switch (event.target.value) {
+        case "select":
+          setInitialData({
+            ...initialData,
+            hype: "",
+            selecthype: "select",
+          });
+          setSelectedHypesCategories({});
+          break;
+        case "valentineHypes":
+          setSelectedHypesCategories(valentineHypes);
+          setInitialData({
+            ...initialData,
+            hype: valentineHypes[0].message,
+            selecthype: "valentineHypes",
+          });
+          break;
+        case "jobHypes":
+          setSelectedHypesCategories(jobHypes);
+          setInitialData({
+            ...initialData,
+            hype: jobHypes[0].message,
+            selecthype: "jobHypes",
+          });
+          break;
+        case "birthdayHypes":
+          setSelectedHypesCategories(birthdayHypes);
+          setInitialData({
+            ...initialData,
+            hype: birthdayHypes[0].message,
+            selecthype: "birthdayHypes",
+          });
+          break;
+        case "loveHypes":
+          setSelectedHypesCategories(loveHypes);
+          setInitialData({
+            ...initialData,
+            hype: loveHypes[0].message,
+            selecthype: "loveHypes",
+          });
+          break;
+        case "christianloveHypes":
+          setSelectedHypesCategories(christianloveHypes);
+          setInitialData({
+            ...initialData,
+            hype: christianloveHypes[0].message,
+            selecthype: "christianloveHypes",
+          });
+          break;
+        case "appreciationloveHypes":
+          setSelectedHypesCategories(appreciationloveHypes);
+          setInitialData({
+            ...initialData,
+            hype: appreciationloveHypes[0].message,
+            selecthype: "appreciationloveHypes",
+          });
+          break;
+        default:
+          setSelectedHypesCategories({});
+          break;
+      }
+    } else {
+      setInitialData({
+        ...initialData,
+        [event.target.name]: event.target.value,
+      });
+    }
+  };
+
+  //Handle Hypes Previous Pagination
+  const handleHypesPrevious = () => {
+    setCurrentIndex(currentIndex - 1);
+    setInitialData({
+      ...initialData,
+      hype: selectedHypesCategories[currentIndex - 1].message,
+    });
+  };
+
+  //Handle Hypes Next Pagination
+  const handleHypesNext = () => {
+    setCurrentIndex(currentIndex + 1);
+    setInitialData({
+      ...initialData,
+      hype: selectedHypesCategories[currentIndex + 1].message,
+    });
+  };
+
+  //Get Random Hypes
+  const handleRandomHypes = async () => {
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const randomIndex = Math.floor(
+      Math.random() * selectedHypesCategories.length,
+    );
+    setCurrentIndex(randomIndex);
+    setInitialData({
+      ...initialData,
+      hype: selectedHypesCategories[randomIndex].message,
+    });
+
+    setLoading(false);
+  };
+
+  //Handle Send Hype Submit
+  const handleSendHypeSubmit = async (e) => {
+    e.preventDefault();
+    setLoadingSend(true);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // set the submitted data here here. example console.log("the submited data", initialData);
     setInitialData({
       name: "",
       selecthype: "",
@@ -90,34 +196,9 @@ const SendHype = () => {
       twitterusername: "",
       smsnumber: "",
     });
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    if (!loader) {
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      setLoader(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [loader]);
-
-  useEffect(() => {
-    if (!loaderSend) {
-      return;
-    }
-    const timer = setTimeout(() => {
-      setLoaderSend(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [loaderSend]);
-
-  const getRandomHypeMessage = (arr) => {
-    setLoader(true);
-    const randomIndex = Math.floor(Math.random() * arr.length);
-    return arr[randomIndex].message;
+    setToggleModal(true);
+    setSelectedHypesCategories({});
+    setLoadingSend(false);
   };
 
   return (
@@ -126,7 +207,7 @@ const SendHype = () => {
         <FluidTitle>Send a hype!</FluidTitle>
         <SendHypeInnerContainer>
           <HypeForm>
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSendHypeSubmit}>
               <FormGroupContainer>
                 <InputContainer>
                   <InputGroup
@@ -139,6 +220,7 @@ const SendHype = () => {
                     onChange={handleInitialDataChange}
                     helperText={errors.name}
                     helperTextType={checkIsValid("name")}
+                    maxLength="50"
                   />
                 </InputContainer>
                 <InputContainer
@@ -151,115 +233,36 @@ const SendHype = () => {
                   <SelectInputGroup
                     name="selecthype"
                     id="selecthype"
-                    value={initialData.selecthype}
                     onBlur={(e) => handleBlur(e)}
                     onChange={handleInitialDataChange}
                     helperText={errors.selecthype}
                     helperTextType={checkIsValid("selecthype")}
+                    defaultValue="select"
                   >
-                    <option value="" disabled hidden>
-                      Select your hype
-                    </option>
-                    <option value="valentine">🌷 Valentine wishes</option>
-                    <option value="job"> 🎉 Congratulations on Job</option>
-                    <option value="birthday"> 🎂 Birthday Messages</option>
-                    <option value="love"> 💕 Love Hypes</option>
-                    <option value="christian-love">
+                    <option value="select"> Select your hype</option>
+                    <option value="valentineHypes">🌷 Valentine wishes</option>
+                    <option value="jobHypes"> 🎉 Congratulations on Job</option>
+                    <option value="birthdayHypes"> 🎂 Birthday Messages</option>
+                    <option value="loveHypes"> 💕 Love Hypes</option>
+                    <option value="christianloveHypes">
                       ❤️ Christian love messages
                     </option>
-                    <option value="appreciation-love">
+                    <option value="appreciationloveHypes">
                       🙏 Appreciation love message
                     </option>
                   </SelectInputGroup>
-                  {initialData.selecthype === "valentine" &&
-                    (loader ? (
-                      <Loader style={{ width: "20px", height: "20px" }} />
-                    ) : (
-                      <BiRefresh
-                        color="#F69D00"
-                        cursor="pointer"
-                        onClick={() =>
-                          sethypeMessage({
-                            valentineHypeMessage:
-                              getRandomHypeMessage(valentineHypes),
-                          })
-                        }
-                      />
-                    ))}
-                  {initialData.selecthype === "job" &&
-                    (loader ? (
-                      <Loader style={{ width: "20px", height: "20px" }} />
-                    ) : (
-                      <BiRefresh
-                        color="#F69D00"
-                        cursor="pointer"
-                        onClick={() =>
-                          sethypeMessage({
-                            jobHypesMessage: getRandomHypeMessage(jobHypes),
-                          })
-                        }
-                      />
-                    ))}
-                  {initialData.selecthype === "birthday" &&
-                    (loader ? (
-                      <Loader style={{ width: "20px", height: "20px" }} />
-                    ) : (
-                      <BiRefresh
-                        color="#F69D00"
-                        cursor="pointer"
-                        onClick={() =>
-                          sethypeMessage({
-                            birthdayHypesMessage:
-                              getRandomHypeMessage(birthdayHypes),
-                          })
-                        }
-                      />
-                    ))}
-                  {initialData.selecthype === "love" &&
-                    (loader ? (
-                      <Loader style={{ width: "20px", height: "20px" }} />
-                    ) : (
-                      <BiRefresh
-                        color="#F69D00"
-                        cursor="pointer"
-                        onClick={() =>
-                          sethypeMessage({
-                            loveHypesMessage: getRandomHypeMessage(loveHypes),
-                          })
-                        }
-                      />
-                    ))}
-                  {initialData.selecthype === "christian-love" &&
-                    (loader ? (
-                      <Loader style={{ width: "20px", height: "20px" }} />
-                    ) : (
-                      <BiRefresh
-                        color="#F69D00"
-                        cursor="pointer"
-                        onClick={() =>
-                          sethypeMessage({
-                            christianloveHypesMessage:
-                              getRandomHypeMessage(christianloveHypes),
-                          })
-                        }
-                      />
-                    ))}
-                  {initialData.selecthype === "appreciation-love" &&
-                    (loader ? (
-                      <Loader style={{ width: "20px", height: "20px" }} />
-                    ) : (
-                      <BiRefresh
-                        color="#F69D00"
-                        cursor="pointer"
-                        onClick={() =>
-                          sethypeMessage({
-                            appreciationloveHypesMessage: getRandomHypeMessage(
-                              appreciationloveHypes,
-                            ),
-                          })
-                        }
-                      />
-                    ))}
+
+                  {loading ? (
+                    <Loader style={{ width: "20px", height: "20px" }} />
+                  ) : initialData.selecthype !== "select" ? (
+                    <BiRefresh
+                      color="#F69D00"
+                      cursor="pointer"
+                      onClick={handleRandomHypes}
+                    />
+                  ) : (
+                    ""
+                  )}
                 </InputContainer>
               </FormGroupContainer>
               <FormGroupContainer>
@@ -268,61 +271,83 @@ const SendHype = () => {
                     name="hype"
                     id="hype"
                     placeholder="Hype message"
-                    value={
-                      initialData.selecthype === "valentine"
-                        ? (hypeMessage.valentineHypeMessage ||
-                            valentineHypes[0].message) +
-                          (displayName ? "(" + firstname + ")" : "")
-                        : initialData.selecthype === "job"
-                        ? (hypeMessage.jobHypesMessage || jobHypes[0].message) +
-                          (displayName ? "(" + firstname + ")" : "")
-                        : initialData.selecthype === "birthday"
-                        ? (hypeMessage.birthdayHypesMessage ||
-                            birthdayHypes[0].message) +
-                          (displayName ? "(" + firstname + ")" : "")
-                        : initialData.selecthype === "love"
-                        ? (hypeMessage.loveHypesMessage ||
-                            loveHypes[0].message) +
-                          (displayName ? "(" + firstname + ")" : "")
-                        : initialData.selecthype === "christian-love"
-                        ? (hypeMessage.christianloveHypesMessage ||
-                            christianloveHypes[0].message) +
-                          (displayName ? "(" + firstname + ")" : "")
-                        : initialData.selecthype === "appreciation-love"
-                        ? (hypeMessage.appreciationloveHypesMessage ||
-                            appreciationloveHypes[0].message) +
-                          (displayName ? "(" + firstname + ")" : "")
-                        : initialData.hype
-                    }
+                    value={`${
+                      displayRecipientName && initialData.name
+                        ? `${initialData.name}\n\n`
+                        : ""
+                    }${
+                      selectedHypesCategories[currentIndex]?.message
+                        ? selectedHypesCategories[currentIndex]?.message
+                        : ""
+                    }\n${
+                      selectedHypesCategories[currentIndex]?.message &&
+                      displayName
+                        ? firstname
+                        : ""
+                    }`}
                     onBlur={(e) => handleBlur(e)}
                     onChange={handleInitialDataChange}
                     helperText={errors.hype}
                     helperTextType={checkIsValid("hype")}
                     rows={15}
-                    style={{
-                      pointerEvents: initialData.selecthype ? "" : "none",
-                    }}
+                    readOnly
                   />
-                  <CheckContainer onClick={() => setDisplayName(!displayName)}>
-                    {displayName ? (
-                      <BiCheckbox cursor="pointer" color="#F69D00" />
+                  <InnerContainer>
+                    <CheckContainerMain>
+                      <CheckContainer
+                        onClick={() => setDisplayName(!displayName)}
+                      >
+                        {displayName ? (
+                          <BiCheckbox cursor="pointer" color="#F69D00" />
+                        ) : (
+                          <BiCheckboxSquare cursor="pointer" color="#F69D00" />
+                        )}
+                        <span>Send anonymously</span>
+                      </CheckContainer>
+                      <CheckContainer
+                        onClick={() =>
+                          setDisplayRecipientName(!displayRecipientName)
+                        }
+                      >
+                        {displayRecipientName ? (
+                          <BiCheckboxSquare cursor="pointer" color="#F69D00" />
+                        ) : (
+                          <BiCheckbox cursor="pointer" color="#F69D00" />
+                        )}
+                        <span>Include recipient name</span>
+                      </CheckContainer>
+                    </CheckContainerMain>
+                    {selectedHypesCategories[currentIndex]?.message ? (
+                      <HypesNavigation>
+                        <AiFillBackward
+                          color={currentIndex === 0 ? "#e1e1e1" : "#F69D00"}
+                          cursor="pointer"
+                          size={30}
+                          pointerEvents={
+                            currentIndex === 0 ? "none" : undefined
+                          }
+                          onClick={handleHypesPrevious}
+                        />
+                        <AiFillForward
+                          color={
+                            currentIndex === selectedHypesCategories.length - 1
+                              ? "#e1e1e1"
+                              : "#F69D00"
+                          }
+                          cursor="pointer"
+                          size={30}
+                          pointerEvents={
+                            currentIndex === selectedHypesCategories.length - 1
+                              ? "none"
+                              : undefined
+                          }
+                          onClick={handleHypesNext}
+                        />
+                      </HypesNavigation>
                     ) : (
-                      <BiCheckboxSquare cursor="pointer" color="#F69D00" />
+                      ""
                     )}
-                    <span>Send Anonymously</span>
-                  </CheckContainer>
-                  <CheckContainer
-                    onClick={() =>
-                      setDisplayRecipientName(!displayRecipientName)
-                    }
-                  >
-                    {displayRecipientName ? (
-                      <BiCheckboxSquare cursor="pointer" color="#F69D00" />
-                    ) : (
-                      <BiCheckbox cursor="pointer" color="#F69D00" />
-                    )}
-                    <span>Include recipient name</span>
-                  </CheckContainer>
+                  </InnerContainer>
                 </InputContainer>
               </FormGroupContainer>
               <FormShareGroupContainer>
@@ -374,6 +399,7 @@ const SendHype = () => {
                       onChange={handleInitialDataChange}
                       helperText={errors.twitterusername}
                       helperTextType={checkIsValid("twitterusername")}
+                      maxLength="15"
                     />
                   )}
 
@@ -387,7 +413,7 @@ const SendHype = () => {
                       value={initialData.smsnumber}
                       onBlur={(e) => handleBlur(e)}
                       onChange={handleInitialDataChange}
-                      helperText={errors.whatsappnumber}
+                      helperText={errors.smsnumber}
                       helperTextType={checkIsValid("smsnumber")}
                     />
                   )}
@@ -399,8 +425,7 @@ const SendHype = () => {
                   backgroundColor:
                     initialData.name &&
                     initialData.selecthype &&
-                    hypeMessage &&
-                    initialData.selectsocial &&
+                    initialData.hype &&
                     (initialData.whatsappnumber ||
                       initialData.twitterusername ||
                       initialData.smsnumber)
@@ -410,8 +435,7 @@ const SendHype = () => {
                 disabled={
                   initialData.name &&
                   initialData.selecthype &&
-                  hypeMessage &&
-                  initialData.selectsocial &&
+                  initialData.hype &&
                   (initialData.whatsappnumber ||
                     initialData.twitterusername ||
                     initialData.smsnumber)
@@ -420,7 +444,7 @@ const SendHype = () => {
                 }
               >
                 <span style={{ display: "flex", gap: "10px" }}>
-                  {loaderSend ? (
+                  {loadingSend ? (
                     <Loader style={{ width: "20px", height: "20px" }} />
                   ) : (
                     ""
@@ -453,6 +477,7 @@ const SendHype = () => {
               size="50px"
             />
           </Link>
+
           <Modal>
             <img src={hypesent} alt="hypesent" width="80%" />
             <br />
@@ -536,7 +561,7 @@ const Form = styled.form`
 const SentHypeModalContainer = styled.div`
   display: flex;
   justify-content: center;
-  z-index: 300;
+  z-index: 1000;
   position: fixed;
   width: 100%;
   height: 100%;
@@ -567,6 +592,8 @@ const Modal = styled.div`
   align-items: center;
 `;
 
+const CheckContainerMain = styled.div``;
+
 const CheckContainer = styled.div`
   display: flex;
   align-items: center;
@@ -575,5 +602,24 @@ const CheckContainer = styled.div`
   width: fit-content;
   span {
     cursor: pointer;
+  }
+`;
+
+const InnerContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  ${({ theme }) => theme.breakpoints.down("md")} {
+    flex-direction: column-reverse;
+    gap: 20px;
+  }
+`;
+
+const HypesNavigation = styled.div`
+  display: flex;
+  gap: 30px;
+  margin: 12px 0px;
+  ${({ theme }) => theme.breakpoints.down("md")} {
+    justify-content: center;
   }
 `;
