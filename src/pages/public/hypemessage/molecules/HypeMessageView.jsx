@@ -6,9 +6,12 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { toast } from "react-hot-toast";
+import { useState } from "react";
+import { db } from "@/setup/firebase/firebase";
 
 const HypeMessageView = () => {
   const [hype, setHype] = useState();
+
   const user = useSelector((state) => state.auth.user);
   const firstname = user.displayName?.split(" ")[0];
 
@@ -37,13 +40,14 @@ const HypeMessageView = () => {
     <>
       <HypeMessageCardContainer>
         <HypeMessageCard>
-          <SubTitle>You have received a hype from Daniel</SubTitle>
+          <SubTitle>You have received a hype from an anonymous star</SubTitle>
           <br />
 
-          <SubTitle>To Unwana with love.</SubTitle>
+          <SubTitle>To {hype?.name} with love.</SubTitle>
           <br />
           <p>
-            My dearest love, <br />
+            {hype?.hype}
+            {/* My dearest love, <br />
             <br />
             On this Valentine's Day, I just wanted to let you know how much you
             mean to me. You bring so much joy and happiness into my life, and I
@@ -52,7 +56,7 @@ const HypeMessageView = () => {
             <br />
             <br />I love you more and more each day, and I am so excited to
             spend this special day with you. Let's make this Valentine's Day one
-            to remember and celebrate our love together. Yours always, Daniel.
+            to remember and celebrate our love together. Yours always, Daniel. */}
           </p>
         </HypeMessageCard>
       </HypeMessageCardContainer>
