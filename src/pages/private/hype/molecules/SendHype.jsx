@@ -76,6 +76,8 @@ const SendHype = () => {
 
   //Handle Hypes Changes
   const handleInitialDataChange = (event) => {
+    let inputValue = event.target.value;
+    setCurrentIndex(0);
     if (event.target.name === "selecthype") {
       switch (event.target.value) {
         case "select":
@@ -125,6 +127,7 @@ const SendHype = () => {
             hype: christianloveHypes[0].message,
             selecthype: "christianloveHypes",
           });
+          setCurrentIndex(0);
           break;
         case "appreciationloveHypes":
           setSelectedHypesCategories(appreciationloveHypes);
@@ -139,10 +142,12 @@ const SendHype = () => {
           break;
       }
     } else {
-      setInitialData({
-        ...initialData,
-        [event.target.name]: event.target.value,
-      });
+      if (/^[a-zA-Z0-9]+$/.test(inputValue) || inputValue === "") {
+        setInitialData({
+          ...initialData,
+          [event.target.name]: inputValue,
+        });
+      }
     }
   };
 
@@ -185,8 +190,7 @@ const SendHype = () => {
     e.preventDefault();
     setLoadingSend(true);
     await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // set the submitted data here here. example console.log("the submited data", initialData);
+    // set the submitted data here. example console.log("the submited data", initialData);
     setInitialData({
       name: "",
       selecthype: "",
@@ -408,7 +412,7 @@ const SendHype = () => {
                       name="smsnumber"
                       type="number"
                       id="smsnumber"
-                      label="Phone Number"
+                      label="Phone number"
                       placeholder="Recipients phone number"
                       value={initialData.smsnumber}
                       onBlur={(e) => handleBlur(e)}
@@ -425,20 +429,28 @@ const SendHype = () => {
                   backgroundColor:
                     initialData.name &&
                     initialData.selecthype &&
-                    initialData.hype &&
-                    (initialData.whatsappnumber ||
-                      initialData.twitterusername ||
-                      initialData.smsnumber)
+                    initialData.selecthype !== "select" &&
+                    initialData.hype.length > 1 &&
+                    (initialData.selectsocial === "whatsapp"
+                      ? initialData.whatsappnumber.length > 10
+                      : initialData.selectsocial === "twitter"
+                      ? initialData.twitterusername
+                      : initialData.selectsocial === "sms" &&
+                        initialData.smsnumber.length > 10)
                       ? ""
                       : "#5E5E5E",
                 }}
                 disabled={
                   initialData.name &&
                   initialData.selecthype &&
-                  initialData.hype &&
-                  (initialData.whatsappnumber ||
-                    initialData.twitterusername ||
-                    initialData.smsnumber)
+                  initialData.selecthype !== "select" &&
+                  initialData.hype.length > 1 &&
+                  (initialData.selectsocial === "whatsapp"
+                    ? initialData.whatsappnumber.length > 10
+                    : initialData.selectsocial === "twitter"
+                    ? initialData.twitterusername
+                    : initialData.selectsocial === "sms" &&
+                      initialData.smsnumber.length > 10)
                     ? false
                     : true
                 }
