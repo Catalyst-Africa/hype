@@ -99,7 +99,6 @@ const SendHype = () => {
     setCurrentIndex(0);
 
     hypes?.forEach((hype) => {
-      console.log(hype);
       if (event.target.name === "selecthype") {
         if (event.target.value === "select") {
           setInitialData({
