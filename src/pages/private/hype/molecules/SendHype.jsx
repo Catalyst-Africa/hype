@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import {
@@ -13,19 +14,13 @@ import { Button } from "@/styles/reusable/elements.styled";
 import sendhypebg from "@/assets/sendhypebg.svg";
 import { BiRefresh } from "react-icons/bi";
 import { AiFillCloseCircle } from "react-icons/ai";
-import {
-  appreciationloveHypes,
-  birthdayHypes,
-  christianloveHypes,
-  jobHypes,
-  loveHypes,
-  valentineHypes,
-} from "./samplehypes";
 import { Loader } from "@/styles/reusable/elements.styled";
 import hypesent from "../../../../assets/hypesent.svg";
 import { Link } from "react-router-dom";
 import { BiCheckbox, BiCheckboxSquare } from "react-icons/bi";
 import { AiFillBackward, AiFillForward } from "react-icons/ai";
+import { db } from "@/setup/firebase/firebase";
+import { useEffect } from "react";
 
 const SendHype = () => {
   const user = useSelector((state) => state.auth.user);
@@ -52,11 +47,35 @@ const SendHype = () => {
   //Loading for when sending hypes
   const [loadingSend, setLoadingSend] = useState(false);
 
+  const [hypes, setHype] = useState([]);
+
+  //Get data from the backend
+
+  useEffect(() => {
+    const getAllHype = async () => {
+      const x = [];
+      try {
+        const querySnapshot = await getDocs(collection(db, "hype"));
+        querySnapshot.forEach((doc) => {
+          const id = doc.id;
+          x.push({ id, ...doc.data() });
+        });
+        setHype(x);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getAllHype();
+  }, []);
+
+  useEffect(() => {}, []);
+
   //Hypes Initial Data
   const [initialData, setInitialData] = useState({
     name: "",
     selecthype: "select",
     hype: "",
+    hypeId: "",
     selectsocial: "",
     whatsappnumber: "",
     twitterusername: "",
@@ -78,80 +97,42 @@ const SendHype = () => {
   const handleInitialDataChange = (event) => {
     let inputValue = event.target.value;
     setCurrentIndex(0);
-    if (event.target.name === "selecthype") {
-      switch (event.target.value) {
-        case "select":
+
+    hypes?.forEach((hype) => {
+      console.log(hype);
+      if (event.target.name === "selecthype") {
+        if (event.target.value === "select") {
           setInitialData({
             ...initialData,
             hype: "",
             selecthype: "select",
           });
           setSelectedHypesCategories({});
-          break;
-        case "valentineHypes":
-          setSelectedHypesCategories(valentineHypes);
+        } else if (event.target.value === Object.keys(hype)[1]) {
+          setSelectedHypesCategories(Object.values(hype)[1]);
           setInitialData({
             ...initialData,
-            hype: valentineHypes[0].message,
-            selecthype: "valentineHypes",
+            hype:
+              Object.values(hype)[1][1]?.message === undefined
+                ? //Returns message for array that are equal to 1
+                  Object.values(hype)[1][0].message
+                : //Returns message for array that are more than 1
+                  Object.values(hype)[1][1]?.message,
+            hypeId: hype.id,
+            selecthype: Object.keys(hype)[1],
           });
-          break;
-        case "jobHypes":
-          setSelectedHypesCategories(jobHypes);
+        }
+      } else {
+        if (/^[a-zA-Z0-9]+$/.test(inputValue) || inputValue === "") {
           setInitialData({
             ...initialData,
-            hype: jobHypes[0].message,
-            selecthype: "jobHypes",
+            [event.target.name]: inputValue,
           });
-          break;
-        case "birthdayHypes":
-          setSelectedHypesCategories(birthdayHypes);
-          setInitialData({
-            ...initialData,
-            hype: birthdayHypes[0].message,
-            selecthype: "birthdayHypes",
-          });
-          break;
-        case "loveHypes":
-          setSelectedHypesCategories(loveHypes);
-          setInitialData({
-            ...initialData,
-            hype: loveHypes[0].message,
-            selecthype: "loveHypes",
-          });
-          break;
-        case "christianloveHypes":
-          setSelectedHypesCategories(christianloveHypes);
-          setInitialData({
-            ...initialData,
-            hype: christianloveHypes[0].message,
-            selecthype: "christianloveHypes",
-          });
-          setCurrentIndex(0);
-          break;
-        case "appreciationloveHypes":
-          setSelectedHypesCategories(appreciationloveHypes);
-          setInitialData({
-            ...initialData,
-            hype: appreciationloveHypes[0].message,
-            selecthype: "appreciationloveHypes",
-          });
-          break;
-        default:
-          setSelectedHypesCategories({});
-          break;
+        }
       }
-    } else {
-      if (/^[a-zA-Z0-9]+$/.test(inputValue) || inputValue === "") {
-        setInitialData({
-          ...initialData,
-          [event.target.name]: inputValue,
-        });
-      }
-    }
+    });
   };
 
-  //Handle Hypes Previous Pagination
   const handleHypesPrevious = () => {
     setCurrentIndex(currentIndex - 1);
     setInitialData({
@@ -189,6 +170,7 @@ const SendHype = () => {
   const handleSendHypeSubmit = async (e) => {
     e.preventDefault();
     setLoadingSend(true);
+
     await new Promise((resolve) => setTimeout(resolve, 1000));
     // set the submitted data here. example console.log("the submited data", initialData);
     setInitialData({
@@ -244,16 +226,24 @@ const SendHype = () => {
                     defaultValue="select"
                   >
                     <option value="select"> Select your hype</option>
-                    <option value="valentineHypes">🌷 Valentine wishes</option>
-                    <option value="jobHypes"> 🎉 Congratulations on Job</option>
-                    <option value="birthdayHypes"> 🎂 Birthday Messages</option>
-                    <option value="loveHypes"> 💕 Love Hypes</option>
-                    <option value="christianloveHypes">
-                      ❤️ Christian love messages
-                    </option>
-                    <option value="appreciationloveHypes">
-                      🙏 Appreciation love message
-                    </option>
+                    {hypes?.map((hype) => (
+                      <option
+                        key={Object.values(hype)[0]}
+                        value={Object.keys(hype)[1]}
+                      >
+                        {Object.keys(hype)[1] === "valentineHypes"
+                          ? "🌷 Valentine wishes"
+                          : Object.keys(hype)[1] === "jobHypes"
+                          ? "🎉 Congratulations on Job"
+                          : Object.keys(hype)[1] === "birthdayHypes"
+                          ? "🎂 Birthday Messages"
+                          : Object.keys(hype)[1] === "loveHypes"
+                          ? "💕 Love Hypes"
+                          : Object.keys(hype)[1] === "christianloveHypes"
+                          ? "❤️ Christian love messages"
+                          : " 🙏 Appreciation love message"}
+                      </option>
+                    ))}
                   </SelectInputGroup>
 
                   {loading ? (
