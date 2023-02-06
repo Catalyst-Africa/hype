@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import {
@@ -26,6 +27,11 @@ import hypesent from "../../../../assets/hypesent.svg";
 import { Link } from "react-router-dom";
 import { BiCheckbox, BiCheckboxSquare } from "react-icons/bi";
 import { AiFillBackward, AiFillForward } from "react-icons/ai";
+import { db } from "@/setup/firebase/firebase";
+import { useEffect } from "react";
+import { useMemo } from "react";
+import { useCallback } from "react";
+import { object } from "prop-types";
 
 const SendHype = () => {
   const user = useSelector((state) => state.auth.user);
@@ -51,6 +57,32 @@ const SendHype = () => {
 
   //Loading for when sending hypes
   const [loadingSend, setLoadingSend] = useState(false);
+
+  const [hypes, setHype] = useState([]);
+
+  //Get data from the backend
+
+  useEffect(() => {
+    const getAllHype = async () => {
+      const x = [];
+      try {
+        const querySnapshot = await getDocs(collection(db, "hype"));
+        querySnapshot.forEach((doc) => {
+          const id = doc.id;
+          // const data = doc.data();
+          x.push({ id, ...doc.data() });
+        });
+        setHype(x);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getAllHype();
+  }, []);
+
+  console.log(hypes);
+
+  useEffect(() => {}, []);
 
   //Hypes Initial Data
   const [initialData, setInitialData] = useState({
@@ -240,16 +272,31 @@ const SendHype = () => {
                     defaultValue="select"
                   >
                     <option value="select"> Select your hype</option>
-                    <option value="valentineHypes">🌷 Valentine wishes</option>
-                    <option value="jobHypes"> 🎉 Congratulations on Job</option>
-                    <option value="birthdayHypes"> 🎂 Birthday Messages</option>
-                    <option value="loveHypes"> 💕 Love Hypes</option>
+                    {hypes?.map((hype) => (
+                      <option value={Object.keys(hype)[1]}>
+                        {Object.keys(hype)[1] === "valentineHypes"
+                          ? "🌷 Valentine wishes"
+                          : Object.keys(hype)[1] === "jobHypes"
+                          ? "🎉 Congratulations on Job"
+                          : Object.keys(hype)[1] === "birthdayHypes"
+                          ? "🎂 Birthday Messages"
+                          : Object.keys(hype)[1] === "loveHypes"
+                          ? "💕 Love Hypes"
+                          : Object.keys(hype)[1] === "christianloveHypes"
+                          ? "❤️ Christian love messages"
+                          : " 🙏 Appreciation love message"}
+                      </option>
+                    ))}
+                    {/* <option value="valentineHypes"></option>
+                    <option value="jobHypes"> </option>
+                    <option value="birthdayHypes"> </option>
+                    <option value="loveHypes"> </option>
                     <option value="christianloveHypes">
-                      ❤️ Christian love messages
+                      
                     </option>
                     <option value="appreciationloveHypes">
                       🙏 Appreciation love message
-                    </option>
+                    </option> */}
                   </SelectInputGroup>
 
                   {loading ? (
