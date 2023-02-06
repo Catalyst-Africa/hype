@@ -238,6 +238,7 @@ const SendHype = () => {
   const handleSendHypeSubmit = async (e) => {
     e.preventDefault();
     setLoadingSend(true);
+
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     // set the submitted data here here. example console.log("the submited data", initialData);
