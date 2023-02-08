@@ -29,24 +29,24 @@ const HomeIntro = () => {
           </p>
           <br />
           <br />
-          <HypeMesageFooter>
-            {firstname ? (
-              <TryHype>
-                <Link to="/dashboard">
-                  <Button>Dashboard</Button>
-                </Link>
-              </TryHype>
-            ) : (
-              <TryHype>
-                <p>Join us to send hypes!</p>
-                <Link to="/signup">
-                  <Button>Try hype</Button>
-                </Link>
-              </TryHype>
-            )}
-          </HypeMesageFooter>
         </HypeMessageCard>
       </HypeMessageCardContainer>
+      <HypeMesageFooter>
+        {firstname ? (
+          <TryHype>
+            <Link to="/dashboard">
+              <Button>Dashboard</Button>
+            </Link>
+          </TryHype>
+        ) : (
+          <TryHype>
+            <p>Join us to send hypes!</p>
+            <Link to="/signup">
+              <Button>Try hype</Button>
+            </Link>
+          </TryHype>
+        )}
+      </HypeMesageFooter>
     </>
   );
 };
@@ -55,10 +55,16 @@ export default HomeIntro;
 
 const HypeMessageCardContainer = styled.div`
   display: flex;
-  align-items: center;
-  padding: 100px 0px;
+  align-items: flex-start;
+  height: 100%;
+  padding: 22px 51px;
+
+  ${({ theme }) => theme.breakpoints.down("sm")} {
+    padding: 37px 24px;
+  }
 `;
 const HypeMessageCard = styled.div`
+  margin-top: 50px;
   width: 50%;
 
   ${({ theme }) => theme.breakpoints.down("lg")} {
@@ -68,19 +74,25 @@ const HypeMessageCard = styled.div`
 `;
 
 const HypeMesageFooter = styled.div`
+  position: sticky;
+  bottom: 0;
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  padding-bottom: 50px;
+  width: 100%;
+  background-color: #fff;
+  margin: auto;
+  padding: 20px 51px;
+  background: #ffb328;
+  ${({ theme }) => theme.breakpoints.down("sm")} {
+    padding: 20px 24px;
+  }
 `;
 
 const TryHype = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
   gap: 36px;
   width: 100%;
-  margin-top: 45px;
 
   a {
     max-width: 500px;
@@ -91,7 +103,7 @@ const TryHype = styled.div`
     width: 100%;
   }
 
-  ${({ theme }) => theme.breakpoints.down("md")} {
+  ${({ theme }) => theme.breakpoints.down("lg")} {
     gap: 8px;
     flex-direction: column;
     justify-content: center;

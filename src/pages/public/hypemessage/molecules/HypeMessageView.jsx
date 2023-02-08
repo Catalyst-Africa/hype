@@ -45,19 +45,8 @@ const HypeMessageView = () => {
 
           <SubTitle>To {hype?.name} with love.</SubTitle>
           <br />
-          <p>
-            {hype?.hype}
-            {/* My dearest love, <br />
-            <br />
-            On this Valentine's Day, I just wanted to let you know how much you
-            mean to me. You bring so much joy and happiness into my life, and I
-            am so grateful to have you by my side. Your love and support mean
-            the world to me, and I am so lucky to have such an amazing partner.
-            <br />
-            <br />I love you more and more each day, and I am so excited to
-            spend this special day with you. Let's make this Valentine's Day one
-            to remember and celebrate our love together. Yours always, Daniel. */}
-          </p>
+          <p>{hype?.hype}</p>
+          <br />
         </HypeMessageCard>
       </HypeMessageCardContainer>
       <HypeMesageFooter>
@@ -84,10 +73,16 @@ export default HypeMessageView;
 
 const HypeMessageCardContainer = styled.div`
   display: flex;
-  align-items: center;
-  padding: 100px 0px;
+  align-items: flex-start;
+  height: 100%;
+  padding: 22px 51px;
+
+  ${({ theme }) => theme.breakpoints.down("sm")} {
+    padding: 37px 24px;
+  }
 `;
 const HypeMessageCard = styled.div`
+  margin-top: 50px;
   width: 50%;
 
   ${({ theme }) => theme.breakpoints.down("lg")} {
@@ -97,10 +92,17 @@ const HypeMessageCard = styled.div`
 `;
 
 const HypeMesageFooter = styled.div`
+  position: sticky;
+  bottom: 0;
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  padding-bottom: 50px;
+  width: 100%;
+  background-color: #fff;
+  margin: auto;
+  padding: 20px 51px;
+  background: #ffb328;
+  ${({ theme }) => theme.breakpoints.down("sm")} {
+    padding: 20px 24px;
+  }
 `;
 
 const TryHype = styled.div`
@@ -109,7 +111,7 @@ const TryHype = styled.div`
   align-items: center;
   gap: 36px;
   width: 100%;
-  margin-top: 45px;
+
 
   a {
     max-width: 500px;
@@ -120,7 +122,7 @@ const TryHype = styled.div`
     width: 100%;
   }
 
-  ${({ theme }) => theme.breakpoints.down("md")} {
+  ${({ theme }) => theme.breakpoints.down("lg")} {
     gap: 8px;
     flex-direction: column;
     justify-content: center;

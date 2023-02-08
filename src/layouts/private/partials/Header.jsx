@@ -22,7 +22,7 @@ const Header = () => {
       </Greeting>
       <Options>
         {/* <SearchIcon /> */}
-        <BellIcon />
+        {/* <BellIcon /> */}
         <div></div>
         <Link to="/settings">
           <Profile>

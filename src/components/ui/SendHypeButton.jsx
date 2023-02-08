@@ -2,10 +2,14 @@ import { Button } from "@/styles/reusable/elements.styled";
 import React from "react";
 import styled from "styled-components";
 import { RiSendPlaneFill } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+
 
 const SendHypeButton = () => {
-  return (
+  const { pathname } = useLocation();
+  return pathname === "/send-hype" ? (
+    ""
+  ) : (
     <Link to="/send-hype">
       <SendHypeButtonContainer>
         <Button>

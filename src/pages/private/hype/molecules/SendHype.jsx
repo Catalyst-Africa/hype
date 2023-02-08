@@ -78,7 +78,6 @@ const SendHype = () => {
     hypeId: "",
     selectsocial: "",
     whatsappnumber: "",
-    twitterusername: "",
     smsnumber: "",
   });
 
@@ -185,7 +184,6 @@ const SendHype = () => {
       hype: "",
       selectsocial: "",
       whatsappnumber: "",
-      twitterusername: "",
       smsnumber: "",
     });
     setToggleModal(true);
@@ -367,7 +365,6 @@ const SendHype = () => {
                       Choose
                     </option>
                     <option value="whatsapp">Whatsapp</option>
-                    <option value="twitter">Twitter</option>
                     <option value="sms">SMS</option>
                   </SelectInputGroup>
                 </InputContainer>
@@ -384,22 +381,6 @@ const SendHype = () => {
                       onChange={handleInitialDataChange}
                       helperText={errors.whatsappnumber}
                       helperTextType={checkIsValid("whatsappnumber")}
-                    />
-                  )}
-
-                  {initialData.selectsocial === "twitter" && (
-                    <InputGroup
-                      name="twitterusername"
-                      type="text"
-                      id="twitterusername"
-                      label="Twitter username"
-                      placeholder="Recipients twitter username"
-                      value={initialData.twitterusername}
-                      onBlur={(e) => handleBlur(e)}
-                      onChange={handleInitialDataChange}
-                      helperText={errors.twitterusername}
-                      helperTextType={checkIsValid("twitterusername")}
-                      maxLength="15"
                     />
                   )}
 
@@ -429,8 +410,6 @@ const SendHype = () => {
                     initialData.hype.length > 1 &&
                     (initialData.selectsocial === "whatsapp"
                       ? initialData.whatsappnumber.length > 10
-                      : initialData.selectsocial === "twitter"
-                      ? initialData.twitterusername
                       : initialData.selectsocial === "sms" &&
                         initialData.smsnumber.length > 10)
                       ? ""
@@ -443,8 +422,6 @@ const SendHype = () => {
                   initialData.hype.length > 1 &&
                   (initialData.selectsocial === "whatsapp"
                     ? initialData.whatsappnumber.length > 10
-                    : initialData.selectsocial === "twitter"
-                    ? initialData.twitterusername
                     : initialData.selectsocial === "sms" &&
                       initialData.smsnumber.length > 10)
                     ? false
