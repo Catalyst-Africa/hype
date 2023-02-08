@@ -15,13 +15,13 @@ const TopStats = () => {
       <StatsContainer>
         <FirstCard>
           <GemBlock>
-            <GemInnerBlock>
+            {/* <GemInnerBlock>
               <FaGem color="#FFB328" size={42} />
               <GemTitle>
                 <FluidTitle>0</FluidTitle>
                 <SubTitle>Gems</SubTitle>
               </GemTitle>
-            </GemInnerBlock>
+            </GemInnerBlock> */}
             <ProgressBlock>
               <ProgressTitle>
                 You’re on a streak, 5 Days out 7days
@@ -141,7 +141,8 @@ const SecondCard = styled.div`
 
 const SecondCardMobile = styled.div`
   display: none;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 40px;
   align-items: center;
   padding: 32px 47px;
 

@@ -57,7 +57,7 @@ const ProfileCard = () => {
             </SubTitle>
           </EditCard>
 
-          <EditCard style={{ cursor: "auto" }}>
+          {/* <EditCard style={{ cursor: "auto" }}>
             <NotificationContainer>
               <IoMdNotifications color="#F69D00" />
               <SubTitle>Notification</SubTitle>
@@ -72,7 +72,7 @@ const ProfileCard = () => {
                 <BsToggleOff color="#F69D00" />
               )}
             </NotificationToggler>
-          </EditCard>
+          </EditCard> */}
         </ProfileEdit>
       </ProfileContainer>
     </>

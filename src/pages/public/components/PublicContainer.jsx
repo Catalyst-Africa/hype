@@ -17,7 +17,10 @@ const PublicContainer = ({ children }) => {
 
   return (
     <Container
-      style={{ backgroundImage: `url(${width > 767 ? lovebg : lovebg1})` }}
+      style={{
+        backgroundImage: `url(${width > 1023 ? lovebg : lovebg1})`,
+        width: "100%",
+      }}
     >
       {children}
     </Container>
@@ -32,22 +35,23 @@ export default PublicContainer;
 
 const Container = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
   gap: 30px;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   margin: 0 auto;
-  padding: 22px 51px;
+  /* padding: 22px 51px; */
   background-repeat: no-repeat;
   background-position: right top;
-  background-size: cover;
+  background-size: contain;
 
   ${({ theme }) => theme.breakpoints.down("md")} {
-    background-size: cover;
+    background-size: contain;
   }
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
-    padding: 37px 24px;
+    /* padding: 37px 24px; */
     margin: 0 auto;
     box-shadow: none;
     border-radius: 0px;
