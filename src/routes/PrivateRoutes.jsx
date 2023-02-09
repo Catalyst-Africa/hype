@@ -30,7 +30,6 @@ const privateRoutes = (
       <Route path="/send-hype" element={<Hype />}>
         <Route path="" element={<SendHype />} />
       </Route>
-      <Route path="*" element={"Not found"} />
     </Route>
   </Route>
 );

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
@@ -15,11 +15,15 @@ const SignUpForm = () => {
   const [passwordType, setPasswordType] = useState(true);
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
+  const { pathname } = useLocation();
+
+  console.log(pathname);
 
   const initialData = {
     name: "",
     email: "",
     password: "",
+    // role: pathname === "/admin/signup/" ? "admin" : "user",
   };
 
   const {
@@ -40,7 +44,13 @@ const SignUpForm = () => {
     <>
       <AuthContainer>
         <form onSubmit={(e) => handleSubmit(e)} autoComplete="off">
-          <AuthHeader title="Let's get you started" />
+          <AuthHeader
+            title={
+              pathname === "/admin/signup/"
+                ? "Admin, Let's get you started "
+                : "Let's get you started"
+            }
+          />
           <InputGroup
             type="text"
             id="name"
@@ -90,8 +100,12 @@ const SignUpForm = () => {
               <br />
             </small>
             <small>
-              <strong>Already have an account?</strong>
-              <Link to="/login"> Sign In here</Link>
+              <strong>Already have an account? </strong>
+              <Link
+                to={pathname === "/admin/signup/" ? "/admin/login" : "/login"}
+              >
+                Sign In here
+              </Link>
             </small>
           </div>
         </form>
