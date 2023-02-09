@@ -31,6 +31,14 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async () => {
   //Check for user
   const docRef = doc(db, "users", auth.currentUser.uid);
   const docSnap = await getDoc(docRef);
+  let isAdmin;
+
+  // Check user's email to set Admin to true if it is catalyst admin's email
+
+  if (auth.currentUser.email.toLowerCase() === "control@catalyst.africa") {
+    isAdmin = true;
+  }
+
   // If there are no user, create user
   if (!docSnap.exists()) {
     await setDoc(doc(db, "users", auth.currentUser.uid), {
@@ -41,6 +49,7 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async () => {
       username: `@${auth.currentUser?.displayName.toLowerCase().split(" ")[0]}`,
       phonenumber: "",
       bio: "Hey there, I am active on Hype!",
+      isAdmin,
     });
   }
 });
@@ -55,6 +64,11 @@ export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
   const docRef = doc(db, "users", auth.currentUser.uid);
   const docSnap = await getDoc(docRef);
 
+  // Check user's email to set Admin to true if it is catalyst admin's email
+  if (auth.currentUser.email.toLowerCase() === "control@catalyst.africa") {
+    isAdmin = true;
+  }
+
   // If there are no user, create user
   if (!docSnap.exists()) {
     await setDoc(doc(db, "users", auth.currentUser.uid), {
@@ -65,6 +79,7 @@ export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
       username: `@${name.toLowerCase().split(" ")[0]}`,
       phonenumber: "",
       bio: "Hey there, I am active on Hype!",
+      isAdmin,
     });
   }
 });

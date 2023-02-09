@@ -1,12 +1,12 @@
 import { Route } from "react-router-dom";
 
-import AdminRoute from "@/routes/routesManager/AdminRoutes";
+import ProtectAdmin from "@/routes/routesManager/ProtectAdmin";
 import { AdminLayout } from "@/layouts";
 import { Dashboard } from "../pages/admin";
 import { AddHype } from "../pages/admin/hype/molecules";
 
 const adminRoutes = (
-  <Route element={<AdminRoute />}>
+  <Route element={<ProtectAdmin />}>
     <Route element={<AdminLayout />}>
       <Route path="/admin/dashboard" element={<Dashboard />} />
       <Route path="/admin/hypes" element={"Hypes"} />
