@@ -19,25 +19,28 @@ import {
   setDoc,
   serverTimestamp,
   updateDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { toast } from "react-hot-toast";
 
 import { auth } from "@/setup/firebase/firebase";
 import { extractErrorMessage } from "@/helpers/helpers";
 import { db } from "@/setup/firebase/firebase";
+import { httpsCallable } from "firebase/functions";
+import { functions } from "@/setup/firebase/firebase";
 
 export const googleAuth = createAsyncThunk("auth/googleAuth", async () => {
   await signInWithPopup(auth, new GoogleAuthProvider());
+
+  // Admin default admin role to 'control@catalyst.africa'
+  if (auth.currentUser.email.toLowerCase() === "control@catalyst.africa") {
+    const addAdmin = httpsCallable(functions, "addAdminRole");
+    await addAdmin({ email: auth.currentUser.email.toLowerCase() });
+  }
+
   //Check for user
   const docRef = doc(db, "users", auth.currentUser.uid);
   const docSnap = await getDoc(docRef);
-  let isAdmin;
-
-  // Check user's email to set Admin to true if it is catalyst admin's email
-
-  if (auth.currentUser.email.toLowerCase() === "control@catalyst.africa") {
-    isAdmin = true;
-  }
 
   // If there are no user, create user
   if (!docSnap.exists()) {
@@ -49,9 +52,8 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async () => {
       username: `@${auth.currentUser?.displayName.toLowerCase().split(" ")[0]}`,
       phonenumber: "",
       bio: "Hey there, I am active on Hype!",
-      isAdmin,
     });
-  }
+  } else return docSnap.data();
 });
 
 export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
@@ -60,14 +62,15 @@ export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
   await createUserWithEmailAndPassword(auth, email, password);
   await sendEmailVerification(auth.currentUser);
 
+  // Admin default admin role to 'control@catalyst.africa'
+  if (auth.currentUser.email.toLowerCase() === "control@catalyst.africa") {
+    const addAdmin = httpsCallable(functions, "addAdminRole");
+    addAdmin({ email: auth.currentUser.email.toLowerCase() });
+  }
+
   //Check for user
   const docRef = doc(db, "users", auth.currentUser.uid);
   const docSnap = await getDoc(docRef);
-
-  // Check user's email to set Admin to true if it is catalyst admin's email
-  if (auth.currentUser.email.toLowerCase() === "control@catalyst.africa") {
-    isAdmin = true;
-  }
 
   // If there are no user, create user
   if (!docSnap.exists()) {
@@ -79,7 +82,6 @@ export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
       username: `@${name.toLowerCase().split(" ")[0]}`,
       phonenumber: "",
       bio: "Hey there, I am active on Hype!",
-      isAdmin,
     });
   }
 });

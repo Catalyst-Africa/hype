@@ -16,7 +16,6 @@ import { updateUser } from "@/setup/redux/slices/auth/authSlice";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "./setup/firebase/firebase";
 
-
 const App = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.app.loading);
@@ -24,13 +23,15 @@ const App = () => {
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
-      console.log(user);
       if (user) {
+        const role = await user.getIdTokenResult();
+        const adminRole = role.claims.admin;
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
         const data = docSnap.data();
+        console.log(data);
         dispatch(updateAuth(true));
-        dispatch(updateUser({ ...user, data }));
+        dispatch(updateUser({ ...user, data, adminRole }));
       } else {
         dispatch(updateAuth(false));
       }

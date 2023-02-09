@@ -42,11 +42,11 @@ const authSlice = createSlice({
       state.user.emailVerified = action.payload.emailVerified;
       state.user.photoURL = action.payload?.data?.photoUrl;
       state.user.displayName = action.payload?.data?.name;
-      state.user.phoneNumber = action.payload.data?.phonenumber;
+      state.user.phoneNumber = action.payload?.data?.phonenumber;
       state.user.bio = action.payload.data?.bio;
-      state.user.createdAt = action.payload.data?.timeStamp;
-      state.user.username = action.payload.data?.username;
-      state.user.isAdmin = action.payload.data?.isAdmin;
+      state.user.createdAt = action.payload?.data?.timeStamp;
+      state.user.username = action.payload?.data?.username;
+      state.user.isAdmin = action.payload?.adminRole;
     },
     updateLoading: (state) => {
       state.rerender = !state.rerender;
