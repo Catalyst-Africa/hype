@@ -28,6 +28,7 @@ const initialState = {
     bio: "",
     createdAt: "",
     username: "",
+    isAdmin: "",
   },
 };
 
@@ -45,6 +46,7 @@ const authSlice = createSlice({
       state.user.bio = action.payload.data?.bio;
       state.user.createdAt = action.payload.data?.timeStamp;
       state.user.username = action.payload.data?.username;
+      state.user.isAdmin = action.payload.data?.isAdmin;
     },
     updateLoading: (state) => {
       state.rerender = !state.rerender;
