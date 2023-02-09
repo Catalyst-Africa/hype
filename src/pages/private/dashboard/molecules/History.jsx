@@ -13,10 +13,12 @@ import { useState } from "react";
 const History = () => {
   const user = useSelector((state) => state.auth.user);
   const [hype, setHype] = useState();
+  const [receivedHype, setReceivedHype] = useState();
   useEffect(() => {
     const sentHype = [];
+    const receivedHype = [];
     const getUserSentHype = async () => {
-      // Create a reference to the cities collection
+      // Create a reference to the sentHypes collection
       const q = query(
         collection(db, "sentHypes"),
         where("userId", "==", user?.uid),
@@ -25,10 +27,23 @@ const History = () => {
       // Create a query against the collection.
       const hypeCountDoc = await getDocs(q);
       hypeCountDoc.forEach((doc) => {
+        console.log(doc.data());
         sentHype.push(doc.data());
       });
 
+      // Create a reference to query sentHype collection for whatsapp
+      const qWhatsapp = query(
+        collection(db, "sentHypes"),
+        where("whatsappnumber", "==", user?.phoneNumber),
+      );
+
+      const sentHypeCountDoc = await getDocs(qWhatsapp);
+      sentHypeCountDoc.forEach((doc) => {
+        receivedHype.push(doc.data());
+      });
+
       setHype(sentHype);
+      setReceivedHype(receivedHype);
     };
     getUserSentHype();
   }, []);
@@ -65,7 +80,7 @@ const History = () => {
             <NumberStatsIcon style={{ background: "rgba(238, 174, 10, 0.22)" }}>
               <BiEnvelope color="#FFB328" size={16} />
             </NumberStatsIcon>
-            <FluidTitle>0</FluidTitle>
+            <FluidTitle>{receivedHype?.length || 0}</FluidTitle>
           </NumberStats>
         </HistoryCard>
       </HistoryCardContainer>

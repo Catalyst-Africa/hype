@@ -85,7 +85,6 @@ const SendHype = () => {
     initialData,
     validation,
   );
-
   //Close Hype Sent Successful Modal
   const handleToggleModal = () => {
     setToggleModal(false);

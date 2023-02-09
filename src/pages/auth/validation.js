@@ -5,7 +5,7 @@ export const validation = (formData, key, value) => {
     const error = `The ${key.split(" ")[0]} field is required!`;
     return error;
   } else if (key === "email") {
-    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i.test(value)) {
       error = "Invalid email address!";
       return error;
     }
