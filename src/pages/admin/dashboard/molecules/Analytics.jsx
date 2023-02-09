@@ -147,6 +147,7 @@ const TitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 8px;
+  align-items: center;
 `;
 
 const AnalyticsCard = styled.div`
