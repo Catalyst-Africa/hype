@@ -15,15 +15,11 @@ const SignUpForm = () => {
   const [passwordType, setPasswordType] = useState(true);
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
-  const { pathname } = useLocation();
-
-  console.log(pathname);
 
   const initialData = {
     name: "",
     email: "",
     password: "",
-    // role: pathname === "/admin/signup/" ? "admin" : "user",
   };
 
   const {
@@ -44,13 +40,7 @@ const SignUpForm = () => {
     <>
       <AuthContainer>
         <form onSubmit={(e) => handleSubmit(e)} autoComplete="off">
-          <AuthHeader
-            title={
-              pathname === "/admin/signup/"
-                ? "Admin, Let's get you started "
-                : "Let's get you started"
-            }
-          />
+          <AuthHeader title="Let's get you started" />
           <InputGroup
             type="text"
             id="name"
@@ -101,11 +91,7 @@ const SignUpForm = () => {
             </small>
             <small>
               <strong>Already have an account? </strong>
-              <Link
-                to={pathname === "/admin/signup/" ? "/admin/login" : "/login"}
-              >
-                Sign In here
-              </Link>
+              <Link to="/login">Sign In here</Link>
             </small>
           </div>
         </form>
