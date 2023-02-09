@@ -1,6 +1,6 @@
 import { Route } from "react-router-dom";
 
-import ProtectAdmin from "@/routes/routesManager/ProtectAdmins";
+import ProtectAdmin from "@/routes/routesManager/ProtectAdmin";
 import { AdminLayout } from "@/layouts";
 import { Dashboard } from "../pages/admin";
 import { AddHype } from "../pages/admin/hype/molecules";
