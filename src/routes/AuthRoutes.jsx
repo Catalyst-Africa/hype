@@ -20,8 +20,6 @@ const authRoutes = (
     <Route element={<ProtectAuth />}>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/admin/login" element={<Login />} />
-      <Route path="/admin/signup" element={<SignUp />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
     </Route>
