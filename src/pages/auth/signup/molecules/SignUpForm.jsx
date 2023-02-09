@@ -16,8 +16,6 @@ const SignUpForm = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
 
-  console.log(pathname);
-
   const initialData = {
     name: "",
     email: "",
