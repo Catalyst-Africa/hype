@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import authRoutes from "@/routes/AuthRoutes";
 import publicRoutes from "@/routes/PublicRoutes";
 import privateRoutes from "@/routes/PrivateRoutes";
+import adminRoutes from "@/routes/AdminRoutes";
 
 import { OverlayLoader } from "@/components/ui";
 import { auth } from "@/setup/firebase/firebase";
@@ -14,6 +15,7 @@ import { updateAuth } from "@/setup/redux/slices/app/appSlice";
 import { updateUser } from "@/setup/redux/slices/auth/authSlice";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "./setup/firebase/firebase";
+
 
 const App = () => {
   const dispatch = useDispatch();
@@ -46,6 +48,7 @@ const App = () => {
         {authRoutes}
         {publicRoutes}
         {privateRoutes}
+        {adminRoutes}
       </Routes>
     </>
   );

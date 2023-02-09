@@ -86,7 +86,7 @@ const SendHype = () => {
     validation,
   );
 
-  //Open Hype Sent Successful Modal
+  //Close Hype Sent Successful Modal
   const handleToggleModal = () => {
     setToggleModal(false);
     window.scrollTo({ top: 0, behavior: "smooth" });

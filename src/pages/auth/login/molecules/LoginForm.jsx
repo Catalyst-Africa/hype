@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 import AuthContainer from "@/pages/auth/components/AuthContainer";
@@ -19,6 +19,9 @@ const LoginForm = () => {
     email: "",
     password: "",
   };
+
+  const { pathname } = useLocation();
+
   const {
     formData,
     errors,
@@ -39,7 +42,13 @@ const LoginForm = () => {
     <>
       <AuthContainer>
         <form onSubmit={(e) => handleSubmit(e)} autoComplete="off">
-          <AuthHeader title="Welcome Back!" />
+          <AuthHeader
+            title={
+              pathname === "/admin/login"
+                ? "Welcome Back! Admin"
+                : "Welcome Back!"
+            }
+          />
           <InputGroup
             type="email"
             id="email"
@@ -75,8 +84,12 @@ const LoginForm = () => {
           <Button $fullWidth>{loading ? <Loader /> : "Log In"}</Button>
           <div style={{ textAlign: "center" }}>
             <small>
-              <strong>New to Hype?</strong>
-              <Link to="/signup"> Sign Up here</Link>
+              <strong>New to Hype? </strong>
+              <Link
+                to={pathname === "/admin/login" ? "/admin/signup/" : "/signup/"}
+              >
+                Sign Up here
+              </Link>
             </small>
           </div>
         </form>
