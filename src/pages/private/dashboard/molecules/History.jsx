@@ -70,7 +70,7 @@ const History = () => {
             <NumberStatsIcon style={{ background: "rgba(7, 181, 25, 0.22)" }}>
               <BsCheck color="#07B519" size={16} />
             </NumberStatsIcon>
-            <FluidTitle>{hype?.length}</FluidTitle>
+            <FluidTitle>{hype?.length || 0}</FluidTitle>
           </NumberStats>
         </HistoryCard>
         <HistoryCard>

@@ -62,7 +62,7 @@ const SendHype = () => {
         });
         setHype(x);
       } catch (err) {
-        console.log(err);
+        err;
       }
     };
     getAllHype();
