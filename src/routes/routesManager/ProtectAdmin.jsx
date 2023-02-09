@@ -6,13 +6,11 @@ const ProtectAdmin = () => {
   const isAdmin = useSelector((state) => state.auth.user.isAdmin);
   const loggedIn = useSelector((state) => state.app.loggedIn);
 
-  const userRole = "admin";
-
   if (loggedIn)
     if (!emailVerified) return <Navigate to="/verify-email" />;
     else if (!isAdmin) return <Navigate to="/dashboard" />;
     else return <Outlet />;
-  else return <Navigate to="/admin/login" />;
+  else return <Navigate to="/login" />;
 };
 
 export default ProtectAdmin;
