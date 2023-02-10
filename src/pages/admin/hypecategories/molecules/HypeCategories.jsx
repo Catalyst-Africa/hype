@@ -8,6 +8,10 @@ import Modal from "@/components/ui/Modal";
 import { InputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { SubTitle } from "@/styles/reusable/elements.styled";
+import { validation } from "@/pages/auth/validation";
+import { useDispatch, useSelector } from "react-redux";
+import { addHypeCategories } from "@/setup/redux/slices/app/extraReducers";
+import { OverlayLoader } from "@/components/ui";
 
 const HypeCategoriesList = [
   "ValentineHypes",
@@ -18,6 +22,9 @@ const HypeCategoriesList = [
 ];
 
 const HypeCategories = () => {
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.app.adminLoading);
+  // Logic for pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(HypeCategoriesList.length / itemsPerPage);
@@ -34,6 +41,7 @@ const HypeCategories = () => {
   const [isOpenEditCategory, setIsOpenEditCategory] = useState(false);
   const [isOpenDeleteCategory, setIsOpenDeleteEditCategory] = useState(false);
 
+  // Handlers for opening and closing modals
   const handleAddOpenModal = () => {
     setIsOpenAddCategory(true);
   };
@@ -55,12 +63,24 @@ const HypeCategories = () => {
     setIsOpenDeleteEditCategory(false);
   };
 
-  const initialData = {
-    name: "",
+  // Handler for adding new categories
+  const handleAddCategory = () => {
+    dispatch(addHypeCategories(formData.category));
+    setIsOpenAddCategory(false);
   };
 
-  const { errors, handleBlur, handleChange, checkIsValid, validateOnSubmit } =
-    useFormValidation(initialData);
+  const initialData = {
+    category: "",
+  };
+
+  const {
+    errors,
+    handleBlur,
+    handleChange,
+    checkIsValid,
+    formData,
+    validateOnSubmit,
+  } = useFormValidation(initialData, validation);
 
   return (
     <>
@@ -118,11 +138,14 @@ const HypeCategories = () => {
             onBlur={(e) => handleBlur(e)}
             onChange={(e) => handleChange(e)}
             helperText={errors.category}
+            value={formData.category}
             helperTextType={checkIsValid("category")}
           />
           <br />
           <ButtonUpdateContainer>
-            <Button>Add</Button>
+            <Button type="button" onClick={handleAddCategory}>
+              Add
+            </Button>
           </ButtonUpdateContainer>
         </Modal>
       )}
@@ -160,6 +183,7 @@ const HypeCategories = () => {
           </ButtonUpdateContainer>
         </Modal>
       )}
+      {loading ? <OverlayLoader transparent /> : ""}
     </>
   );
 };
