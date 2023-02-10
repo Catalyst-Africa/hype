@@ -1,31 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { SubTitle } from "@/styles/reusable/elements.styled";
 import { Link } from "react-router-dom";
+import { getCountFromServer, collection } from "firebase/firestore";
+import { db } from "@/setup/firebase/firebase";
 
 const TopStats = () => {
+  const [usersData, setUsersData] = useState({
+    users: "",
+    sentHypes: "",
+    receivedHypes: "",
+    gemsUsed: "",
+  });
+  useEffect(() => {
+    const getAdminData = async () => {
+      const totalUsers = collection(db, "users");
+      const totalSentHype = collection(db, "sentHypes");
+
+      const data = await Promise.all([
+        (await getCountFromServer(totalUsers)).data().count,
+        (await getCountFromServer(totalSentHype)).data().count,
+      ]);
+      setUsersData({
+        users: data[0],
+        sentHypes: data[1],
+        receivedHypes: data[1],
+      });
+      console.log(data);
+    };
+
+    getAdminData();
+  }, []);
+
   const Stats = [
     {
       name: "Users",
-      count: "750k",
+      count: usersData.users,
       link: "/admin/users",
     },
     {
-      name: "Total Hypes",
-      count: "538",
-      link: "/admin/hypes",
-    },
-    {
       name: "Sent Hypes",
-      count: "7500",
+      count: usersData.sentHypes,
       link: "/admin/sent-hypes",
     },
-
+    {
+      name: "Recieved Hypes",
+      count: usersData.receivedHypes,
+    },
     {
       name: "Gems Used",
-      count: "176k",
-      link: "#",
+      count: usersData.gemsUsed,
     },
   ];
   return (
@@ -37,9 +62,9 @@ const TopStats = () => {
                 <StatsCard key={index}>
                   <Link
                     to={item.link}
-                    style={{ cursor: item.link === "#" ? "default" : "pointer" }}
+                    style={{ cursor: !item.link ? "default" : "pointer" }}
                   >
-                    <FluidTitle>{item.count}</FluidTitle>
+                    <FluidTitle>{item.count || 0}</FluidTitle>
                     <SubTitle style={{ color: "8A92A6", fontWeight: "400" }}>
                       {item.name}
                     </SubTitle>

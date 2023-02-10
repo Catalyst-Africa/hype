@@ -1,98 +1,31 @@
 import Modal from "@/components/ui/Modal";
+import { getAllUsers } from "@/setup/redux/slices/app/extraReducers";
 import { Button } from "@/styles/reusable/elements.styled";
 import { FluidTitle, SubTitle } from "@/styles/reusable/elements.styled";
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { AiOutlineUser, AiFillPhone, AiOutlineMail } from "react-icons/ai";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { RiDeleteBin2Line } from "react-icons/ri";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
-const UsersList = [
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-  {
-    name: "Beyond Logic",
-    email: "BeyondLogic@Localhost.com",
-    phone: "12345678910",
-  },
-];
 const Users = () => {
+  const dispatch = useDispatch();
+  const usersList = useSelector((state) => state.app.users);
+
+  useEffect(() => {
+    dispatch(getAllUsers());
+  }, []);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [isOpenDeleteUser, setIsOpenDeleteUser] = useState(false);
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(UsersList.length / itemsPerPage);
+  const totalPages = Math.ceil(usersList.length / itemsPerPage);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentUsersList = UsersList?.slice(startIndex, endIndex);
+  const currentUsersList = usersList?.slice(startIndex, endIndex);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -108,7 +41,7 @@ const Users = () => {
   return (
     <>
       <UserContainer>
-        <FluidTitle>{`Users [${UsersList.length}]`}</FluidTitle>
+        <FluidTitle>{`Users [${usersList.length}]`}</FluidTitle>
         <br />
         {currentUsersList
           ? currentUsersList.sort().map((user, index) => {
@@ -124,7 +57,7 @@ const Users = () => {
                   </InfoContainer>
                   <InfoContainer>
                     <AiFillPhone />
-                    <span>{user.phone}</span>
+                    <span>{user.phone || "No phone number set yet!"}</span>
                   </InfoContainer>
                   <UserCardInner>
                     <RiDeleteBin2Line
