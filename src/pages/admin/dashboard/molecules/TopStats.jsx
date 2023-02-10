@@ -1,25 +1,53 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { SubTitle } from "@/styles/reusable/elements.styled";
+import { getCountFromServer, collection } from "firebase/firestore";
+import { db } from "@/setup/firebase/firebase";
 
 const TopStats = () => {
+  const [usersData, setUsersData] = useState({
+    users: "",
+    sentHypes: "",
+    receivedHypes: "",
+    gemsUsed: "",
+  });
+  useEffect(() => {
+    const getAdminData = async () => {
+      const totalUsers = collection(db, "users");
+      const totalSentHype = collection(db, "sentHypes");
+
+      const data = await Promise.all([
+        (await getCountFromServer(totalUsers)).data().count,
+        (await getCountFromServer(totalSentHype)).data().count,
+      ]);
+      setUsersData({
+        users: data[0],
+        sentHypes: data[1],
+        receivedHypes: data[1],
+      });
+      console.log(data);
+    };
+
+    getAdminData();
+  }, []);
+
   const Stats = [
     {
       name: "Users",
-      count: "750k",
+      count: usersData.users,
     },
     {
       name: "Sent Hypes",
-      count: "7500",
+      count: usersData.sentHypes,
     },
     {
       name: "Recieved Hypes",
-      count: "7500",
+      count: usersData.receivedHypes,
     },
     {
       name: "Gems Used",
-      count: "176k",
+      count: usersData.gemsUsed,
     },
   ];
   return (
@@ -29,7 +57,7 @@ const TopStats = () => {
           ? Stats.map((item, index) => {
               return (
                 <StatsCard key={index}>
-                  <FluidTitle>{item.count}</FluidTitle>
+                  <FluidTitle>{item.count || 0}</FluidTitle>
                   <SubTitle style={{ color: "8A92A6", fontWeight: "400" }}>
                     {item.name}
                   </SubTitle>
