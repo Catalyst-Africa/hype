@@ -2,24 +2,30 @@ import React from "react";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { SubTitle } from "@/styles/reusable/elements.styled";
+import { Link } from "react-router-dom";
 
 const TopStats = () => {
   const Stats = [
     {
       name: "Users",
       count: "750k",
+      link: "/admin/users",
+    },
+    {
+      name: "Total Hypes",
+      count: "538",
+      link: "/admin/hypes",
     },
     {
       name: "Sent Hypes",
       count: "7500",
+      link: "/admin/sent-hypes",
     },
-    {
-      name: "Recieved Hypes",
-      count: "7500",
-    },
+
     {
       name: "Gems Used",
       count: "176k",
+      link: "#",
     },
   ];
   return (
@@ -29,10 +35,15 @@ const TopStats = () => {
           ? Stats.map((item, index) => {
               return (
                 <StatsCard key={index}>
-                  <FluidTitle>{item.count}</FluidTitle>
-                  <SubTitle style={{ color: "8A92A6", fontWeight: "400" }}>
-                    {item.name}
-                  </SubTitle>
+                  <Link
+                    to={item.link}
+                    style={{ cursor: item.link === "#" ? "default" : "pointer" }}
+                  >
+                    <FluidTitle>{item.count}</FluidTitle>
+                    <SubTitle style={{ color: "8A92A6", fontWeight: "400" }}>
+                      {item.name}
+                    </SubTitle>
+                  </Link>
                 </StatsCard>
               );
             })

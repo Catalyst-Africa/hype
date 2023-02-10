@@ -7,6 +7,7 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/styles/reusable/elements.styled";
+import { BsWhatsapp } from "react-icons/bs";
 
 const hypesList = [
   {
@@ -199,7 +200,7 @@ const hypesList = [
   },
 ];
 
-const ViewHypes = () => {
+const SentHypes = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isOpenDeleteHype, setIsOpenDeleteHype] = useState(false);
@@ -236,10 +237,19 @@ const ViewHypes = () => {
     setIsOpenDeleteHype(false);
   };
 
+  const colors = [
+    "#FFDFDF",
+    "#F2D6F9",
+    "#D2D1E0",
+    "#FCE6BE",
+    "#D2D1E0",
+    "#FCCFCF",
+  ];
+
   return (
     <>
-      <ViewHypesContainer>
-        <FluidTitle>{`Hypes [${hypesList.length}]`}</FluidTitle>
+      <SentHypesContainer>
+        <FluidTitle>{`Sent Hypes [${hypesList.length}]`}</FluidTitle>
         <SelectHypeCategoryContainer>
           <SelectHypeCategory
             onChange={handleCategoryChange}
@@ -260,22 +270,34 @@ const ViewHypes = () => {
         <ViewHypesInnerContainer>
           {currentHypes
             ? currentHypes.map((hype, index) => {
+                const randomColor =
+                  colors[Math.floor(Math.random() * colors.length)];
                 return (
-                  <HypeCard key={index}>
+                  <HypeCard
+                    key={index}
+                    style={{ backgroundColor: randomColor }}
+                  >
                     <p>{hype.hype}</p>
-                    <InfoContainer>
-                      <p>{hype.category}</p>
-                      <EditContainer>
-                        <Link to={`/admin/edit-hype/${hype.id}`}>
-                          <FiEdit />
+                    <br />
+                    <InfoCard1 style={{ color: "#868686" }}>
+                      <span>
+                        Sent to: <b>BeyondLogic</b>
+                      </span>
+                      <span>08.14.2023 </span>
+                      <span>{hype.category}</span>
+                    </InfoCard1>
+                    <br />
+                    <InfoCard2>
+                      <InfoSocial>
+                        <BsWhatsapp color="#4BBB16" />
+                        <p style={{ color: "#868686" }}>Whatsapp</p>
+                      </InfoSocial>
+                      <ViewHypeContainer>
+                        <Link to="#">
+                          <em>View Hype</em>
                         </Link>
-
-                        <RiDeleteBin2Line
-                          color="#ff0000"
-                          onClick={handleDeleteOpenModal}
-                        />
-                      </EditContainer>
-                    </InfoContainer>
+                      </ViewHypeContainer>
+                    </InfoCard2>
                   </HypeCard>
                 );
               })
@@ -298,7 +320,7 @@ const ViewHypes = () => {
             />
           )}
         </HypesNavigation>
-      </ViewHypesContainer>
+      </SentHypesContainer>
 
       {isOpenDeleteHype && (
         <Modal handleClose={handleDeleteCloseModal}>
@@ -322,9 +344,9 @@ const ViewHypes = () => {
   );
 };
 
-export default ViewHypes;
+export default SentHypes;
 
-const ViewHypesContainer = styled.div`
+const SentHypesContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -365,15 +387,23 @@ const HypeCard = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px 10px;
-  background: #fff;
   border-radius: 4px;
   color: #000;
-  gap: 20px;
   box-shadow: 0px 10px 13px rgba(17, 38, 146, 0.05);
   border-radius: 8px;
 `;
 
-const InfoContainer = styled.div`
+const InfoCard1 = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: #009891;
+  gap: 4px;
+  svg {
+    cursor: pointer;
+  }
+`;
+
+const InfoCard2 = styled.div`
   display: flex;
   color: #009891;
   justify-content: space-between;
@@ -411,12 +441,23 @@ const SelectHypeCategoryContainer = styled.div`
   align-items: center;
 `;
 
-const EditContainer = styled.div`
+const ViewHypeContainer = styled.div`
   display: flex;
   gap: 15px;
+  color: #393939;
 `;
 
 const ButtonDeleteContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+`;
+
+const InfoSocial = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+
+  svg {
+    cursor: default;
+  }
 `;
