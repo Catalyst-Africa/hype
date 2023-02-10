@@ -1,27 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
-import {
-  TextAreaInputGroup,
-  SelectInputGroup,
-} from "@/components/ui";
+import { TextAreaInputGroup, SelectInputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 import { useSelector } from "react-redux";
 import { Button } from "@/styles/reusable/elements.styled";
 import sendhypebg from "@/assets/sendhypebg.svg";
-import { AiFillCloseCircle } from "react-icons/ai";
 import { Loader } from "@/styles/reusable/elements.styled";
-import hypesent from "../../../../assets/hypesent.svg";
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-const AddHype = () => {
+const EditHype = () => {
   const user = useSelector((state) => state.auth.user);
   const firstname = user?.displayName?.split(" ")[0];
-
-  //Success Hype Modal
-  const [toggleModal, setToggleModal] = useState(false);
 
   //Loading for when adding hypes
   const [loadingAdd, setLoadingAdd] = useState(false);
@@ -37,12 +29,6 @@ const AddHype = () => {
     initialData,
     validation,
   );
-
-  //Close Hype Add Successful Modal
-  const handleToggleModal = () => {
-    setToggleModal(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   //Handle Hypes Changes
   const handleInitialDataChange = (event) => {
@@ -62,19 +48,16 @@ const AddHype = () => {
     e.preventDefault();
     setLoadingAdd(true);
     // set the submitted data here. example console.log("the submited data", initialData);
-    setInitialData({
-      hypeCategory: "",
-      hype: "",
-    });
-    setToggleModal(true);
     setLoadingAdd(false);
   };
 
+  const { id } = useParams();
+
   return (
     <>
-      <AddHypeContainer style={{ opacity: toggleModal ? "0.1" : "" }}>
-        <FluidTitle>Add a Hype!</FluidTitle>
-        <AddHypeInnerContainer>
+      <EditHypeContainer>
+        <FluidTitle>Edit Hype</FluidTitle>
+        <EditHypeInnerContainer>
           <HypeForm>
             <Form onSubmit={handleAddHypeSubmit}>
               <FormGroupContainer>
@@ -145,7 +128,7 @@ const AddHype = () => {
                     ""
                   )}
                   <span>
-                    <span>Add</span>
+                    <span>Update</span>
                     <span style={{ fontWeight: "100" }}> hype!</span>
                   </span>
                 </span>
@@ -160,36 +143,15 @@ const AddHype = () => {
               height="656px"
             />
           </HypeImage>
-        </AddHypeInnerContainer>
-      </AddHypeContainer>
-      {toggleModal ? (
-        <SentHypeModalContainer>
-          <Link to="/admin/hypes">
-            <AiFillCloseCircle
-              color="#FFB328"
-              cursor="pointer"
-              onClick={handleToggleModal}
-              size="50px"
-            />
-          </Link>
-
-          <Modal>
-            <img src={hypesent} alt="hypesent" width="80%" />
-            <br />
-            <br />
-            <FluidTitle>hype added</FluidTitle>
-          </Modal>
-        </SentHypeModalContainer>
-      ) : (
-        ""
-      )}
+        </EditHypeInnerContainer>
+      </EditHypeContainer>
     </>
   );
 };
 
-export default AddHype;
+export default EditHype;
 
-const AddHypeContainer = styled.div`
+const EditHypeContainer = styled.div`
   position: relative;
   background: #fff;
   box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.05);
@@ -201,7 +163,7 @@ const AddHypeContainer = styled.div`
   }
 `;
 
-const AddHypeInnerContainer = styled.div`
+const EditHypeInnerContainer = styled.div`
   display: flex;
   justify-content: center;
   gap: 54px;
@@ -242,38 +204,4 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
-`;
-
-const SentHypeModalContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  z-index: 1000;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  margin: auto;
-
-  height: 100%;
-  background: #f3f3f3;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  text-align: center;
-  border-radius: 10px;
-  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12);
-
-  //use svg or a tag depending on if the react icon is nested inside the Link tag
-  a {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
-`;
-
-const Modal = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 `;
