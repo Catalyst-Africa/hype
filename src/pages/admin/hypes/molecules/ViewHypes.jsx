@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FiEdit } from "react-icons/fi";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-import { Button } from "@/styles/reusable/elements.styled";
+import { RiDeleteBin2Line } from "react-icons/ri";
 
 const hypesList = [
   {
@@ -218,7 +218,10 @@ const ViewHypes = () => {
                     <p>{hype.hype}</p>
                     <InfoContainer>
                       <p>{hype.category}</p>
-                      <FiEdit />
+                      <EditContainer>
+                        <FiEdit />
+                        <RiDeleteBin2Line color="#ff0000"/>
+                      </EditContainer>
                     </InfoContainer>
                   </HypeCard>
                 );
@@ -323,12 +326,7 @@ const SelectHypeCategoryContainer = styled.div`
   align-items: center;
 `;
 
-const HypeNav = styled.div`
+const EditContainer = styled.div`
   display: flex;
-  gap: 30px;
-
-  svg {
-    cursor: pointer;
-    color: #ffb328;
-  }
+  gap: 15px;
 `;
