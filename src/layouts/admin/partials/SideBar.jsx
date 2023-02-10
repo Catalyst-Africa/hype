@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Logo } from "@/components/ui";
 import { AiFillPieChart } from "react-icons/ai";
 import { BiGroup, BiCategoryAlt, BiMessageAltDetail } from "react-icons/bi";
+import { FiUsers } from "react-icons/fi";
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { SubTitle } from "@/styles/reusable/elements.styled";
@@ -40,6 +41,11 @@ const SideBar = () => {
         <li>
           <NavLink to="/admin/hypes">
             <BiMessageAltDetail /> Hypes
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/admin/users">
+            <FiUsers /> Users
           </NavLink>
         </li>
         <li>

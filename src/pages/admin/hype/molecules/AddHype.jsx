@@ -191,9 +191,9 @@ export default AddHype;
 
 const AddHypeContainer = styled.div`
   position: relative;
-  background: rgba(255, 255, 255, 0.2);
+  background: #fff;
   box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.05);
-  padding: 48px 44px;
+  padding: 38px 44px;
 
   ${({ theme }) => theme.breakpoints.down("lg")} {
     padding: 18px 20px;
@@ -230,15 +230,6 @@ const FormGroupContainer = styled.div`
   width: 100%;
 
   ${({ theme }) => theme.breakpoints.down("md")} {
-    flex-direction: column;
-  }
-`;
-
-const FormShareGroupContainer = styled.div`
-  display: flex;
-  gap: 27px;
-
-  ${({ theme }) => theme.breakpoints.down("xl")} {
     flex-direction: column;
   }
 `;
