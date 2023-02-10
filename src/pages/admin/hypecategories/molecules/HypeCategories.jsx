@@ -78,6 +78,18 @@ const HypeCategoriesContainer = styled.div`
   gap: 10px;
   padding-top: 18px;
   padding-bottom: 150px;
+  p {
+    max-width: 700px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  ${({ theme }) => theme.breakpoints.down("md")} {
+    p {
+      max-width: 200px;
+    }
+  }
 `;
 
 const ButtonContainer = styled.div`

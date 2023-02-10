@@ -1,6 +1,6 @@
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import React, { useState } from "react";
-import { AiFillPhone, AiOutlineMail } from "react-icons/ai";
+import { AiOutlineUser, AiFillPhone, AiOutlineMail } from "react-icons/ai";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import styled from "styled-components";
@@ -101,10 +101,13 @@ const Users = () => {
         <FluidTitle>Users</FluidTitle>
         <br />
         {currentUsersList
-          ? currentUsersList.map((user, index) => {
+          ? currentUsersList.sort().map((user, index) => {
               return (
                 <UserCard key={index}>
-                  <span>{user.name}</span>
+                  <InfoContainer>
+                    <AiOutlineUser />
+                    <span>{user.name}</span>
+                  </InfoContainer>
                   <InfoContainer>
                     <AiOutlineMail />
                     <span>{user.email}</span>
@@ -152,6 +155,13 @@ const UserContainer = styled.div`
   padding-top: 18px;
   padding-bottom: 150px;
   position: relative;
+
+  span {
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 const UserCard = styled.div`
@@ -160,7 +170,7 @@ const UserCard = styled.div`
   background-color: #fff;
   padding: 10px 10px;
 
-  ${({ theme }) => theme.breakpoints.down("md")} {
+  ${({ theme }) => theme.breakpoints.down("touch")} {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
