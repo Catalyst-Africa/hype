@@ -4,157 +4,194 @@ import styled from "styled-components";
 import { FiEdit } from "react-icons/fi";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { RiDeleteBin2Line } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 const hypesList = [
   {
+    id: 1,
     category: "ValentineHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
+    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me On this Valentine's Day, I just wanted to let you know how much you mean to me On this Valentine's Day, I just wanted to let you know how much you mean to me",
   },
   {
+    id: 2,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 3,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
 
   {
+    id: 4,
     category: "JobsHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 5,
     category: "ValentineHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 6,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 7,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
 
   {
+    id: 8,
     category: "JobsHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 9,
     category: "JobsHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 10,
     category: "ValentineHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 11,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 12,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
 
   {
+    id: 13,
     category: "JobsHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 14,
     category: "ValentineHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 15,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 16,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
 
   {
+    id: 17,
     category: "JobsHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 18,
     category: "JobsHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 19,
     category: "ValentineHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 20,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 21,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
 
   {
+    id: 22,
     category: "JobsHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 23,
     category: "ValentineHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 24,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 25,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
 
   {
+    id: 26,
     category: "JobsHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 27,
     category: "JobsHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 28,
     category: "ValentineHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 29,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 30,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
 
   {
+    id: 31,
     category: "JobsHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 32,
     category: "ValentineHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 33,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 34,
     category: "LoveHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
 
   {
+    id: 35,
     category: "JobsHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
   {
+    id: 36,
     category: "JobsHypes",
     hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
   },
@@ -219,7 +256,10 @@ const ViewHypes = () => {
                     <InfoContainer>
                       <p>{hype.category}</p>
                       <EditContainer>
-                        <FiEdit />
+                        <Link to={`/admin/edit-hype/${hype.id}`}>
+                          <FiEdit />
+                        </Link>
+
                         <RiDeleteBin2Line color="#ff0000" />
                       </EditContainer>
                     </InfoContainer>
@@ -258,6 +298,15 @@ const ViewHypesContainer = styled.div`
   gap: 30px;
   padding-top: 18px;
   padding-bottom: 150px;
+
+  p {
+    max-width: 700px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
 
 const ViewHypesInnerContainer = styled.div`
