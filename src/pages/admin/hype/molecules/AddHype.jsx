@@ -196,7 +196,7 @@ const AddHypeContainer = styled.div`
   padding: 38px 44px;
 
   ${({ theme }) => theme.breakpoints.down("lg")} {
-    padding: 18px 20px;
+    padding: 38px 20px;
     margin-bottom: 100px;
   }
 `;
