@@ -25,7 +25,7 @@ const appSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAllUsers.pending, (state) => {
-        state.loading = true;
+        // state.loading = true;
       })
       .addCase(getAllUsers.fulfilled, (state, { payload }) => {
         state.loading = false;
