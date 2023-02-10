@@ -39,6 +39,9 @@ const HypeCategories = () => {
   };
   const handleAddCloseModal = () => {
     setIsOpenAddCategory(false);
+    setInitialData({
+      name: "",
+    });
   };
 
   const handleEditOpenModal = () => {
@@ -46,6 +49,9 @@ const HypeCategories = () => {
   };
   const handleEditCloseModal = () => {
     setIsOpenEditCategory(false);
+    setInitialData({
+      name: "",
+    });
   };
 
   const handleDeleteOpenModal = () => {
@@ -55,8 +61,24 @@ const HypeCategories = () => {
     setIsOpenDeleteEditCategory(false);
   };
 
-  const initialData = {
+  const [initialData, setInitialData] = useState({
     name: "",
+  });
+
+  const handleCategoryChange = (event) => {
+    const newValue = event.target.value;
+    if (!newValue.trim().length) {
+      setInitialData({
+        name: "",
+      });
+      return;
+    }
+    if (!newValue.match(/^[a-zA-Z]+$/)) {
+      return;
+    }
+    setInitialData({
+      name: newValue.trim(),
+    });
   };
 
   const { errors, handleBlur, handleChange, checkIsValid, validateOnSubmit } =
@@ -65,7 +87,7 @@ const HypeCategories = () => {
   return (
     <>
       <HypeCategoriesContainer>
-        <FluidTitle>Categories</FluidTitle>
+        <FluidTitle>{`Categories [${HypeCategoriesList.length}]`}</FluidTitle>
         <ButtonContainer>
           <Button onClick={handleAddOpenModal}>Add a Category</Button>
         </ButtonContainer>
@@ -115,8 +137,9 @@ const HypeCategories = () => {
             type="text"
             id="category"
             placeholder="Enter Category Name"
+            value={initialData.name}
             onBlur={(e) => handleBlur(e)}
-            onChange={(e) => handleChange(e)}
+            onChange={handleCategoryChange}
             helperText={errors.category}
             helperTextType={checkIsValid("category")}
           />
@@ -135,9 +158,9 @@ const HypeCategories = () => {
             type="text"
             id="category"
             placeholder="Edit Category"
-            defaultValue="ValentineHypes"
+            value={initialData.name}
             onBlur={(e) => handleBlur(e)}
-            onChange={(e) => handleChange(e)}
+            onChange={handleCategoryChange}
             helperText={errors.category}
             helperTextType={checkIsValid("category")}
           />

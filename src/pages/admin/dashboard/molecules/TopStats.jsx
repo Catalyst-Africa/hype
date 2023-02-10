@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { SubTitle } from "@/styles/reusable/elements.styled";
+import { Link } from "react-router-dom";
 import { getCountFromServer, collection } from "firebase/firestore";
 import { db } from "@/setup/firebase/firebase";
 
@@ -36,10 +37,12 @@ const TopStats = () => {
     {
       name: "Users",
       count: usersData.users,
+      link: "/admin/users",
     },
     {
       name: "Sent Hypes",
       count: usersData.sentHypes,
+      link: "/admin/sent-hypes",
     },
     {
       name: "Recieved Hypes",
@@ -57,10 +60,15 @@ const TopStats = () => {
           ? Stats.map((item, index) => {
               return (
                 <StatsCard key={index}>
-                  <FluidTitle>{item.count || 0}</FluidTitle>
-                  <SubTitle style={{ color: "8A92A6", fontWeight: "400" }}>
-                    {item.name}
-                  </SubTitle>
+                  <Link
+                    to={item.link}
+                    style={{ cursor: !item.link ? "default" : "pointer" }}
+                  >
+                    <FluidTitle>{item.count || 0}</FluidTitle>
+                    <SubTitle style={{ color: "8A92A6", fontWeight: "400" }}>
+                      {item.name}
+                    </SubTitle>
+                  </Link>
                 </StatsCard>
               );
             })
