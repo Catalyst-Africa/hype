@@ -95,7 +95,7 @@ const Analytics = () => {
         : labelsDays,
     datasets: [
       {
-        label: "Sent Hypes",
+        label: "Total Hypes",
         data: [
           7500, 4000, 8000, 8000, 6500, 7800, 5000, 5820, 8900, 7100, 6100,
           5000,
@@ -103,7 +103,7 @@ const Analytics = () => {
         backgroundColor: "#36BFFA",
       },
       {
-        label: "Recieved Hypes",
+        label: "Sent Hypes",
         data: [
           7000, 7500, 7000, 7000, 5400, 4000, 4820, 7800, 5000, 7000, 6000,
           4000,

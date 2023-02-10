@@ -41,7 +41,7 @@ const Users = () => {
   return (
     <>
       <UserContainer>
-        <FluidTitle>Users</FluidTitle>
+        <FluidTitle>{`Users [${usersList.length}]`}</FluidTitle>
         <br />
         {currentUsersList
           ? currentUsersList.sort().map((user, index) => {

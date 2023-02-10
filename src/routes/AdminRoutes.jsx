@@ -10,6 +10,7 @@ const adminRoutes = (
     <Route element={<AdminLayout />}>
       <Route path="/admin/dashboard" element={<Dashboard />} />
       <Route path="/admin/hypes" element={<ViewHypes />} />
+      <Route path="/admin/sent-hypes" element={<ViewHypes />} />
       <Route path="/admin/users" element={<Users />} />
       <Route path="/admin/categories" element={<HypeCategories />} />
       <Route path="/admin/add-hype" element={<AddHype />} />
