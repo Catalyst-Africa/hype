@@ -62,7 +62,6 @@ const authSlice = createSlice({
         toast.success("Successfully signed in!");
       })
 
-      //TODO: Find a way to return the error message
       .addCase(googleAuth.rejected, (state, action) => {
         state.loading = false;
         toast.error(extractErrorMessage(action.error.message));
