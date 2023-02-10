@@ -1,4 +1,6 @@
-import { FluidTitle } from "@/styles/reusable/elements.styled";
+import Modal from "@/components/ui/Modal";
+import { Button } from "@/styles/reusable/elements.styled";
+import { FluidTitle, SubTitle } from "@/styles/reusable/elements.styled";
 import React, { useState } from "react";
 import { AiOutlineUser, AiFillPhone, AiOutlineMail } from "react-icons/ai";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -84,6 +86,7 @@ const UsersList = [
 ];
 const Users = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isOpenDeleteUser, setIsOpenDeleteUser] = useState(false);
   const itemsPerPage = 10;
   const totalPages = Math.ceil(UsersList.length / itemsPerPage);
 
@@ -93,6 +96,13 @@ const Users = () => {
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
+  };
+
+  const handleDeleteShowModal = () => {
+    setIsOpenDeleteUser(true);
+  };
+  const handleDeleteCloseModal = () => {
+    setIsOpenDeleteUser(false);
   };
 
   return (
@@ -117,7 +127,10 @@ const Users = () => {
                     <span>{user.phone}</span>
                   </InfoContainer>
                   <UserCardInner>
-                    <RiDeleteBin2Line color="#ff0000" />
+                    <RiDeleteBin2Line
+                      color="#ff0000"
+                      onClick={handleDeleteShowModal}
+                    />
                   </UserCardInner>
                 </UserCard>
               );
@@ -142,6 +155,18 @@ const Users = () => {
           )}
         </UsersNavigation>
       </UserContainer>
+      {isOpenDeleteUser && (
+        <Modal handleClose={handleDeleteCloseModal}>
+          <FluidTitle>Delete User</FluidTitle>
+          <br />
+          <SubTitle>Username</SubTitle>
+          <p>Are you sure you want to delete this User?</p>
+          <br />
+          <ButtonDeleteContainer>
+            <Button style={{ backgroundColor: "#ff0000" }}>Delete</Button>
+          </ButtonDeleteContainer>
+        </Modal>
+      )}
     </>
   );
 };
@@ -222,4 +247,9 @@ const UsersNavigation = styled.div`
   ${({ theme }) => theme.breakpoints.down("md")} {
     justify-content: flex-start;
   }
+`;
+
+const ButtonDeleteContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `;

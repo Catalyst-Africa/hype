@@ -4,6 +4,10 @@ import styled from "styled-components";
 import { FiEdit } from "react-icons/fi";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { Button } from "@/styles/reusable/elements.styled";
+import Modal from "@/components/ui/Modal";
+import { InputGroup } from "@/components/ui";
+import { useFormValidation } from "@/hooks";
+import { SubTitle } from "@/styles/reusable/elements.styled";
 
 const HypeCategoriesList = [
   "ValentineHypes",
@@ -25,12 +29,45 @@ const HypeCategories = () => {
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
+
+  const [isOpenAddCategory, setIsOpenAddCategory] = useState(false);
+  const [isOpenEditCategory, setIsOpenEditCategory] = useState(false);
+  const [isOpenDeleteCategory, setIsOpenDeleteEditCategory] = useState(false);
+
+  const handleAddOpenModal = () => {
+    setIsOpenAddCategory(true);
+  };
+  const handleAddCloseModal = () => {
+    setIsOpenAddCategory(false);
+  };
+
+  const handleEditOpenModal = () => {
+    setIsOpenEditCategory(true);
+  };
+  const handleEditCloseModal = () => {
+    setIsOpenEditCategory(false);
+  };
+
+  const handleDeleteOpenModal = () => {
+    setIsOpenDeleteEditCategory(true);
+  };
+  const handleDeleteCloseModal = () => {
+    setIsOpenDeleteEditCategory(false);
+  };
+
+  const initialData = {
+    name: "",
+  };
+
+  const { errors, handleBlur, handleChange, checkIsValid, validateOnSubmit } =
+    useFormValidation(initialData);
+
   return (
     <>
       <HypeCategoriesContainer>
         <FluidTitle>Categories</FluidTitle>
         <ButtonContainer>
-          <Button>Add a Category</Button>
+          <Button onClick={handleAddOpenModal}>Add a Category</Button>
         </ButtonContainer>
         <br />
         {currentCategoriesList
@@ -39,8 +76,11 @@ const HypeCategories = () => {
                 <CategoryCard key={key}>
                   <p>{item}</p>
                   <CardInner>
-                    <FiEdit color="#FFB328" />
-                    <RiDeleteBin2Line color="#ff0000" />
+                    <FiEdit color="#FFB328" onClick={handleEditOpenModal} />
+                    <RiDeleteBin2Line
+                      color="#ff0000"
+                      onClick={handleDeleteOpenModal}
+                    />
                   </CardInner>
                 </CategoryCard>
               );
@@ -66,6 +106,60 @@ const HypeCategories = () => {
           )}
         </CategoriesNavigation>
       </HypeCategoriesContainer>
+
+      {isOpenAddCategory && (
+        <Modal handleClose={handleAddCloseModal}>
+          <FluidTitle>Add Category</FluidTitle>
+          <br />
+          <InputGroup
+            type="text"
+            id="category"
+            placeholder="Enter Category Name"
+            onBlur={(e) => handleBlur(e)}
+            onChange={(e) => handleChange(e)}
+            helperText={errors.category}
+            helperTextType={checkIsValid("category")}
+          />
+          <br />
+          <ButtonUpdateContainer>
+            <Button>Add</Button>
+          </ButtonUpdateContainer>
+        </Modal>
+      )}
+
+      {isOpenEditCategory && (
+        <Modal handleClose={handleEditCloseModal}>
+          <FluidTitle>Edit Category</FluidTitle>
+          <br />
+          <InputGroup
+            type="text"
+            id="category"
+            placeholder="Edit Category"
+            defaultValue="ValentineHypes"
+            onBlur={(e) => handleBlur(e)}
+            onChange={(e) => handleChange(e)}
+            helperText={errors.category}
+            helperTextType={checkIsValid("category")}
+          />
+          <br />
+          <ButtonUpdateContainer>
+            <Button>Update</Button>
+          </ButtonUpdateContainer>
+        </Modal>
+      )}
+
+      {isOpenDeleteCategory && (
+        <Modal handleClose={handleDeleteCloseModal}>
+          <FluidTitle>Delete Category</FluidTitle>
+          <br />
+          <SubTitle>ValentineHypes</SubTitle>
+          <p>Are you sure you want to delete this category?</p>
+          <br />
+          <ButtonUpdateContainer>
+            <Button style={{ backgroundColor: "#ff0000" }}>Delete</Button>
+          </ButtonUpdateContainer>
+        </Modal>
+      )}
     </>
   );
 };
@@ -136,4 +230,9 @@ const CategoriesNavigation = styled.div`
   ${({ theme }) => theme.breakpoints.down("md")} {
     justify-content: flex-start;
   }
+`;
+
+const ButtonUpdateContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `;

@@ -1,10 +1,12 @@
-import { FluidTitle } from "@/styles/reusable/elements.styled";
+import { FluidTitle, SubTitle } from "@/styles/reusable/elements.styled";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { FiEdit } from "react-icons/fi";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import Modal from "@/components/ui/Modal";
+import { Button } from "@/styles/reusable/elements.styled";
 
 const hypesList = [
   {
@@ -200,6 +202,7 @@ const hypesList = [
 const ViewHypes = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [isOpenDeleteHype, setIsOpenDeleteHype] = useState(false);
 
   const filteredHypes =
     selectedCategory === "All"
@@ -225,6 +228,13 @@ const ViewHypes = () => {
   const uniqueHypesCategories = [
     ...new Set(hypesList.map((item) => item.category)),
   ];
+
+  const handleDeleteOpenModal = () => {
+    setIsOpenDeleteHype(true);
+  };
+  const handleDeleteCloseModal = () => {
+    setIsOpenDeleteHype(false);
+  };
 
   return (
     <>
@@ -260,7 +270,10 @@ const ViewHypes = () => {
                           <FiEdit />
                         </Link>
 
-                        <RiDeleteBin2Line color="#ff0000" />
+                        <RiDeleteBin2Line
+                          color="#ff0000"
+                          onClick={handleDeleteOpenModal}
+                        />
                       </EditContainer>
                     </InfoContainer>
                   </HypeCard>
@@ -286,6 +299,25 @@ const ViewHypes = () => {
           )}
         </HypesNavigation>
       </ViewHypesContainer>
+
+      {isOpenDeleteHype && (
+        <Modal handleClose={handleDeleteCloseModal}>
+          <FluidTitle>Delete Hype</FluidTitle>
+          <br />
+          <p>
+            On this Valentine's Day, I just wanted to let you know how much you
+            mean to me On this Valentine's Day, I just wanted to let you know
+            how much you mean to me On this Valentine's Day, I just wanted to
+            let you know how much you mean to me
+          </p>
+          <br />
+          <p>Are you sure you want to delete this hype?</p>
+          <br />
+          <ButtonDeleteContainer>
+            <Button style={{ backgroundColor: "#ff0000" }}>Delete</Button>
+          </ButtonDeleteContainer>
+        </Modal>
+      )}
     </>
   );
 };
@@ -382,4 +414,9 @@ const SelectHypeCategoryContainer = styled.div`
 const EditContainer = styled.div`
   display: flex;
   gap: 15px;
+`;
+
+const ButtonDeleteContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `;
