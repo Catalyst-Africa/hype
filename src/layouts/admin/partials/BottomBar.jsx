@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { AiFillPieChart } from "react-icons/ai";
-import { BiGroup, BiCategoryAlt, BiMessageAltDetail } from "react-icons/bi";
+import { BiCategoryAlt, BiMessageAltDetail } from "react-icons/bi";
+import { FiUsers } from "react-icons/fi";
 
 const BottomBar = () => {
   return (
@@ -15,6 +16,11 @@ const BottomBar = () => {
         <li>
           <NavLink to="/admin/hypes">
             <BiMessageAltDetail />
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/admin/users">
+            <FiUsers />
           </NavLink>
         </li>
         <li>
