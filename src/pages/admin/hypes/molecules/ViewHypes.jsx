@@ -220,7 +220,7 @@ const ViewHypes = () => {
                       <p>{hype.category}</p>
                       <EditContainer>
                         <FiEdit />
-                        <RiDeleteBin2Line color="#ff0000"/>
+                        <RiDeleteBin2Line color="#ff0000" />
                       </EditContainer>
                     </InfoContainer>
                   </HypeCard>
@@ -310,6 +310,10 @@ const HypesNavigation = styled.div`
 
   svg {
     cursor: pointer;
+  }
+
+  ${({ theme }) => theme.breakpoints.down("md")} {
+    justify-content: flex-start;
   }
 `;
 
