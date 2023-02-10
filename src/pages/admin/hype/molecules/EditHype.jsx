@@ -15,9 +15,6 @@ const EditHype = () => {
   const user = useSelector((state) => state.auth.user);
   const firstname = user?.displayName?.split(" ")[0];
 
-  //Success Hype Modal
-  const [toggleModal, setToggleModal] = useState(false);
-
   //Loading for when adding hypes
   const [loadingAdd, setLoadingAdd] = useState(false);
 
@@ -32,11 +29,6 @@ const EditHype = () => {
     initialData,
     validation,
   );
-
-  //Close Hype Add Successful Modal
-  const handleToggleModal = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   //Handle Hypes Changes
   const handleInitialDataChange = (event) => {
@@ -56,11 +48,6 @@ const EditHype = () => {
     e.preventDefault();
     setLoadingAdd(true);
     // set the submitted data here. example console.log("the submited data", initialData);
-    setInitialData({
-      hypeCategory: "",
-      hype: "",
-    });
-    setToggleModal(true);
     setLoadingAdd(false);
   };
 
@@ -68,7 +55,7 @@ const EditHype = () => {
 
   return (
     <>
-      <EditHypeContainer style={{ opacity: toggleModal ? "0.1" : "" }}>
+      <EditHypeContainer>
         <FluidTitle>Edit Hype</FluidTitle>
         <EditHypeInnerContainer>
           <HypeForm>

@@ -164,7 +164,7 @@ const AddHype = () => {
       </AddHypeContainer>
       {toggleModal ? (
         <SentHypeModalContainer>
-          <Link to="/admin/dashboard">
+          <Link to="/admin/hypes">
             <AiFillCloseCircle
               color="#FFB328"
               cursor="pointer"
