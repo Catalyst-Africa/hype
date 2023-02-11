@@ -5,16 +5,24 @@ import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { TextAreaInputGroup, SelectInputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addHype } from "@/setup/redux/slices/app/extraReducers";
 import { Button } from "@/styles/reusable/elements.styled";
 import sendhypebg from "@/assets/sendhypebg.svg";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Loader } from "@/styles/reusable/elements.styled";
 import hypesent from "../../../../assets/hypesent.svg";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { getAllHypeCategories } from "@/setup/redux/slices/app/extraReducers";
 
 const AddHype = () => {
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllHypeCategories());
+  }, []);
   const hypeCategories = useSelector((state) => state.app.hypeCategories);
   const firstname = user?.displayName?.split(" ")[0];
 
@@ -54,11 +62,16 @@ const AddHype = () => {
     });
   };
 
-  // console.log(initialData);
   //Handle Add Hype Submit
   const handleAddHypeSubmit = async (e) => {
     e.preventDefault();
     setLoadingAdd(true);
+
+    // Dispatch AddHype action
+    dispatch(
+      addHype({ category: initialData.hypeCategory, hype: initialData.hype }),
+    );
+
     // set the submitted data here. example console.log("the submited data", initialData);
     setInitialData({
       hypeCategory: "",
@@ -95,7 +108,7 @@ const AddHype = () => {
                   >
                     <option value="select"> Select hype category</option>
                     {hypeCategories?.map((category) => (
-                      <option value={category}>
+                      <option key={category} value={category}>
                         {category.split(/(?=[A-Z])/).join(" ")}
                       </option>
                     ))}
