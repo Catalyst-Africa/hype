@@ -4,6 +4,8 @@ import {
   addHypeCategories,
   getAllHypeCategories,
   getAllUsers,
+  addHype,
+  getAllHype,
 } from "./extraReducers";
 import { toast } from "react-hot-toast";
 import { extractErrorMessage } from "@/helpers/helpers";
@@ -15,6 +17,7 @@ const initialState = {
   adminLoading: false,
   users: [],
   hypeCategories: [],
+  hypes: [],
 };
 
 const appSlice = createSlice({
@@ -48,7 +51,7 @@ const appSlice = createSlice({
       })
       .addCase(addHypeCategories.fulfilled, (state) => {
         state.adminLoading = false;
-        toast.success("Hype category created successfully");
+        toast.success("Hype category created successfully!");
       })
       .addCase(addHypeCategories.rejected, (state, action) => {
         state.adminLoading = false;
@@ -63,6 +66,30 @@ const appSlice = createSlice({
         state.hypeCategories = payload;
       })
       .addCase(getAllHypeCategories.rejected, (state, action) => {
+        state.adminLoading = false;
+        toast.error(action.error.message);
+      })
+      .addCase(addHype.pending, (state) => {
+        state.adminLoading = true;
+      })
+      .addCase(addHype.fulfilled, (state, { payload }) => {
+        state.adminLoading = false;
+        // state.hypeCategories = payload;
+        toast.success("Hype has been added successfully!");
+      })
+      .addCase(addHype.rejected, (state, action) => {
+        state.adminLoading = false;
+        toast.error(action.error.message);
+      })
+      .addCase(getAllHype.pending, (state) => {
+        state.adminLoading = true;
+      })
+      .addCase(getAllHype.fulfilled, (state, { payload }) => {
+        state.adminLoading = false;
+        state.hypes = payload;
+        // toast.success("Hype has been added successfully!");
+      })
+      .addCase(getAllHype.rejected, (state, action) => {
         state.adminLoading = false;
         toast.error(action.error.message);
       });
