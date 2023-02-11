@@ -70,7 +70,7 @@ const HomeIntro = () => {
         <HeroInner2>
           <br />
           <img
-            src={width > 480 ? HomeHeroImage2 : HomeHeroImage3}
+            src={width > 1199 ? HomeHeroImage2 : HomeHeroImage3}
             alt="Hero image"
           />
         </HeroInner2>
