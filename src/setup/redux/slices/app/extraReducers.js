@@ -58,18 +58,27 @@ export const getAllHypeCategories = createAsyncThunk(
 
 export const addHype = createAsyncThunk(
   "app/addHype",
-  async ({ category, hype }) => {
-    console.log("fuck");
+  async ({ category, hype, id }) => {
     const hypeRef = doc(db, "hype", category);
     const docSnap = await getDoc(hypeRef);
-    console.log(docSnap.data().hypes.length);
 
     // Atomically add a new region to the "regions" array field.
     await updateDoc(hypeRef, {
       hypes: arrayUnion({
-        id: docSnap.data().hypes.length + 1,
+        id,
+        category,
         message: hype,
       }),
     });
   },
 );
+
+export const getAllHype = createAsyncThunk("app/getAllHype", async () => {
+  let allHype = [];
+  const hypes = collection(db, "hype");
+  const hypeSnap = await getDocs(hypes);
+  hypeSnap.forEach((hype) => {
+    allHype = [...allHype, ...hype.data().hypes];
+  });
+  return allHype;
+});
