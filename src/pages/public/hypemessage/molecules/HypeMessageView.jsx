@@ -8,24 +8,50 @@ import styled from "styled-components";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { db } from "@/setup/firebase/firebase";
+import lovebg from "../../../../assets/hypesbg/lovebg.svg";
+import lovebg1 from "../../../../assets/hypesbg/lovebg1.svg";
+import birthdaybg from "../../../../assets/hypesbg/birthdaybg.svg";
+import birthdaybg1 from "../../../../assets/hypesbg/birthdaybg1.svg";
+import Header from "@/layouts/public/partials/Header";
 
 const HypeMessageView = () => {
   const [hype, setHype] = useState();
 
   const user = useSelector((state) => state.auth.user);
   const firstname = user.displayName?.split(" ")[0];
-
-  const navigate = useNavigate();
+  const [width, setWidth] = useState(window.innerWidth);
 
   const { id } = useParams();
-  console.log(hype);
-  // const idNumber = Number(id);
+
+  let backgroundCover;
+  let backgroundSize;
+  let backgroundRepeat;
+  let backgroundColor;
+
+  switch (hype?.selecthype) {
+    case "valentineHypes":
+      backgroundCover = width > 768 ? lovebg : lovebg1;
+      backgroundSize = width > 768 ? "cover" : "contain";
+      backgroundRepeat = width > 768 ? "no-repeat" : "repeat";
+      backgroundColor = "#fce9e9";
+      break;
+    case "birthdayHypes":
+      backgroundCover = width > 768 ? birthdaybg : birthdaybg1;
+      backgroundSize = width > 768 ? "cover" : "contain";
+      backgroundRepeat = width > 768 ? "no-repeat" : "repeat";
+      backgroundColor = "#F2D6F9";
+      break;
+    default:
+      backgroundCover = width > 768 ? lovebg : lovebg1;
+      backgroundSize = width > 768 ? "cover" : "contain";
+      backgroundRepeat = width > 768 ? "no-repeat" : "repeat";
+      backgroundColor = "#fce9e9";
+  }
 
   useEffect(() => {
     const getSentHype = async () => {
       const sentHypeRef = doc(db, "sentHypes", id);
       const sentHypeSnap = await getDoc(sentHypeRef);
-      console.log(sentHypeSnap.data());
       if (sentHypeSnap.exists()) {
         setHype(sentHypeSnap.data());
       } else {
@@ -35,10 +61,25 @@ const HypeMessageView = () => {
     getSentHype();
   }, []);
 
-  console.log(123);
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <>
-      <HypeMessageCardContainer>
+      <HypeContainer
+        style={{
+          backgroundImage: `url(${backgroundCover})`,
+          width: "100%",
+          backgroundSize,
+          backgroundRepeat,
+          backgroundColor,
+        }}
+      >
+        <Header style={{ background: "#ff0000" }} />
         <HypeMessageCard>
           <SubTitle>You have received a hype from an anonymous star</SubTitle>
           <br />
@@ -48,7 +89,7 @@ const HypeMessageView = () => {
           <p>{hype?.hype}</p>
           <br />
         </HypeMessageCard>
-      </HypeMessageCardContainer>
+      </HypeContainer>
       <HypeMesageFooter>
         {firstname ? (
           <TryHype>
@@ -71,32 +112,39 @@ const HypeMessageView = () => {
 
 export default HypeMessageView;
 
-const HypeMessageCardContainer = styled.div`
+const HypeContainer = styled.div`
   display: flex;
   align-items: flex-start;
+  flex-direction: column;
   height: 100%;
-  padding: 22px 51px;
-
-  ${({ theme }) => theme.breakpoints.down("sm")} {
-    padding: 37px 24px;
-  }
+  background-position: right top;
+  min-height: 100vh;
 `;
 const HypeMessageCard = styled.div`
   margin-top: 50px;
   width: 50%;
+  padding: 0px 48px;
+  padding-bottom: 150px;
 
-  ${({ theme }) => theme.breakpoints.down("lg")} {
+  ${({ theme }) => theme.breakpoints.down("md")} {
     width: 100%;
-    padding: 0px 0px;
+  }
+
+  ${({ theme }) => theme.breakpoints.down("xs")} {
+    width: 100%;
+    height: 100vh;
+    padding: 0px 24px;
+    padding-bottom: 150px;
   }
 `;
 
 const HypeMesageFooter = styled.div`
-  position: sticky;
+  position: fixed;
   bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   width: 100%;
-  background-color: #fff;
   margin: auto;
   padding: 20px 51px;
   background: #ffb328;
@@ -111,7 +159,6 @@ const TryHype = styled.div`
   align-items: center;
   gap: 36px;
   width: 100%;
-
 
   a {
     max-width: 500px;

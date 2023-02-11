@@ -1,16 +1,17 @@
 import { Container } from "@/styles/reusable/elements.styled";
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Header from "@/layouts/public/partials/Header";
 
 const Layout = () => {
+  const { pathname } = useLocation();
   return (
     <>
       <PublicAreaContainer>
         <Main>
           <MainContent>
-            <Header />
+            {pathname === "/" ? <Header /> : ""}
             <Outlet />
           </MainContent>
         </Main>
@@ -23,14 +24,11 @@ export default Layout;
 
 const PublicAreaContainer = styled(Container)`
   padding: 0;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+  overflow: auto;
 `;
 const Main = styled.main`
   width: 100%;
   grid-template-columns: 240px 1fr;
-  background: #fce9e9;
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
     grid-template-columns: 1fr;
