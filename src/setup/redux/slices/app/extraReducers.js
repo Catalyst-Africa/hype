@@ -31,12 +31,12 @@ export const getAllUsers = createAsyncThunk("app/getAllUsers", async () => {
 export const addHypeCategories = createAsyncThunk(
   "app/addHypeCategories",
   async (hypeName) => {
-    const docRef = doc(db, "users", auth.currentUser.uid);
+    const docRef = doc(db, "hype", hypeName);
     const docSnap = await getDoc(docRef);
 
-    // If there are no user, create user
+    // If there are no hype with same name, create hype
     if (!docSnap.exists()) {
-      await setDoc(doc(db, "hype", hypeName), {});
+      await setDoc(doc(db, "hype", hypeName), { hypes: [] });
     } else {
       throw new Error("Hype Category already exists!");
     }
