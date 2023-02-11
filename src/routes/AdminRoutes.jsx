@@ -14,7 +14,7 @@ const adminRoutes = (
       <Route path="/admin/users" element={<Users />} />
       <Route path="/admin/categories" element={<HypeCategories />} />
       <Route path="/admin/add-hype" element={<AddHype />} />
-      <Route path="/admin/edit-hype/:id" element={<EditHype />} />
+      <Route path="/admin/edit-hype/:category/:id" element={<EditHype />} />
     </Route>
   </Route>
 );

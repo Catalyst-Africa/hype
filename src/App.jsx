@@ -29,7 +29,6 @@ const App = () => {
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
         const data = docSnap.data();
-        console.log(data);
         dispatch(updateAuth(true));
         dispatch(updateUser({ ...user, data, adminRole }));
       } else {

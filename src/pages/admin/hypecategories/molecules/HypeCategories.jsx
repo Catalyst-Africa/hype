@@ -24,8 +24,6 @@ const HypeCategories = () => {
     dispatch(getAllHypeCategories());
   }, []);
 
-  // useEffect(() => {}, [initialData.category]);
-
   const loading = useSelector((state) => state.app.adminLoading);
   const hypeCategoriesList = useSelector((state) => state.app.hypeCategories);
 
@@ -70,9 +68,14 @@ const HypeCategories = () => {
   };
 
   // Handler for adding new categories
-  const handleAddCategory = () => {
+  const handleAddCategory = async () => {
     dispatch(addHypeCategories(formData.category));
+    loading === false &&
+      setTimeout(() => {
+        dispatch(getAllHypeCategories());
+      }, 3000);
     setIsOpenAddCategory(false);
+    formData.category = "";
   };
 
   const handleEditCategory = () => {};

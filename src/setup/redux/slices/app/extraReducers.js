@@ -7,6 +7,7 @@ import {
   getDocs,
   updateDoc,
   arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { auth } from "@/setup/firebase/firebase";
@@ -31,12 +32,12 @@ export const getAllUsers = createAsyncThunk("app/getAllUsers", async () => {
 export const addHypeCategories = createAsyncThunk(
   "app/addHypeCategories",
   async (hypeName) => {
-    const docRef = doc(db, "users", auth.currentUser.uid);
+    const docRef = doc(db, "hype", hypeName);
     const docSnap = await getDoc(docRef);
 
-    // If there are no user, create user
+    // If there are no hype with same name, create hype
     if (!docSnap.exists()) {
-      await setDoc(doc(db, "hype", hypeName), {});
+      await setDoc(doc(db, "hype", hypeName), { hypes: [] });
     } else {
       throw new Error("Hype Category already exists!");
     }
@@ -62,12 +63,38 @@ export const addHype = createAsyncThunk(
     const hypeRef = doc(db, "hype", category);
     const docSnap = await getDoc(hypeRef);
 
-    // Atomically add a new region to the "regions" array field.
+    // Atomically add a new hype to the "hypes" array field.
     await updateDoc(hypeRef, {
       hypes: arrayUnion({
         id,
         category,
         message: hype,
+      }),
+    });
+  },
+);
+
+export const updateHype = createAsyncThunk(
+  "app/updateHype",
+  async ({ formData, initialData }) => {
+    const hypeRef = doc(db, "hype", formData.hypeCategory);
+    const docSnap = await getDoc(hypeRef);
+
+    // Atomically remove a hype to the "hypes" array field.
+    await updateDoc(hypeRef, {
+      hypes: arrayRemove({
+        category: initialData.hypeCategory,
+        id: initialData.hypeId,
+        message: initialData.hype,
+      }),
+    });
+
+    // Atomically add a new hype to the "hypes" array field.
+    await updateDoc(hypeRef, {
+      hypes: arrayUnion({
+        id: formData.hypeId,
+        category: formData.hypeCategory,
+        message: formData.hype,
       }),
     });
   },

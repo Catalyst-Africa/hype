@@ -1,34 +1,38 @@
 import React, { useEffect, useState } from "react";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, where, query } from "firebase/firestore";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { TextAreaInputGroup, SelectInputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/styles/reusable/elements.styled";
 import sendhypebg from "@/assets/sendhypebg.svg";
 import { Loader } from "@/styles/reusable/elements.styled";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
+import { db } from "@/setup/firebase/firebase";
+import { updateHype } from "@/setup/redux/slices/app/extraReducers";
 
 const EditHype = () => {
   const user = useSelector((state) => state.auth.user);
   const firstname = user?.displayName?.split(" ")[0];
+  const location = useLocation();
+  const dispatch = useDispatch();
+  updateHype;
+
+  // useEffect(() => {}, []);
 
   //Loading for when adding hypes
   const [loadingAdd, setLoadingAdd] = useState(false);
-
   //Hypes Initial Data
   const [initialData, setInitialData] = useState({
-    hypeCategory: "",
-    hype: "",
-    hypeId: "",
+    hypeCategory: location.state?.hypeData?.category,
+    hype: location.state?.hypeData?.message,
+    hypeId: location.state?.hypeData?.id,
   });
 
-  const { errors, handleBlur, checkIsValid } = useFormValidation(
-    initialData,
-    validation,
-  );
+  const { errors, handleBlur, handleChange, checkIsValid, formData } =
+    useFormValidation(initialData, validation);
 
   //Handle Hypes Changes
   const handleInitialDataChange = (event) => {
@@ -36,22 +40,21 @@ const EditHype = () => {
     if (/^\s/.test(inputValue)) {
       return;
     }
-    setInitialData({
-      ...initialData,
-      [event.target.name]: inputValue,
-    });
+    // setInitialData({
+    //   ...initialData,
+    //   [event.target.name]: inputValue,
+    // });
   };
 
-  console.log(initialData);
   //Handle Add Hype Submit
-  const handleAddHypeSubmit = async (e) => {
+  const handleEditHypeSubmit = async (e) => {
     e.preventDefault();
+    const { hypeCategory, hype, hypeId } = formData;
+    dispatch(updateHype({ formData, initialData }));
     setLoadingAdd(true);
     // set the submitted data here. example console.log("the submited data", initialData);
     setLoadingAdd(false);
   };
-
-  const { id } = useParams();
 
   return (
     <>
@@ -59,7 +62,7 @@ const EditHype = () => {
         <FluidTitle>Edit Hype</FluidTitle>
         <EditHypeInnerContainer>
           <HypeForm>
-            <Form onSubmit={handleAddHypeSubmit}>
+            <Form onSubmit={handleEditHypeSubmit}>
               <FormGroupContainer>
                 <InputContainer
                   style={{
@@ -72,22 +75,14 @@ const EditHype = () => {
                     name="hypeCategory"
                     id="hypeCategory"
                     onBlur={(e) => handleBlur(e)}
-                    onChange={handleInitialDataChange}
+                    onChange={(e) => handleChange(e)}
                     helperText={errors.hypeCategory}
                     helperTextType={checkIsValid("hypeCategory")}
-                    value={initialData.hypeCategory}
+                    value={formData.hypeCategory}
                     defaultValue="select"
                   >
-                    <option value="select"> Select hype category</option>
-                    <option value="valentineHypes">🌷 Valentine wishes</option>
-                    <option value="jobHypes">🎉 Congratulations on Job</option>
-                    <option value="birthdayHypes">🎂 Birthday Messages</option>
-                    <option value="loveHypes">💕 Love Hypes</option>
-                    <option value="christianLoveHypes">
-                      ❤️ Christian love messages
-                    </option>
-                    <option value="appreciationLoveHypes">
-                      🙏 Appreciation love message
+                    <option value={formData.hypeCategory}>
+                      {formData.hypeCategory}
                     </option>
                   </SelectInputGroup>
                 </InputContainer>
@@ -98,9 +93,9 @@ const EditHype = () => {
                     name="hype"
                     id="hype"
                     placeholder="Hype message"
-                    value={initialData.hype}
+                    value={formData.hype}
                     onBlur={(e) => handleBlur(e)}
-                    onChange={handleInitialDataChange}
+                    onChange={(e) => handleChange(e)}
                     helperText={errors.hype}
                     helperTextType={checkIsValid("hype")}
                     rows={15}
