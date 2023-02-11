@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import HomeHeroImage1 from "../../../../assets/homeheroimage1.svg";
 import HomeHeroImage2 from "../../../../assets/homeheroimage2.svg";
-import HomeHeroImage3 from "../../../../assets/homeheroimage3.svg";
+import HomeHeroImage3 from "../../../../assets/images/homeheroimage1.png";
 import HomeHeroImageBg from "../../../../assets/homeheroimagebg.svg";
 import SectionOneImage from "../../../../assets/homesection1.svg";
 import SectionTwoImage from "../../../../assets/homesection2.svg";
