@@ -1,11 +1,12 @@
 import { Title, FluidTitle, SubTitle } from "@/styles/reusable/elements.styled";
 import { Button } from "@/styles/reusable/elements.styled";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import HomeHeroImage1 from "../../../../assets/homeheroimage1.svg";
 import HomeHeroImage2 from "../../../../assets/homeheroimage2.svg";
+import HomeHeroImage3 from "../../../../assets/homeheroimage3.svg";
 import HomeHeroImageBg from "../../../../assets/homeheroimagebg.svg";
 import SectionOneImage from "../../../../assets/homesection1.svg";
 import SectionTwoImage from "../../../../assets/homesection2.svg";
@@ -19,6 +20,7 @@ import { Logo } from "@/components/ui";
 const HomeIntro = () => {
   const user = useSelector((state) => state.auth.user);
   const firstname = user.displayName?.split(" ")[0];
+  const [width, setWidth] = useState(window.innerWidth);
 
   const TemplatesList = [
     {
@@ -45,6 +47,14 @@ const HomeIntro = () => {
     },
   ];
 
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <>
       <Hero>
@@ -59,7 +69,10 @@ const HomeIntro = () => {
         </HeroInner1>
         <HeroInner2>
           <br />
-          <img src={HomeHeroImage2} alt="Hero image" />
+          <img
+            src={width > 480 ? HomeHeroImage2 : HomeHeroImage3}
+            alt="Hero image"
+          />
         </HeroInner2>
       </Hero>
       <MainContainer>
@@ -111,9 +124,9 @@ const HomeIntro = () => {
             Templates for everything
           </Title>
           <br />
-          <SubTitle>
+          <p>
             Lorem ipsum dolor sit amet consectetur. In fermentum duis viverra.
-          </SubTitle>
+          </p>
           <TemplatesInnerContainer>
             {TemplatesList
               ? TemplatesList.map((item, index) => {
