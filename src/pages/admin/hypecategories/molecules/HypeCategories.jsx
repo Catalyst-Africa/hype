@@ -10,28 +10,33 @@ import { useFormValidation } from "@/hooks";
 import { SubTitle } from "@/styles/reusable/elements.styled";
 import { validation } from "@/pages/auth/validation";
 import { useDispatch, useSelector } from "react-redux";
-import { addHypeCategories } from "@/setup/redux/slices/app/extraReducers";
+import {
+  addHypeCategories,
+  getAllHypeCategories,
+} from "@/setup/redux/slices/app/extraReducers";
 import { OverlayLoader } from "@/components/ui";
-
-const HypeCategoriesList = [
-  "ValentineHypes",
-  "JobsHypes",
-  "ChirstianLoveHypes",
-  "AppreciationHypes",
-  "LoveHypes",
-];
+import { useEffect } from "react";
 
 const HypeCategories = () => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllHypeCategories());
+  }, []);
+
+  // useEffect(() => {}, [initialData.category]);
+
   const loading = useSelector((state) => state.app.adminLoading);
+  const hypeCategoriesList = useSelector((state) => state.app.hypeCategories);
+
   // Logic for pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(HypeCategoriesList.length / itemsPerPage);
+  const totalPages = Math.ceil(hypeCategoriesList.length / itemsPerPage);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentCategoriesList = HypeCategoriesList?.slice(startIndex, endIndex);
+  const currentCategoriesList = hypeCategoriesList?.slice(startIndex, endIndex);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -47,19 +52,14 @@ const HypeCategories = () => {
   };
   const handleAddCloseModal = () => {
     setIsOpenAddCategory(false);
-    setInitialData({
-      name: "",
-    });
   };
 
-  const handleEditOpenModal = () => {
+  const handleEditOpenModal = (item) => {
+    setInitialData({ ...initialData, category: item });
     setIsOpenEditCategory(true);
   };
   const handleEditCloseModal = () => {
     setIsOpenEditCategory(false);
-    setInitialData({
-      name: "",
-    });
   };
 
   const handleDeleteOpenModal = () => {
@@ -75,25 +75,11 @@ const HypeCategories = () => {
     setIsOpenAddCategory(false);
   };
 
+  const handleEditCategory = () => {};
+
   const [initialData, setInitialData] = useState({
     category: "",
   });
-
-  const handleCategoryChange = (event) => {
-    const newValue = event.target.value;
-    if (!newValue.trim().length) {
-      setInitialData({
-        name: "",
-      });
-      return;
-    }
-    if (!newValue.match(/^[a-zA-Z]+$/)) {
-      return;
-    }
-    setInitialData({
-      name: newValue.trim(),
-    });
-  };
 
   const {
     errors,
@@ -102,12 +88,13 @@ const HypeCategories = () => {
     checkIsValid,
     formData,
     validateOnSubmit,
-  } = useFormValidation(initialData, validation);
-
+  } = useFormValidation(initialData.category, validation);
+  console.log(initialData);
+  console.log(formData);
   return (
     <>
       <HypeCategoriesContainer>
-        <FluidTitle>{`Categories [${HypeCategoriesList.length}]`}</FluidTitle>
+        <FluidTitle>Categories</FluidTitle>
         <ButtonContainer>
           <Button onClick={handleAddOpenModal}>Add a Category</Button>
         </ButtonContainer>
@@ -118,7 +105,10 @@ const HypeCategories = () => {
                 <CategoryCard key={key}>
                   <p>{item}</p>
                   <CardInner>
-                    <FiEdit color="#FFB328" onClick={handleEditOpenModal} />
+                    <FiEdit
+                      color="#FFB328"
+                      onClick={() => handleEditOpenModal(item)}
+                    />
                     <RiDeleteBin2Line
                       color="#ff0000"
                       onClick={handleDeleteOpenModal}
@@ -157,9 +147,8 @@ const HypeCategories = () => {
             type="text"
             id="category"
             placeholder="Enter Category Name"
-            value={initialData.name}
             onBlur={(e) => handleBlur(e)}
-            onChange={handleCategoryChange}
+            onChange={(e) => handleChange(e)}
             helperText={errors.category}
             value={formData.category}
             helperTextType={checkIsValid("category")}
@@ -181,10 +170,11 @@ const HypeCategories = () => {
             type="text"
             id="category"
             placeholder="Edit Category"
-            value={initialData.name}
+            defaultValue={initialData.category}
             onBlur={(e) => handleBlur(e)}
-            onChange={handleCategoryChange}
+            onChange={(e) => handleChange(e)}
             helperText={errors.category}
+            value={formData.category}
             helperTextType={checkIsValid("category")}
           />
           <br />

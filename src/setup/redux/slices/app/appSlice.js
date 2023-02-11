@@ -14,6 +14,7 @@ const initialState = {
   loading: true,
   adminLoading: false,
   users: [],
+  hypeCategories: [],
 };
 
 const appSlice = createSlice({
@@ -55,7 +56,15 @@ const appSlice = createSlice({
         toast.error(action.error.message);
       })
       .addCase(getAllHypeCategories.pending, (state) => {
+        // state.adminLoading = true;
+      })
+      .addCase(getAllHypeCategories.fulfilled, (state, { payload }) => {
         state.adminLoading = false;
+        state.hypeCategories = payload;
+      })
+      .addCase(getAllHypeCategories.rejected, (state, action) => {
+        state.adminLoading = false;
+        toast.error(action.error.message);
       });
   },
 });
