@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { collection, getDocs, addDoc, where, query } from "firebase/firestore";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { TextAreaInputGroup, SelectInputGroup } from "@/components/ui";
@@ -9,8 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/styles/reusable/elements.styled";
 import sendhypebg from "@/assets/sendhypebg.svg";
 import { Loader } from "@/styles/reusable/elements.styled";
-import { useParams, useLocation } from "react-router-dom";
-import { db } from "@/setup/firebase/firebase";
+import { useLocation } from "react-router-dom";
 import { updateHype } from "@/setup/redux/slices/app/extraReducers";
 
 const EditHype = () => {
@@ -20,10 +18,9 @@ const EditHype = () => {
   const dispatch = useDispatch();
   updateHype;
 
-  // useEffect(() => {}, []);
-
   //Loading for when adding hypes
   const [loadingAdd, setLoadingAdd] = useState(false);
+
   //Hypes Initial Data
   const [initialData, setInitialData] = useState({
     hypeCategory: location.state?.hypeData?.category,
@@ -31,29 +28,29 @@ const EditHype = () => {
     hypeId: location.state?.hypeData?.id,
   });
 
-  const { errors, handleBlur, handleChange, checkIsValid, formData } =
-    useFormValidation(initialData, validation);
-
-  //Handle Hypes Changes
-  const handleInitialDataChange = (event) => {
-    let inputValue = event.target.value;
-    if (/^\s/.test(inputValue)) {
-      return;
-    }
-    // setInitialData({
-    //   ...initialData,
-    //   [event.target.name]: inputValue,
-    // });
-  };
+  const {
+    errors,
+    handleBlur,
+    setFormData,
+    handleChange,
+    checkIsValid,
+    formData,
+  } = useFormValidation(initialData, validation);
 
   //Handle Add Hype Submit
   const handleEditHypeSubmit = async (e) => {
     e.preventDefault();
-    const { hypeCategory, hype, hypeId } = formData;
+
     dispatch(updateHype({ formData, initialData }));
     setLoadingAdd(true);
+
     // set the submitted data here. example console.log("the submited data", initialData);
     setLoadingAdd(false);
+    setFormData({
+      hypeCategory: "",
+      hype: "",
+      hypeId: "",
+    });
   };
 
   return (

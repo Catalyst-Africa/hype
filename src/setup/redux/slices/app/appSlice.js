@@ -7,6 +7,7 @@ import {
   addHype,
   getAllHype,
   updateHype,
+  deleteHype,
 } from "./extraReducers";
 import { toast } from "react-hot-toast";
 import { extractErrorMessage } from "@/helpers/helpers";
@@ -91,6 +92,18 @@ const appSlice = createSlice({
         toast.success("Hype has been updated successfully!");
       })
       .addCase(updateHype.rejected, (state, action) => {
+        state.adminLoading = false;
+        toast.error(action.error.message);
+      })
+      .addCase(deleteHype.pending, (state) => {
+        state.adminLoading = true;
+      })
+      .addCase(deleteHype.fulfilled, (state, { payload }) => {
+        state.adminLoading = false;
+        // state.hypeCategories = payload;
+        toast.success("Hype has been deleted successfully!");
+      })
+      .addCase(deleteHype.rejected, (state, action) => {
         state.adminLoading = false;
         toast.error(action.error.message);
       })

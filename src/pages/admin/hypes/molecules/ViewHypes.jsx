@@ -8,19 +8,21 @@ import { Link } from "react-router-dom";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/styles/reusable/elements.styled";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllHype } from "@/setup/redux/slices/app/extraReducers";
+import { getAllHype, deleteHype } from "@/setup/redux/slices/app/extraReducers";
+import { useRef } from "react";
 
 const ViewHypes = () => {
   const dispatch = useDispatch();
   const hypesList = useSelector((state) => state.app.hypes);
-
-  useEffect(() => {
-    dispatch(getAllHype());
-  }, []);
+  const deleteMessage = useRef("");
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isOpenDeleteHype, setIsOpenDeleteHype] = useState(false);
+
+  useEffect(() => {
+    dispatch(getAllHype());
+  }, [isOpenDeleteHype]);
 
   const filteredHypes =
     selectedCategory === "All"
@@ -47,11 +49,16 @@ const ViewHypes = () => {
     ...new Set(hypesList?.map((item) => item.category)),
   ];
 
-  const handleDeleteOpenModal = () => {
+  const handleDeleteOpenModal = (hype) => {
     setIsOpenDeleteHype(true);
+    deleteMessage.current = hype;
   };
   const handleDeleteCloseModal = () => {
     setIsOpenDeleteHype(false);
+  };
+  const handleDeleteHype = () => {
+    dispatch(deleteHype(deleteMessage.current));
+    handleDeleteCloseModal();
   };
 
   return (
@@ -93,7 +100,9 @@ const ViewHypes = () => {
 
                         <RiDeleteBin2Line
                           color="#ff0000"
-                          onClick={handleDeleteOpenModal}
+                          onClick={() => {
+                            handleDeleteOpenModal(hypeData);
+                          }}
                         />
                       </EditContainer>
                     </InfoContainer>
@@ -126,16 +135,24 @@ const ViewHypes = () => {
           <FluidTitle>Delete Hype</FluidTitle>
           <br />
           <p>
-            On this Valentine's Day, I just wanted to let you know how much you
+            {deleteMessage.current.message}
+            {/* On this Valentine's Day, I just wanted to let you know how much you
             mean to me On this Valentine's Day, I just wanted to let you know
             how much you mean to me On this Valentine's Day, I just wanted to
-            let you know how much you mean to me
+            let you know how much you mean to me */}
           </p>
           <br />
           <p>Are you sure you want to delete this hype?</p>
           <br />
           <ButtonDeleteContainer>
-            <Button style={{ backgroundColor: "#ff0000" }}>Delete</Button>
+            <Button
+              onClick={() => {
+                handleDeleteHype();
+              }}
+              style={{ backgroundColor: "#ff0000" }}
+            >
+              Delete
+            </Button>
           </ButtonDeleteContainer>
         </Modal>
       )}
