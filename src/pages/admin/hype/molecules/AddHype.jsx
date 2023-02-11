@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import { collection, getDocs, addDoc } from "firebase/firestore";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
-import {
-  TextAreaInputGroup,
-  SelectInputGroup,
-} from "@/components/ui";
+import { TextAreaInputGroup, SelectInputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 import { useSelector } from "react-redux";
@@ -18,6 +15,7 @@ import { Link } from "react-router-dom";
 
 const AddHype = () => {
   const user = useSelector((state) => state.auth.user);
+  const hypeCategories = useSelector((state) => state.app.hypeCategories);
   const firstname = user?.displayName?.split(" ")[0];
 
   //Success Hype Modal
@@ -56,7 +54,7 @@ const AddHype = () => {
     });
   };
 
-  console.log(initialData);
+  // console.log(initialData);
   //Handle Add Hype Submit
   const handleAddHypeSubmit = async (e) => {
     e.preventDefault();
@@ -96,16 +94,11 @@ const AddHype = () => {
                     defaultValue="select"
                   >
                     <option value="select"> Select hype category</option>
-                    <option value="valentineHypes">🌷 Valentine wishes</option>
-                    <option value="jobHypes">🎉 Congratulations on Job</option>
-                    <option value="birthdayHypes">🎂 Birthday Messages</option>
-                    <option value="loveHypes">💕 Love Hypes</option>
-                    <option value="christianLoveHypes">
-                      ❤️ Christian love messages
-                    </option>
-                    <option value="appreciationLoveHypes">
-                      🙏 Appreciation love message
-                    </option>
+                    {hypeCategories?.map((category) => (
+                      <option value={category}>
+                        {category.split(/(?=[A-Z])/).join(" ")}
+                      </option>
+                    ))}
                   </SelectInputGroup>
                 </InputContainer>
               </FormGroupContainer>
