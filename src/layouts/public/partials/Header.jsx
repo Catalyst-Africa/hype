@@ -2,14 +2,19 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { Logo } from "@/components/ui";
 import { Button } from "@/styles/reusable/elements.styled";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 const Header = () => {
   const user = useSelector((state) => state.auth.user);
   const firstname = user.displayName?.split(" ")[0];
+  const { pathname } = useLocation();
 
   return (
-    <HeaderElement>
+    <HeaderElement
+      // style={{
+      //   background: pathname.includes("hype/message/") ? "transparent" : "#fff",
+      // }}
+    >
       <div>
         <Link to="/">
           <Logo />
@@ -24,9 +29,9 @@ const Header = () => {
             <Link to="/">
               <span>About</span>
             </Link>
-            <Link to="/">
+            {/* <Link to="/">
               <span>Contact Us</span>
-            </Link>
+            </Link> */}
           </NavItems>
 
           {firstname ? (
@@ -55,8 +60,6 @@ export default Header;
 
 const HeaderElement = styled.header`
   width: 100%;
-  /* background: transparent; */
-  background: #fff;
   padding: 18px 48px;
   display: flex;
   justify-content: space-between;

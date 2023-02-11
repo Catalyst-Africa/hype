@@ -4,7 +4,9 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import HomeHeroImage from "../../../../assets/homeheroimage.svg";
+import HomeHeroImage1 from "../../../../assets/homeheroimage1.svg";
+import HomeHeroImage2 from "../../../../assets/homeheroimage2.svg";
+import HomeHeroImageBg from "../../../../assets/homeheroimagebg.svg";
 import SectionOneImage from "../../../../assets/homesection1.svg";
 import SectionTwoImage from "../../../../assets/homesection2.svg";
 import SectionThreeImage from "../../../../assets/homesection3.svg";
@@ -45,19 +47,22 @@ const HomeIntro = () => {
 
   return (
     <>
-      <MainContainer>
-        <Hero>
-          <HeroInner1>
-            <Title as="h1" color="#F69D00">
-              Spread positivity!
-            </Title>
-            <SubTitle>Share a Hype</SubTitle>
+      <Hero>
+        <HeroInner1>
+          <Title as="h1" color="#F69D00">
+            Spread positivity!
+          </Title>
+          <SubTitle>Share a Hype</SubTitle>
+          <Link to="/send-hype">
             <Button>Send a Hype</Button>
-          </HeroInner1>
-          <HeroInner2>
-            <img src={HomeHeroImage} alt="Hero image" />
-          </HeroInner2>
-        </Hero>
+          </Link>
+        </HeroInner1>
+        <HeroInner2>
+          <br />
+          <img src={HomeHeroImage2} alt="Hero image" />
+        </HeroInner2>
+      </Hero>
+      <MainContainer>
         <SectionContainer>
           <ImageContainer>
             <img src={SectionOneImage} alt="Share Love" />
@@ -144,10 +149,12 @@ const HomeIntro = () => {
             <SubTitle>Contact Us</SubTitle>
             <br />
             <ul>
-              <li>Whatsapp</li>
-              <li>Instagram</li>
-              <li>Twitter</li>
-              <li>LinkedIn</li>
+              <a href="https://www.instagram.com/sharehype4fun/">
+                <li>Instagram</li>
+              </a>
+              <a href="https://twitter.com/sharehype4fun/">
+                <li>Twitter</li>
+              </a>
             </ul>
           </FooterSection>
         </HomeFooter>
@@ -171,7 +178,7 @@ const MainContainer = styled.div`
   padding: 0px 51px;
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
-    padding: 37px 24px;
+    padding: 0px 24px;
   }
 `;
 const Hero = styled.div`
@@ -179,10 +186,17 @@ const Hero = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  background: url(${HomeHeroImageBg});
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding: 0px 51px;
 
-  ${({ theme }) => theme.breakpoints.down("lg")} {
-    width: 100%;
-    padding: 0px 0px;
+  ${({ theme }) => theme.breakpoints.down("sm")} {
+    padding: 0px 24px;
+  }
+
+  ${({ theme }) => theme.breakpoints.down("xs")} {
+    flex-direction: column;
   }
 `;
 
@@ -200,6 +214,10 @@ const HeroInner2 = styled.div`
   width: 100%;
   img {
     width: 100%;
+  }
+
+  ${({ theme }) => theme.breakpoints.down("xs")} {
+    padding-top: 120px;
   }
 `;
 
