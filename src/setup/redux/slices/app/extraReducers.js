@@ -1,5 +1,13 @@
 import { db } from "@/setup/firebase/firebase";
-import { collection, doc, setDoc, getDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  setDoc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { auth } from "@/setup/firebase/firebase";
 
@@ -45,5 +53,23 @@ export const getAllHypeCategories = createAsyncThunk(
       allHypeCategories.push(hypeCategory.id);
     });
     return allHypeCategories;
+  },
+);
+
+export const addHype = createAsyncThunk(
+  "app/addHype",
+  async ({ category, hype }) => {
+    console.log("fuck");
+    const hypeRef = doc(db, "hype", category);
+    const docSnap = await getDoc(hypeRef);
+    console.log(docSnap.data().hypes.length);
+
+    // Atomically add a new region to the "regions" array field.
+    await updateDoc(hypeRef, {
+      hypes: arrayUnion({
+        id: docSnap.data().hypes.length + 1,
+        message: hype,
+      }),
+    });
   },
 );

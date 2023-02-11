@@ -110,11 +110,11 @@ const SendHype = () => {
           setInitialData({
             ...initialData,
             hype:
-              Object.values(hype)[1][1]?.message === undefined
+              Object.values(hype)[1]?.message === undefined
                 ? //Returns message for array that are equal to 1
-                  Object.values(hype)[1][0].message
+                  Object.values(hype)[0].message
                 : //Returns message for array that are more than 1
-                  Object.values(hype)[1][1]?.message,
+                  Object.values(hype)[1]?.message,
             hypeId: hype.id,
             selecthype: Object.keys(hype)[1],
           });
