@@ -1,71 +1,184 @@
-import { FluidTitle } from "@/styles/reusable/elements.styled";
+import { Title, FluidTitle, SubTitle } from "@/styles/reusable/elements.styled";
 import { Button } from "@/styles/reusable/elements.styled";
-import { SubTitle } from "@/styles/reusable/elements.styled";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import HomeHeroImage from "../../../../assets/homeheroimage.svg";
+import SectionOneImage from "../../../../assets/homesection1.svg";
+import SectionTwoImage from "../../../../assets/homesection2.svg";
+import SectionThreeImage from "../../../../assets/homesection3.svg";
+import { AiFillHeart } from "react-icons/ai";
+import { FaBirthdayCake } from "react-icons/fa";
+import { MdCelebration } from "react-icons/md";
+import { RiHeartsFill } from "react-icons/ri";
+import { Logo } from "@/components/ui";
 
 const HomeIntro = () => {
   const user = useSelector((state) => state.auth.user);
-   const firstname = user.displayName?.split(" ")[0];
-   
+  const firstname = user.displayName?.split(" ")[0];
+
+  const TemplatesList = [
+    {
+      icon: <AiFillHeart size={112} color="#FF0000" />,
+      bgColor: "#FCCFCF",
+      name: "Love",
+    },
+
+    {
+      icon: <FaBirthdayCake size={112} color="#6C63FF" />,
+      bgColor: "#D2D1E0",
+      name: "BirthDay",
+    },
+
+    {
+      icon: <MdCelebration size={112} color="#FFB328" />,
+      bgColor: "#FCE6BE",
+      name: "Celebration",
+    },
+    {
+      icon: <RiHeartsFill size={112} color="#FFEDFA" />,
+      bgColor: "#6C63FF",
+      name: "Valentines",
+    },
+  ];
+
   return (
     <>
-      <HypeMessageCardContainer>
-        <HypeMessageCard>
-          <FluidTitle>Today's Hype!</FluidTitle>
-          <br />
-          <p>
+      <MainContainer>
+        <Hero>
+          <HeroInner1>
+            <Title as="h1" color="#F69D00">
+              Spread positivity!
+            </Title>
+            <SubTitle>Share a Hype</SubTitle>
+            <Button>Send a Hype</Button>
+          </HeroInner1>
+          <HeroInner2>
+            <img src={HomeHeroImage} alt="Hero image" />
+          </HeroInner2>
+        </Hero>
+        <SectionContainer>
+          <ImageContainer>
+            <img src={SectionOneImage} alt="Share Love" />
+          </ImageContainer>
+          <SectionInfo>
+            <FluidTitle>Share Love</FluidTitle>
             <br />
-            On this Valentine's Day, I just wanted to let you know how much you
-            mean to me. You bring so much joy and happiness into my life, and I
-            am so grateful to have you by my side. Your love and support mean
-            the world to me, and I am so lucky to have such an amazing partner.
+            <p>
+              Lorem ipsum dolor sit amet consectetur. In fermentum duis viverra
+              libero enim ut diam felis vitae egestas viverra turpis.
+            </p>
+          </SectionInfo>
+        </SectionContainer>
+        <SectionContainer>
+          <InnerSectionContainer>
+            <SectionInfo>
+              <FluidTitle>Send Birthday Wishes</FluidTitle>
+              <br />
+              <p>
+                Lorem ipsum dolor sit amet consectetur. In fermentum duis
+                viverra libero enim ut diam felis vitae egestas viverra turpis.
+              </p>
+            </SectionInfo>
+            <ImageContainer>
+              <img src={SectionTwoImage} alt="Send Birthday Wishes<" />
+            </ImageContainer>
+          </InnerSectionContainer>
+        </SectionContainer>
+        <SectionContainer>
+          <ImageContainer>
+            <img src={SectionThreeImage} alt="Celebrate your friend today" />
+          </ImageContainer>
+
+          <SectionInfo>
+            <FluidTitle>Celebrate your friend today</FluidTitle>
             <br />
-            <br />I love you more and more each day, and I am so excited to
-            spend this special day with you. Let's make this Valentine's Day one
-            to remember and celebrate our love together. Yours always, Daniel.
-          </p>
+            <p>
+              Lorem ipsum dolor sit amet consectetur. In fermentum duis viverra
+              libero enim ut diam felis vitae egestas viverra turpis.
+            </p>
+          </SectionInfo>
+        </SectionContainer>
+
+        <TemplatesContainer>
+          <Title as="h1" color="#F69D00">
+            Templates for everything
+          </Title>
           <br />
-          <br />
-        </HypeMessageCard>
-      </HypeMessageCardContainer>
-      <HypeMesageFooter>
-        {firstname ? (
-          <TryHype>
-            <Link to="/dashboard">
-              <Button>Dashboard</Button>
-            </Link>
-          </TryHype>
-        ) : (
-          <TryHype>
-            <p>Join us to send hypes!</p>
-            <Link to="/signup">
-              <Button>Try hype</Button>
-            </Link>
-          </TryHype>
-        )}
-      </HypeMesageFooter>
+          <SubTitle>
+            Lorem ipsum dolor sit amet consectetur. In fermentum duis viverra.
+          </SubTitle>
+          <TemplatesInnerContainer>
+            {TemplatesList
+              ? TemplatesList.map((item, index) => {
+                  return (
+                    <TemplateCardContainer key={index}>
+                      <TemplatesCard style={{ backgroundColor: item.bgColor }}>
+                        {item.icon}
+                      </TemplatesCard>
+                      <p>{item.name}</p>
+                    </TemplateCardContainer>
+                  );
+                })
+              : ""}
+          </TemplatesInnerContainer>
+        </TemplatesContainer>
+        <Divider />
+        <br />
+        <br />
+        <HomeFooter>
+          <FooterSection>
+            <Logo />
+          </FooterSection>
+          <FooterSection>
+            <SubTitle>Legal</SubTitle>
+            <br />
+            <ul>
+              <li>Terms</li>
+              <li>Privacy</li>
+              <li>FAQ</li>
+            </ul>
+          </FooterSection>
+          <FooterSection>
+            <SubTitle>Contact Us</SubTitle>
+            <br />
+            <ul>
+              <li>Whatsapp</li>
+              <li>Instagram</li>
+              <li>Twitter</li>
+              <li>LinkedIn</li>
+            </ul>
+          </FooterSection>
+        </HomeFooter>
+        <br />
+        <br />
+        <Divider />
+        <br />
+        <span>2023 Catalyst Africa. All rights reserved</span>
+        <br />
+      </MainContainer>
     </>
   );
 };
 
 export default HomeIntro;
 
-const HypeMessageCardContainer = styled.div`
+const MainContainer = styled.div`
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
   height: 100%;
-  padding: 22px 51px;
+  padding: 0px 51px;
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
     padding: 37px 24px;
   }
 `;
-const HypeMessageCard = styled.div`
-  margin-top: 50px;
-  width: 50%;
+const Hero = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 
   ${({ theme }) => theme.breakpoints.down("lg")} {
     width: 100%;
@@ -73,47 +186,127 @@ const HypeMessageCard = styled.div`
   }
 `;
 
-const HypeMesageFooter = styled.div`
-  position: sticky;
-  bottom: 0;
+const HeroInner1 = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 25px;
   width: 100%;
-  background-color: #fff;
-  margin: auto;
-  padding: 20px 51px;
-  background: #ffb328;
-  ${({ theme }) => theme.breakpoints.down("sm")} {
-    padding: 20px 24px;
+  button {
+    max-width: 180px;
+    padding: 0px 32px;
+  }
+`;
+const HeroInner2 = styled.div`
+  width: 100%;
+  img {
+    width: 100%;
   }
 `;
 
-const TryHype = styled.div`
+const SectionContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
-  gap: 36px;
   width: 100%;
+  gap: 74px;
 
-  a {
-    max-width: 500px;
-    width: 30%;
+  ${({ theme }) => theme.breakpoints.down("md")} {
+    margin-top: 100px;
   }
-  button {
-    max-width: 500px;
+  ${({ theme }) => theme.breakpoints.down("xs")} {
+    flex-direction: column;
+    margin-top: 100px;
+  }
+`;
+
+const InnerSectionContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 74px;
+
+  ${({ theme }) => theme.breakpoints.down("xs")} {
+    flex-direction: column-reverse;
+  }
+`;
+
+const ImageContainer = styled.div`
+  width: 100%;
+  img {
     width: 100%;
   }
+`;
 
-  ${({ theme }) => theme.breakpoints.down("lg")} {
-    gap: 8px;
+const SectionInfo = styled.div`
+  width: 100%;
+`;
+
+const TemplatesContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 150px;
+`;
+
+const TemplatesInnerContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 84px;
+  width: 100%;
+  gap: 40px;
+  max-width: 1200px;
+  margin-bottom: 120px;
+
+  ${({ theme }) => theme.breakpoints.down("md")} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  ${({ theme }) => theme.breakpoints.down("xs")} {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+`;
+const TemplatesCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 228px;
+  border-radius: 12px;
+`;
+
+const TemplateCardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: center;
+  width: 100%;
+`;
+
+const Divider = styled.div`
+  border: 1px solid #eee;
+`;
+
+const HomeFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin: auto;
+
+  ${({ theme }) => theme.breakpoints.down("xs")} {
     flex-direction: column;
-    justify-content: center;
-    a {
-      max-width: 500px;
-      width: 100%;
-    }
-    button {
-      max-width: 500px;
-      width: 100%;
-    }
+    justify-content: flex-start;
+    gap: 30px;
+  }
+`;
+
+const FooterSection = styled.div`
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 `;

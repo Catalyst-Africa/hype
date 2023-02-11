@@ -38,12 +38,12 @@ const TopStats = () => {
             </SmallCard>
           </Link>
 
-          <Link to="">
+          {/* <Link to="">
             <SmallCard>
               <BiTrendingUp color="#FFB328" size={24} />
               <SubTitle>Trending Hypes</SubTitle>
             </SmallCard>
-          </Link>
+          </Link> */}
 
           {/* <SmallCard>
             <MdFavorite color="#FFB328" size={24} />
@@ -51,19 +51,20 @@ const TopStats = () => {
           </SmallCard> */}
         </SecondCard>
       </StatsContainer>
+
       <SecondCardMobile>
-        <Link to="/send-hype">
+        {/* <Link to="/send-hype">
           <SmallCard>
             <RiSendPlaneFill color="#FFB328" size={24} />
             <SubTitle>Send Hypes</SubTitle>
           </SmallCard>
-        </Link>
-        <Link to="">
+        </Link> */}
+        {/* <Link to="">
           <SmallCard>
             <BiTrendingUp color="#FFB328" size={24} />
             <SubTitle>Trending Hypes</SubTitle>
           </SmallCard>
-        </Link>
+        </Link> */}
 
         {/* <SmallCard>
           <MdFavorite color="#FFB328" size={24} />
@@ -85,7 +86,7 @@ const StatsContainer = styled.div`
   border-radius: 5px;
   padding: 28.5px 28px;
   gap: 20px;
-
+  width: 100%;
   ${({ theme }) => theme.breakpoints.down("md")} {
     justify-content: center;
     flex-direction: column;
@@ -106,14 +107,15 @@ const SecondCard = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
-  gap: 40px;
-  padding: 10px 0px;
+  /* gap: 40px; */
+  /* padding: 10px 0px; */
 
   align-items: center;
-  ${({ theme }) => theme.breakpoints.down("touch")} {
-    flex-direction: column;
+  ${({ theme }) => theme.breakpoints.down("lg")} {
+    display: none;
+    /* flex-direction: column;
     align-items: flex-end;
-    gap: 10px;
+    gap: 10px; */
   }
 
   ${({ theme }) => theme.breakpoints.down("md")} {
@@ -125,7 +127,7 @@ const SecondCard = styled.div`
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 50px;
+    /* gap: 50px; */
   }
   h6 {
     width: 100%;
@@ -144,11 +146,11 @@ const SecondCardMobile = styled.div`
   justify-content: center;
   gap: 40px;
   align-items: center;
-  padding: 32px 47px;
+  /* padding: 32px 47px; */
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
     display: flex;
-    padding: 32px 2px;
+    /* padding: 32px 2px; */
   }
 
   h6 {

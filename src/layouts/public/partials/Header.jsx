@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { Logo } from "@/components/ui";
 import { Button } from "@/styles/reusable/elements.styled";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 const Header = () => {
   const user = useSelector((state) => state.auth.user);
@@ -17,33 +17,35 @@ const Header = () => {
       </div>
       <Options>
         <NavMenu>
-          <Link to="/">
-            <span>Home</span>
-          </Link>
-          <span>Contact Us</span>
-          {firstname ? (
-            ""
-          ) : (
-            <Link to="/signup">
-              <Button $type="outlined">Get Started</Button>
+          <NavItems>
+            <NavLink to="/">
+              <span>Home</span>
+            </NavLink>
+            <Link to="/">
+              <span>About</span>
             </Link>
+            <Link to="/">
+              <span>Contact Us</span>
+            </Link>
+          </NavItems>
+
+          {firstname ? (
+            <Link to="/dashboard">
+              <Button $type="outlined">Dashboard</Button>
+            </Link>
+          ) : (
+            <NavigationButton>
+              <Link to="/signup">
+                <Button $type="outlined" style={{ border: "none" }}>
+                  Login
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button>Join Now</Button>
+              </Link>
+            </NavigationButton>
           )}
         </NavMenu>
-        <Profile>
-          <span style={{ fontWeight: "bold" }}>
-            {firstname ? firstname : "Guest"}
-          </span>
-          <div>
-            <img
-              src={
-                user.photoURL
-                  ? user.photoURL
-                  : "https://api.dicebear.com/5.x/fun-emoji/svg?seed=Peanut"
-              }
-              alt={user.displayName ? user.displayName : "Avatar"}
-            />
-          </div>
-        </Profile>
       </Options>
     </HeaderElement>
   );
@@ -53,7 +55,8 @@ export default Header;
 
 const HeaderElement = styled.header`
   width: 100%;
-  background: transparent;
+  /* background: transparent; */
+  background: #fff;
   padding: 18px 48px;
   display: flex;
   justify-content: space-between;
@@ -91,25 +94,23 @@ const NavMenu = styled.div`
     }
   }
 `;
-const Profile = styled.div`
+
+const NavItems = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 55px;
+
+  .active {
+    font-weight: bold;
+  }
 
   ${({ theme }) => theme.breakpoints.down("md")} {
     display: none;
   }
+`;
 
-  div {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 2px solid ${({ theme }) => theme.color.main.default};
-
-    img {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-    }
-  }
+const NavigationButton = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;

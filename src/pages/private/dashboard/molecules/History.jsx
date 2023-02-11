@@ -9,6 +9,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { useSelector } from "react-redux";
 import { db } from "@/setup/firebase/firebase";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const History = () => {
   const user = useSelector((state) => state.auth.user);
@@ -63,26 +64,37 @@ const History = () => {
             <FluidTitle>0</FluidTitle>
           </NumberStats>
         </HistoryCard> */}
-        <HistoryCard>
-          <SubTitle>Sent Hypes</SubTitle>
-          <SubTitleDivider style={{ background: "#07B519" }}></SubTitleDivider>
-          <NumberStats>
-            <NumberStatsIcon style={{ background: "rgba(7, 181, 25, 0.22)" }}>
-              <BsCheck color="#07B519" size={16} />
-            </NumberStatsIcon>
-            <FluidTitle>{hype?.length || 0}</FluidTitle>
-          </NumberStats>
-        </HistoryCard>
-        <HistoryCard>
-          <SubTitle>Received Hypes</SubTitle>
-          <SubTitleDivider style={{ background: "#FFB328" }}></SubTitleDivider>
-          <NumberStats>
-            <NumberStatsIcon style={{ background: "rgba(238, 174, 10, 0.22)" }}>
-              <BiEnvelope color="#FFB328" size={16} />
-            </NumberStatsIcon>
-            <FluidTitle>{receivedHype?.length || 0}</FluidTitle>
-          </NumberStats>
-        </HistoryCard>
+        <Link to="/sent-hypes">
+          <HistoryCard>
+            <SubTitle>Sent Hypes</SubTitle>
+            <SubTitleDivider
+              style={{ background: "#07B519" }}
+            ></SubTitleDivider>
+            <NumberStats>
+              <NumberStatsIcon style={{ background: "rgba(7, 181, 25, 0.22)" }}>
+                <BsCheck color="#07B519" size={16} />
+              </NumberStatsIcon>
+              <FluidTitle>{hype?.length || 0}</FluidTitle>
+            </NumberStats>
+          </HistoryCard>
+        </Link>
+
+        <Link to="/recieved-hypes">
+          <HistoryCard>
+            <SubTitle>Received Hypes</SubTitle>
+            <SubTitleDivider
+              style={{ background: "#FFB328" }}
+            ></SubTitleDivider>
+            <NumberStats>
+              <NumberStatsIcon
+                style={{ background: "rgba(238, 174, 10, 0.22)" }}
+              >
+                <BiEnvelope color="#FFB328" size={16} />
+              </NumberStatsIcon>
+              <FluidTitle>{receivedHype?.length || 0}</FluidTitle>
+            </NumberStats>
+          </HistoryCard>
+        </Link>
       </HistoryCardContainer>
     </HistoryContainer>
   );
@@ -94,6 +106,10 @@ const HistoryContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 26px;
+
+  a {
+    width: 100%;
+  }
 `;
 
 const HistoryCardContainer = styled.div`
