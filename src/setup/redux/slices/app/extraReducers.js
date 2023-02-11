@@ -100,6 +100,23 @@ export const updateHype = createAsyncThunk(
   },
 );
 
+export const deleteHype = createAsyncThunk(
+  "app/deleteHype",
+  async (initialData) => {
+    const hypeRef = doc(db, "hype", initialData.category);
+    const docSnap = await getDoc(hypeRef);
+
+    // Atomically remove a hype to the "hypes" array field.
+    await updateDoc(hypeRef, {
+      hypes: arrayRemove({
+        category: initialData.category,
+        id: initialData.id,
+        message: initialData.message,
+      }),
+    });
+  },
+);
+
 export const getAllHype = createAsyncThunk("app/getAllHype", async () => {
   let allHype = [];
   const hypes = collection(db, "hype");
