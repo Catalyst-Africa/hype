@@ -50,9 +50,9 @@ const HomeIntro = () => {
       <Hero>
         <HeroInner1>
           <Title as="h1" color="#F69D00">
-            Spread positivity!
+            Celebrate your loved ones
           </Title>
-          <SubTitle>Share a Hype</SubTitle>
+          <SubTitle>Share a hype today</SubTitle>
           <Link to="/send-hype">
             <Button>Send a Hype</Button>
           </Link>
@@ -192,11 +192,15 @@ const Hero = styled.div`
   padding: 0px 51px;
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
-    padding: 0px 24px;
+    padding: 0 24px;
+    padding-top: 70px;
   }
 
   ${({ theme }) => theme.breakpoints.down("xs")} {
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
 `;
 
@@ -208,6 +212,12 @@ const HeroInner1 = styled.div`
   button {
     max-width: 180px;
     padding: 0px 32px;
+  }
+
+  ${({ theme }) => theme.breakpoints.down("xs")} {
+    button {
+      margin: auto;
+    }
   }
 `;
 const HeroInner2 = styled.div`
