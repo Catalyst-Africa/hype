@@ -10,6 +10,7 @@ import { Button } from "@/styles/reusable/elements.styled";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllHype, deleteHype } from "@/setup/redux/slices/app/extraReducers";
 import { useRef } from "react";
+import { deleteSingleUser } from "@/setup/redux/slices/auth/extraReducers";
 
 const ViewHypes = () => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const ViewHypes = () => {
   const handleDeleteOpenModal = (hype) => {
     setIsOpenDeleteHype(true);
     deleteMessage.current = hype;
+    console.log(deleteMessage.current);
   };
   const handleDeleteCloseModal = () => {
     setIsOpenDeleteHype(false);

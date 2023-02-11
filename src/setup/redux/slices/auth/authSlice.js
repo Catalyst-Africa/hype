@@ -1,5 +1,6 @@
 import { extractErrorMessage } from "@/helpers/helpers";
 import { createSlice } from "@reduxjs/toolkit";
+import { deleteUser } from "firebase/auth";
 import { toast } from "react-hot-toast";
 
 import {
@@ -13,6 +14,7 @@ import {
   updateUserPassword,
   updateUserData,
   updateUserDP,
+  deleteSingleUser,
 } from "./extraReducers";
 
 const initialState = {
@@ -163,6 +165,15 @@ const authSlice = createSlice({
       })
       .addCase(updateUserDP.rejected, (state, action) => {
         console.log(action.error);
+        toast.error(extractErrorMessage(action.error.message));
+      })
+      .addCase(deleteSingleUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteSingleUser.fulfilled, (state) => {
+        toast.success("User deleted successfully!");
+      })
+      .addCase(deleteSingleUser.rejected, (state) => {
         toast.error(extractErrorMessage(action.error.message));
       });
   },

@@ -28,3 +28,14 @@ exports.addAdminRole = functions.https.onCall(async (data, context) => {
     return err;
   }
 });
+
+exports.deleteUser = functions.https.onCall(async (data, context) => {
+  try {
+    if (context.auth.token.admin !== true) {
+      return { error: "Only admins can delete users" };
+    }
+    await admin.auth().deleteUser(data.uid);
+  } catch (err) {
+    return err;
+  }
+});
