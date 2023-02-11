@@ -11,9 +11,9 @@ const Header = () => {
 
   return (
     <HeaderElement
-      // style={{
-      //   background: pathname.includes("hype/message/") ? "transparent" : "#fff",
-      // }}
+    // style={{
+    //   background: pathname.includes("hype/message/") ? "transparent" : "#fff",
+    // }}
     >
       <div>
         <Link to="/">
@@ -40,7 +40,7 @@ const Header = () => {
             </Link>
           ) : (
             <NavigationButton>
-              <Link to="/signup">
+              <Link to="/login">
                 <Button $type="outlined" style={{ border: "none" }}>
                   Login
                 </Button>
