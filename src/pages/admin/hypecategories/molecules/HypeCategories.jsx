@@ -89,8 +89,6 @@ const HypeCategories = () => {
     formData,
     validateOnSubmit,
   } = useFormValidation(initialData.category, validation);
-  console.log(initialData);
-  console.log(formData);
   return (
     <>
       <HypeCategoriesContainer>

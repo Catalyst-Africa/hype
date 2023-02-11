@@ -15,6 +15,7 @@ import hypesent from "../../../../assets/hypesent.svg";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { getAllHypeCategories } from "@/setup/redux/slices/app/extraReducers";
+import { useId } from "react";
 
 const AddHype = () => {
   const user = useSelector((state) => state.auth.user);
@@ -36,7 +37,7 @@ const AddHype = () => {
   const [initialData, setInitialData] = useState({
     hypeCategory: "",
     hype: "",
-    hypeId: "",
+    hypeId: useId(),
   });
 
   const { errors, handleBlur, checkIsValid } = useFormValidation(
@@ -69,7 +70,11 @@ const AddHype = () => {
 
     // Dispatch AddHype action
     dispatch(
-      addHype({ category: initialData.hypeCategory, hype: initialData.hype }),
+      addHype({
+        category: initialData.hypeCategory,
+        hype: initialData.hype,
+        id: initialData.hypeId,
+      }),
     );
 
     // set the submitted data here. example console.log("the submited data", initialData);
