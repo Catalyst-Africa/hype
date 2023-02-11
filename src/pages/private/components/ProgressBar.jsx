@@ -16,7 +16,8 @@ export default ProgressBar;
 const ProgressBarContainer = styled.div`
   height: 4px;
   width: 100%;
-  max-width: 286px;
+  max-width: 800px;
+  /* max-width: 286px; */
   background: #d9d9d9;
   border-radius: 4px;
   border-radius: 4px;

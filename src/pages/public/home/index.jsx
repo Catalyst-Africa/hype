@@ -5,7 +5,7 @@ import PublicContainer from "@/pages/public/components/PublicContainer";
 const index = () => {
   return (
     <>
-      <PublicContainer>
+      <PublicContainer style={{ backgroundColor: "#fff" }}>
         <HomeIntro />
       </PublicContainer>
     </>

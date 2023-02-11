@@ -8,6 +8,7 @@ import {
   Profile,
   Hype,
   Settings,
+  Hypes,
 } from "../pages/private";
 import {
   AccountSettings,
@@ -30,6 +31,8 @@ const privateRoutes = (
       <Route path="/send-hype" element={<Hype />}>
         <Route path="" element={<SendHype />} />
       </Route>
+      <Route path="/sent-hypes" element={<Hypes />} />
+      <Route path="/recieved-hypes" element={<Hypes />} />
     </Route>
   </Route>
 );

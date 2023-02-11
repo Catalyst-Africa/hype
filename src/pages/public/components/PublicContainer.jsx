@@ -4,7 +4,7 @@ import styled from "styled-components";
 import lovebg from "../../../assets/hypesbg/lovebg.svg";
 import lovebg1 from "../../../assets/hypesbg/lovebg1.svg";
 
-const PublicContainer = ({ children }) => {
+const PublicContainer = ({ children, style }) => {
   const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -17,10 +17,9 @@ const PublicContainer = ({ children }) => {
 
   return (
     <Container
-      style={{
-        backgroundImage: `url(${width > 1023 ? lovebg : lovebg1})`,
-        width: "100%",
-      }}
+      style={style}
+      // backgroundImage: `url(${width > 1023 ? lovebg : lovebg1})`,
+      // width: "100%",
     >
       {children}
     </Container>
