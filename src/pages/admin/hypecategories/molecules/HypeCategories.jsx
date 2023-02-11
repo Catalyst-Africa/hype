@@ -40,7 +40,6 @@ const HypeCategories = () => {
     setCurrentPage(newPage);
   };
 
-  console.log(loading);
   const [isOpenAddCategory, setIsOpenAddCategory] = useState(false);
   const [isOpenEditCategory, setIsOpenEditCategory] = useState(false);
   const [isOpenDeleteCategory, setIsOpenDeleteEditCategory] = useState(false);

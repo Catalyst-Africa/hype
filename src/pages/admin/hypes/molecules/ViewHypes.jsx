@@ -13,11 +13,11 @@ import { getAllHype } from "@/setup/redux/slices/app/extraReducers";
 const ViewHypes = () => {
   const dispatch = useDispatch();
   const hypesList = useSelector((state) => state.app.hypes);
-  console.log(hypesList);
+
   useEffect(() => {
     dispatch(getAllHype());
   }, []);
-  console.log(hypesList);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isOpenDeleteHype, setIsOpenDeleteHype] = useState(false);
@@ -77,14 +77,17 @@ const ViewHypes = () => {
         </SelectHypeCategoryContainer>
         <ViewHypesInnerContainer>
           {currentHypes
-            ? currentHypes.map((hype, index) => {
+            ? currentHypes.map((hypeData, index) => {
                 return (
                   <HypeCard key={index}>
-                    <p>{hype.message}</p>
+                    <p>{hypeData.message}</p>
                     <InfoContainer>
-                      <p>{hype.category}</p>
+                      <p>{hypeData.category}</p>
                       <EditContainer>
-                        <Link to={`/admin/edit-hype/${hype.id}`}>
+                        <Link
+                          to={`/admin/edit-hype/${hypeData.category}/${hypeData.id}`}
+                          state={{ hypeData }}
+                        >
                           <FiEdit />
                         </Link>
 
