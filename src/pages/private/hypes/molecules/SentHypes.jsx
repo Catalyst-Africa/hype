@@ -12,197 +12,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSentHypeByUser } from "@/setup/redux/slices/app/extraReducers";
 
-const hypesList = [
-  {
-    id: 1,
-    category: "ValentineHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me On this Valentine's Day, I just wanted to let you know how much you mean to me On this Valentine's Day, I just wanted to let you know how much you mean to me",
-  },
-  {
-    id: 2,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 3,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-
-  {
-    id: 4,
-    category: "JobsHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 5,
-    category: "ValentineHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 6,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 7,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-
-  {
-    id: 8,
-    category: "JobsHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 9,
-    category: "JobsHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 10,
-    category: "ValentineHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 11,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 12,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-
-  {
-    id: 13,
-    category: "JobsHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 14,
-    category: "ValentineHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 15,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 16,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-
-  {
-    id: 17,
-    category: "JobsHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 18,
-    category: "JobsHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 19,
-    category: "ValentineHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 20,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 21,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-
-  {
-    id: 22,
-    category: "JobsHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 23,
-    category: "ValentineHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 24,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 25,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-
-  {
-    id: 26,
-    category: "JobsHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 27,
-    category: "JobsHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 28,
-    category: "ValentineHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 29,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 30,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-
-  {
-    id: 31,
-    category: "JobsHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 32,
-    category: "ValentineHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 33,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 34,
-    category: "LoveHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-
-  {
-    id: 35,
-    category: "JobsHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-  {
-    id: 36,
-    category: "JobsHypes",
-    hype: "On this Valentine's Day, I just wanted to let you know how much you mean to me...",
-  },
-];
-
 const SentHypes = () => {
   const dispatch = useDispatch();
   const hypesList = useSelector((state) => state.app.usersSentHype);
@@ -279,45 +88,53 @@ const SentHypes = () => {
           </SelectHypeCategory>
         </SelectHypeCategoryContainer>
         <ViewHypesInnerContainer>
-          {currentHypes
-            ? currentHypes.map((hype, index) => {
-                const randomColor =
-                  colors[Math.floor(Math.random() * colors.length)];
-                return (
-                  <HypeCard
-                    key={index}
-                    style={{ backgroundColor: randomColor }}
-                  >
-                    <p>{hype.hype}</p>
-                    <br />
-                    <InfoCard1 style={{ color: "#868686" }}>
-                      <span>
-                        Sent to: <b>{hype.name}</b>
-                      </span>
-                      <span>
-                        {new Date(hype?.timeStamp?.seconds * 1000)
-                          .toLocaleDateString()
-                          .split("/")
-                          .join(".")}
-                      </span>
-                      <span>{hype.hypeId}</span>
-                    </InfoCard1>
-                    <br />
-                    <InfoCard2>
-                      <InfoSocial>
-                        <BsWhatsapp color="#4BBB16" />
-                        <p style={{ color: "#868686" }}>Whatsapp</p>
-                      </InfoSocial>
-                      <ViewHypeContainer>
-                        <Link to="#">
-                          <em>View Hype</em>
-                        </Link>
-                      </ViewHypeContainer>
-                    </InfoCard2>
-                  </HypeCard>
-                );
-              })
-            : ""}
+          {currentHypes ? (
+            currentHypes.map((hype, index) => {
+              const randomColor =
+                colors[Math.floor(Math.random() * colors.length)];
+              return (
+                <HypeCard key={index} style={{ backgroundColor: randomColor }}>
+                  <p>{hype.hype}</p>
+                  <br />
+                  <InfoCard1 style={{ color: "#868686" }}>
+                    <span>
+                      Sent to: <b>{hype.name}</b>
+                    </span>
+                    <span>
+                      {new Date(hype?.timeStamp?.seconds * 1000)
+                        .toLocaleDateString()
+                        .split("/")
+                        .join(".")}
+                    </span>
+                    <span>{hype.hypeId}</span>
+                  </InfoCard1>
+                  <br />
+                  <InfoCard2>
+                    <InfoSocial>
+                      <BsWhatsapp color="#4BBB16" />
+                      <p style={{ color: "#868686" }}>Whatsapp</p>
+                    </InfoSocial>
+                    <ViewHypeContainer>
+                      <Link to="#">
+                        <em>View Hype</em>
+                      </Link>
+                    </ViewHypeContainer>
+                  </InfoCard2>
+                </HypeCard>
+              );
+            })
+          ) : (
+            <div
+              style={{
+                textAlign: "center",
+                fontSize: "18px",
+                width: "100%",
+                gridColumn: "1 / span 4",
+              }}
+            >
+              No data to display
+            </div>
+          )}
         </ViewHypesInnerContainer>
         <HypesNavigation>
           {currentPage > 1 && (
@@ -327,7 +144,7 @@ const SentHypes = () => {
               color="#FFB328"
             />
           )}
-          {currentPage} of {totalPages}
+          {hypesList.length > 0 ? `${currentPage} of ${totalPages}` : ""}
           {currentPage < totalPages && (
             <IoIosArrowForward
               onClick={() => handlePageChange(currentPage + 1)}
