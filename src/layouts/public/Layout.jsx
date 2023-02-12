@@ -11,7 +11,7 @@ const Layout = () => {
       <PublicAreaContainer>
         <Main>
           <MainContent>
-            {pathname === "/" ? <Header /> : ""}
+            {pathname.includes("/hype/message") ? "" : <Header />}
             <Outlet />
           </MainContent>
         </Main>
