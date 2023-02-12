@@ -8,6 +8,9 @@ import { Link } from "react-router-dom";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/styles/reusable/elements.styled";
 import { BsWhatsapp } from "react-icons/bs";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getSentHypeByUser } from "@/setup/redux/slices/app/extraReducers";
 
 const hypesList = [
   {
@@ -201,6 +204,14 @@ const hypesList = [
 ];
 
 const SentHypes = () => {
+  const dispatch = useDispatch();
+  const hypesList = useSelector((state) => state.app.usersSentHype);
+  const user = useSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    dispatch(getSentHypeByUser(user.uid));
+  }, []);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isOpenDeleteHype, setIsOpenDeleteHype] = useState(false);
@@ -281,10 +292,15 @@ const SentHypes = () => {
                     <br />
                     <InfoCard1 style={{ color: "#868686" }}>
                       <span>
-                        Sent to: <b>BeyondLogic</b>
+                        Sent to: <b>{hype.name}</b>
                       </span>
-                      <span>08.14.2023 </span>
-                      <span>{hype.category}</span>
+                      <span>
+                        {new Date(hype?.timeStamp?.seconds * 1000)
+                          .toLocaleDateString()
+                          .split("/")
+                          .join(".")}
+                      </span>
+                      <span>{hype.hypeId}</span>
                     </InfoCard1>
                     <br />
                     <InfoCard2>
