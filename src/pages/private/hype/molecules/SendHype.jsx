@@ -181,6 +181,7 @@ const SendHype = () => {
       userId: user.uid,
       ...initialData,
       timeStamp: serverTimestamp(),
+      sender: displayName ? firstname : "",
     });
 
     console.log(`https://hype-dev.netlify.app/hype/message/${docRef.id}`);
