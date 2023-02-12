@@ -1,5 +1,5 @@
 import { SubTitle } from "@/styles/reusable/elements.styled";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import {
   Chart as ChartJS,
@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 
 import { Bar } from "react-chartjs-2";
+import { useSelector } from "react-redux";
 
 ChartJS.register(
   CategoryScale,
@@ -31,83 +32,24 @@ export const options = {
   maintainAspectRatio: false,
 };
 
-const getCurrentMonthName = (parameter) => {
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  return monthNames[parameter];
-};
-
-const labelsDays = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
-const LabelYear = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
-const last30Days = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-const last30DaysMonth = last30Days.getMonth();
-const currentMonth = new Date().getMonth();
-
-const labelsMonth = [getCurrentMonthName(currentMonth)];
-
-const Label30days = [getCurrentMonthName(last30DaysMonth)];
+const label = ["Statistics"];
 
 const Analytics = () => {
-  const [selectedOption, setSelectedOption] = useState("");
+  const hypesListSent = useSelector((state) => state.app.allHypeSent);
+  const hypesList = useSelector((state) => state.app.hypes);
 
-  const handleChange = (event) => {
-    setSelectedOption(event.target.value);
-  };
+  console.log("cool", hypesList);
   const data = {
-    labels:
-      selectedOption === "thisweek"
-        ? labelsDays
-        : selectedOption === "thismonth"
-        ? labelsMonth
-        : selectedOption === "last30days"
-        ? Label30days
-        : selectedOption === "thisyear"
-        ? LabelYear
-        : selectedOption === "lastyear"
-        ? LabelYear
-        : labelsDays,
+    labels: label,
     datasets: [
       {
         label: "Total Hypes",
-        data: [
-          7500, 4000, 8000, 8000, 6500, 7800, 5000, 5820, 8900, 7100, 6100,
-          5000,
-        ],
+        data: [hypesList?.length || 0],
         backgroundColor: "#36BFFA",
       },
       {
         label: "Sent Hypes",
-        data: [
-          7000, 7500, 7000, 7000, 5400, 4000, 4820, 7800, 5000, 7000, 6000,
-          4000,
-        ],
+        data: [hypesListSent.length || 0],
         backgroundColor: "#12B76A",
       },
     ],
@@ -117,16 +59,6 @@ const Analytics = () => {
     <AnalyticsContainer>
       <TitleContainer>
         <SubTitle>Conversions</SubTitle>
-        <SubTitle style={{ color: "rgba(57, 57, 57, 0.38)" }}>
-          <SelectDate value={selectedOption} onChange={handleChange}>
-            {/* <option value="">Select...</option> */}
-            <option value="thisweek">This Week</option>
-            <option value="thismonth">This Month</option>
-            <option value="last30days">Last 30 Days</option>
-            <option value="thisyear">This Year</option>
-            <option value="lastyear">Last Year</option>
-          </SelectDate>
-        </SubTitle>
       </TitleContainer>
       <AnalyticsCard>
         <BarContainer>
