@@ -10,6 +10,9 @@ import {
   deleteHype,
   getSentHypeByUser,
   receiveSentHypeByUser,
+  getAdminStatistics,
+  getAllHypeReceived,
+  getAllHypeSent,
 } from "./extraReducers";
 import { toast } from "react-hot-toast";
 import { extractErrorMessage } from "@/helpers/helpers";
@@ -24,6 +27,11 @@ const initialState = {
   hypes: [],
   usersSentHype: [],
   usersReceivedHype: [],
+  sentHypesCount: [],
+  receivedHypesCount: [],
+  totalUser: [],
+  allHypeSent: [],
+  allHypeReceived: [],
 };
 
 const appSlice = createSlice({
@@ -142,6 +150,41 @@ const appSlice = createSlice({
         state.usersReceivedHype = payload;
       })
       .addCase(receiveSentHypeByUser.rejected, (state, action) => {
+        state.adminLoading = false;
+        toast.error(action.error.message);
+      })
+      .addCase(getAdminStatistics.pending, (state) => {
+        state.adminLoading = true;
+      })
+      .addCase(getAdminStatistics.fulfilled, (state, { payload }) => {
+        state.totalUser = payload[0].users;
+        state.sentHypes = payload[0].sentHypes;
+        state.receivedHypes = payload[0].receivedHypes;
+        state.adminLoading = false;
+      })
+      .addCase(getAdminStatistics.rejected, (state, action) => {
+        state.adminLoading = false;
+        toast.error(action.error.message);
+      })
+      .addCase(getAllHypeSent.pending, (state) => {
+        state.adminLoading = true;
+      })
+      .addCase(getAllHypeSent.fulfilled, (state, { payload }) => {
+        state.adminLoading = false;
+        state.allHypeSent = payload;
+      })
+      .addCase(getAllHypeSent.rejected, (state, action) => {
+        state.adminLoading = false;
+        toast.error(action.error.message);
+      })
+      .addCase(getAllHypeReceived.pending, (state, { payload }) => {
+        state.adminLoading = true;
+        state.allHypeReceived = payload;
+      })
+      .addCase(getAllHypeReceived.fulfilled, (state, { payload }) => {
+        state.adminLoading = false;
+      })
+      .addCase(getAllHypeReceived.rejected, (state, action) => {
         state.adminLoading = false;
         toast.error(action.error.message);
       });
