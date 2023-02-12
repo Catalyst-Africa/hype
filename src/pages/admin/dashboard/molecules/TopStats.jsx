@@ -17,21 +17,21 @@ const TopStats = () => {
   const Stats = [
     {
       name: "Users",
-      count: data.totalUser,
+      count: data.totalUser || 0,
       link: "/admin/users",
     },
     {
       name: "Sent Hypes",
-      count: data.sentHypes,
+      count: data.sentHypes || 0,
       link: "/admin/sent-hypes",
     },
     {
       name: "Recieved Hypes",
-      count: data.receivedHypes,
+      count: data.receivedHypes || 0,
     },
     {
       name: "Gems Used",
-      count: data.gemsUsed,
+      count: data.gemsUsed || 0,
     },
   ];
   return (
