@@ -46,7 +46,7 @@ const RecievedHypes = () => {
   const currentHypes = filteredHypes?.slice(startIndex, endIndex);
 
   const uniqueHypesCategories = [
-    ...new Set(hypesList.map((item) => item.category)),
+    ...new Set(hypesList.map((item) => item.hypeId)),
   ];
 
   const handleDeleteOpenModal = () => {
@@ -88,11 +88,15 @@ const RecievedHypes = () => {
         </SelectHypeCategoryContainer>
         <ViewHypesInnerContainer>
           {currentHypes.length > 0 ? (
-            currentHypes.map((hype, index) => {
+            currentHypes.reverse().map((hype, index) => {
               const randomColor =
                 colors[Math.floor(Math.random() * colors.length)];
               return (
-                <HypeCard key={index} style={{ backgroundColor: randomColor }}>
+                <HypeCard
+                  onClick={(e) => e.stopPropagation()}
+                  key={index}
+                  style={{ backgroundColor: randomColor }}
+                >
                   <p>{hype.hype}</p>
                   <br />
                   <InfoCard1 style={{ color: "#868686" }}>
@@ -117,7 +121,7 @@ const RecievedHypes = () => {
                       <p style={{ color: "#868686" }}>Whatsapp</p>
                     </InfoSocial>
                     <ViewHypeContainer>
-                      <Link to="#">
+                      <Link to="">
                         <em>View Hype</em>
                       </Link>
                     </ViewHypeContainer>
