@@ -8,6 +8,8 @@ import {
   getAllHype,
   updateHype,
   deleteHype,
+  getSentHypeByUser,
+  receiveSentHypeByUser,
 } from "./extraReducers";
 import { toast } from "react-hot-toast";
 import { extractErrorMessage } from "@/helpers/helpers";
@@ -20,6 +22,8 @@ const initialState = {
   users: [],
   hypeCategories: [],
   hypes: [],
+  usersSentHype: [],
+  usersReceivedHype: [],
 };
 
 const appSlice = createSlice({
@@ -116,6 +120,28 @@ const appSlice = createSlice({
         // toast.success("Hype has been added successfully!");
       })
       .addCase(getAllHype.rejected, (state, action) => {
+        state.adminLoading = false;
+        toast.error(action.error.message);
+      })
+      .addCase(getSentHypeByUser.pending, (state) => {
+        state.adminLoading = true;
+      })
+      .addCase(getSentHypeByUser.fulfilled, (state, { payload }) => {
+        state.adminLoading = false;
+        state.usersSentHype = payload;
+      })
+      .addCase(getSentHypeByUser.rejected, (state, action) => {
+        state.adminLoading = false;
+        toast.error(action.error.message);
+      })
+      .addCase(receiveSentHypeByUser.pending, (state) => {
+        state.adminLoading = true;
+      })
+      .addCase(receiveSentHypeByUser.fulfilled, (state, { payload }) => {
+        state.adminLoading = false;
+        state.usersReceivedHype = payload;
+      })
+      .addCase(receiveSentHypeByUser.rejected, (state, action) => {
         state.adminLoading = false;
         toast.error(action.error.message);
       });
