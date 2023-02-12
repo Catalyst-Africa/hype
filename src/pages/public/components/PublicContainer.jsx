@@ -18,15 +18,14 @@ const Container = styled.div`
   gap: 30px;
   width: 100%;
   margin: 0 auto;
-
-  /* padding: 22px 51px; */
+  padding: 22px 51px;
 
   ${({ theme }) => theme.breakpoints.down("md")} {
     background-size: contain;
   }
 
   ${({ theme }) => theme.breakpoints.down("sm")} {
-    /* padding: 37px 24px; */
+    padding: 0px 24px;
     margin: 0 auto;
     box-shadow: none;
     border-radius: 0px;
