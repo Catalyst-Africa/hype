@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import {
@@ -175,6 +180,7 @@ const SendHype = () => {
     const docRef = await addDoc(collection(db, "sentHypes"), {
       userId: user.uid,
       ...initialData,
+      timeStamp: serverTimestamp(),
     });
 
     console.log(`https://hype-dev.netlify.app/hype/message/${docRef.id}`);

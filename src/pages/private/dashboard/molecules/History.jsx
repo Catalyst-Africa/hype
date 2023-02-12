@@ -2,51 +2,24 @@ import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { SubTitle } from "@/styles/reusable/elements.styled";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { MdEditNote } from "react-icons/md";
 import { BsCheck } from "react-icons/bs";
 import { BiEnvelope } from "react-icons/bi";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { useSelector } from "react-redux";
-import { db } from "@/setup/firebase/firebase";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import {
+  getSentHypeByUser,
+  receiveSentHypeByUser,
+} from "@/setup/redux/slices/app/extraReducers";
 
 const History = () => {
   const user = useSelector((state) => state.auth.user);
-  const [hype, setHype] = useState();
-  const [receivedHype, setReceivedHype] = useState();
+  const dispatch = useDispatch();
+  const hype = useSelector((state) => state.app.usersSentHype);
+  const receivedHype = useSelector((state) => state.app.usersReceivedHype);
+
   useEffect(() => {
-    const sentHype = [];
-    const receivedHype = [];
-    const getUserSentHype = async () => {
-      // Create a reference to the sentHypes collection
-      const q = query(
-        collection(db, "sentHypes"),
-        where("userId", "==", user?.uid),
-      );
-
-      // Create a query against the collection.
-      const hypeCountDoc = await getDocs(q);
-      hypeCountDoc.forEach((doc) => {
-        console.log(doc.data());
-        sentHype.push(doc.data());
-      });
-
-      // Create a reference to query sentHype collection for whatsapp
-      const qWhatsapp = query(
-        collection(db, "sentHypes"),
-        where("whatsappnumber", "==", user?.phoneNumber),
-      );
-
-      const sentHypeCountDoc = await getDocs(qWhatsapp);
-      sentHypeCountDoc.forEach((doc) => {
-        receivedHype.push(doc.data());
-      });
-
-      setHype(sentHype);
-      setReceivedHype(receivedHype);
-    };
-    getUserSentHype();
+    dispatch(getSentHypeByUser(user.uid));
+    dispatch(receiveSentHypeByUser(user));
   }, []);
 
   return (

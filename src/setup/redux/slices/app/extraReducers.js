@@ -8,6 +8,8 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  query,
+  where,
 } from "firebase/firestore";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { auth } from "@/setup/firebase/firebase";
@@ -126,3 +128,73 @@ export const getAllHype = createAsyncThunk("app/getAllHype", async () => {
   });
   return allHype;
 });
+
+export const getSentHypeByUser = createAsyncThunk(
+  "app/getSentHypeByUser",
+  async (user) => {
+    const sentHype = [];
+    const q = query(collection(db, "sentHypes"), where("userId", "==", user));
+
+    // Create a query against the collection.
+    const hypeCountDoc = await getDocs(q);
+    hypeCountDoc.forEach((doc) => {
+      sentHype.push(doc.data());
+    });
+
+    return sentHype;
+  },
+);
+
+export const receiveSentHypeByUser = createAsyncThunk(
+  "app/receiveSentHypeByUser",
+  async (user) => {
+    const receivedHype = [];
+    // Create a reference to query sentHype collection for whatsapp
+    const qWhatsapp = query(
+      collection(db, "sentHypes"),
+      where("whatsappnumber", "==", user?.phoneNumber),
+    );
+    const sentHypeCountDoc = await getDocs(qWhatsapp);
+    sentHypeCountDoc.forEach(async (doc) => {
+      console.log(doc);
+      if (!doc.exists()) {
+        await addDoc(collection(db, "receivedHypes"), {
+          doc,
+        });
+      }
+    });
+
+    const q = query(
+      collection(db, "receivedHypes"),
+      where("userId", "==", user?.uid),
+    );
+
+    // Create a query against the collection.
+    const hypeReceivedCountDoc = await getDocs(q);
+    hypeReceivedCountDoc.forEach((doc) => {
+      if (doc.exists()) {
+        receivedHype.push(doc.data());
+      }
+    });
+
+    return receivedHype;
+  },
+);
+
+export const getAdminStatistics = createAsyncThunk(
+  "app/getAdminStatistics",
+  async () => {
+    const totalUsers = collection(db, "users");
+    const totalSentHype = collection(db, "sentHypes");
+
+    const data = await Promise.all([
+      (await getCountFromServer(totalUsers)).data().count,
+      (await getCountFromServer(totalSentHype)).data().count,
+    ]);
+    setUsersData({
+      users: data[0],
+      sentHypes: data[1],
+      receivedHypes: data[1],
+    });
+  },
+);
