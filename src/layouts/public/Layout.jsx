@@ -3,7 +3,6 @@ import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Header from "@/layouts/public/partials/Header";
-import Footer from "@/layouts/public/partials/Footer";
 
 const Layout = () => {
   const { pathname } = useLocation();
@@ -14,7 +13,6 @@ const Layout = () => {
           <MainContent>
             {pathname.includes("/hype/message") ? "" : <Header />}
             <Outlet />
-            {pathname.includes("/hype/message") ? "" : <Footer />}
           </MainContent>
         </Main>
       </PublicAreaContainer>
