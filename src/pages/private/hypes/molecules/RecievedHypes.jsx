@@ -18,7 +18,7 @@ const RecievedHypes = () => {
 
   useEffect(() => {
     dispatch(receiveSentHypeByUser(user));
-  });
+  }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -99,7 +99,7 @@ const RecievedHypes = () => {
                     <span>
                       Received from:{" "}
                       <b>
-                        {hype?.sender.length > 0 ? hype?.sender : "anonymous"}
+                        {hype?.sender?.length > 0 ? hype?.sender : "anonymous"}
                       </b>
                     </span>
                     <span>

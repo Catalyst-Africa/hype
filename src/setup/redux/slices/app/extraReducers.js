@@ -10,6 +10,7 @@ import {
   arrayRemove,
   query,
   where,
+  addDoc,
   getCountFromServer,
 } from "firebase/firestore";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -157,27 +158,10 @@ export const receiveSentHypeByUser = createAsyncThunk(
     );
     const sentHypeCountDoc = await getDocs(qWhatsapp);
     sentHypeCountDoc.forEach(async (doc) => {
-      console.log(doc);
-      if (!doc.exists()) {
-        await addDoc(collection(db, "receivedHypes"), {
-          doc,
-        });
-      }
+      const data = doc.data();
+      receivedHype.push(data);
     });
-
-    const q = query(
-      collection(db, "receivedHypes"),
-      where("userId", "==", user?.uid),
-    );
-
-    // Create a query against the collection.
-    const hypeReceivedCountDoc = await getDocs(q);
-    hypeReceivedCountDoc.forEach((doc) => {
-      if (doc.exists()) {
-        receivedHype.push(doc.data());
-      }
-    });
-
+    console.log(receivedHype);
     return receivedHype;
   },
 );
