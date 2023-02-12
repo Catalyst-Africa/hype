@@ -47,10 +47,9 @@ const SendHype = () => {
   //Loading for when sending hypes
   const [loadingSend, setLoadingSend] = useState(false);
 
-  const [hypes, setHype] = useState([]);
+  const [hypes, setHypes] = useState([]);
 
   //Get data from the backend
-
   useEffect(() => {
     const getAllHype = async () => {
       const x = [];
@@ -60,7 +59,7 @@ const SendHype = () => {
           const id = doc.id;
           x.push({ id, ...doc.data() });
         });
-        setHype(x);
+        setHypes(x);
       } catch (err) {
         err;
       }
@@ -105,16 +104,20 @@ const SendHype = () => {
             selecthype: "select",
           });
           setSelectedHypesCategories({});
-        } else if (event.target.value === Object.keys(hype)[1]) {
+        } else if (
+          event.target.value === Object.values(hype)[0]
+          // ||
+          // event.target.value === Object.keys(hype)[1][0].category
+        ) {
           setSelectedHypesCategories(Object.values(hype)[1]);
           setInitialData({
             ...initialData,
             hype:
-              Object.values(hype)[1]?.message === undefined
+              Object.values(hype)[1][1]?.message === undefined
                 ? //Returns message for array that are equal to 1
-                  Object.values(hype)[0].message
+                  Object.values(hype)[1][0].message
                 : //Returns message for array that are more than 1
-                  Object.values(hype)[1]?.message,
+                  Object.values(hype)[1][1]?.message,
             hypeId: hype.id,
             selecthype: Object.keys(hype)[1],
           });
@@ -232,19 +235,11 @@ const SendHype = () => {
                     {hypes?.map((hype) => (
                       <option
                         key={Object.values(hype)[0]}
-                        value={Object.keys(hype)[1]}
+                        value={Object.values(hype)[0]}
                       >
-                        {Object.keys(hype)[1] === "valentineHypes"
-                          ? "🌷 Valentine wishes"
-                          : Object.keys(hype)[1] === "jobHypes"
-                          ? "🎉 Congratulations on Job"
-                          : Object.keys(hype)[1] === "birthdayHypes"
-                          ? "🎂 Birthday Messages"
-                          : Object.keys(hype)[1] === "loveHypes"
-                          ? "💕 Love Hypes"
-                          : Object.keys(hype)[1] === "christianLoveHypes"
-                          ? "❤️ Christian love messages"
-                          : " 🙏 Appreciation love message"}
+                        {Object.values(hype)[0]
+                          .split(/(?=[A-Z])/)
+                          .join(" ")}
                       </option>
                     ))}
                   </SelectInputGroup>

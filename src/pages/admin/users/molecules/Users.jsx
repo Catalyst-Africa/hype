@@ -1,8 +1,10 @@
 import Modal from "@/components/ui/Modal";
 import { getAllUsers } from "@/setup/redux/slices/app/extraReducers";
+import { deleteSingleUser } from "@/setup/redux/slices/auth/extraReducers";
 import { Button } from "@/styles/reusable/elements.styled";
 import { FluidTitle, SubTitle } from "@/styles/reusable/elements.styled";
 import React, { useState } from "react";
+import { useRef } from "react";
 import { useEffect } from "react";
 import { AiOutlineUser, AiFillPhone, AiOutlineMail } from "react-icons/ai";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
@@ -13,6 +15,7 @@ import styled from "styled-components";
 const Users = () => {
   const dispatch = useDispatch();
   const usersList = useSelector((state) => state.app.users);
+  const userRef = useRef();
 
   useEffect(() => {
     dispatch(getAllUsers());
@@ -31,11 +34,16 @@ const Users = () => {
     setCurrentPage(newPage);
   };
 
-  const handleDeleteShowModal = () => {
+  const handleDeleteShowModal = (user) => {
+    userRef.current = user;
     setIsOpenDeleteUser(true);
   };
   const handleDeleteCloseModal = () => {
     setIsOpenDeleteUser(false);
+  };
+
+  const handleDeleteUser = () => {
+    dispatch(deleteSingleUser(userRef.current));
   };
 
   return (
@@ -62,7 +70,9 @@ const Users = () => {
                   <UserCardInner>
                     <RiDeleteBin2Line
                       color="#ff0000"
-                      onClick={handleDeleteShowModal}
+                      onClick={(e) => {
+                        handleDeleteShowModal(user.userId);
+                      }}
                     />
                   </UserCardInner>
                 </UserCard>
@@ -96,7 +106,12 @@ const Users = () => {
           <p>Are you sure you want to delete this User?</p>
           <br />
           <ButtonDeleteContainer>
-            <Button style={{ backgroundColor: "#ff0000" }}>Delete</Button>
+            <Button
+              onClick={handleDeleteUser}
+              style={{ backgroundColor: "#ff0000" }}
+            >
+              Delete
+            </Button>
           </ButtonDeleteContainer>
         </Modal>
       )}

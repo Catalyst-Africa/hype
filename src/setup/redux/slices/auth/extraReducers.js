@@ -20,6 +20,7 @@ import {
   serverTimestamp,
   updateDoc,
   onSnapshot,
+  deleteDoc,
 } from "firebase/firestore";
 import { toast } from "react-hot-toast";
 
@@ -171,5 +172,16 @@ export const updateUserDP = createAsyncThunk(
     await updateDoc(docRef, {
       photoUrl: imgUrl,
     });
+  },
+);
+
+export const deleteSingleUser = createAsyncThunk(
+  "auth/deleteUser",
+  async (user) => {
+    const deleteOneUser = httpsCallable(functions, "deleteUser");
+    deleteOneUser({ uid: user });
+
+    const userRef = doc(db, "users", user);
+    await deleteDoc(userRef);
   },
 );
