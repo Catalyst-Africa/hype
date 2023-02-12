@@ -10,6 +10,7 @@ import {
   arrayRemove,
   query,
   where,
+  getCountFromServer,
 } from "firebase/firestore";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { auth } from "@/setup/firebase/firebase";
@@ -19,14 +20,14 @@ export const getAllUsers = createAsyncThunk("app/getAllUsers", async () => {
   const users = collection(db, "users");
   const usersSnap = await getDocs(users);
   usersSnap.forEach((user) => {
-    if (user.id !== auth.currentUser.uid) {
-      allUsers.push({
-        userId: user.id,
-        name: user.data().name,
-        email: user.data().email,
-        phone: user.data().phonenumber,
-      });
-    }
+    // if (user.id !== auth.currentUser.uid) {
+    allUsers.push({
+      userId: user.id,
+      name: user.data().name,
+      email: user.data().email,
+      phone: user.data().phonenumber,
+    });
+    // }
   });
   return allUsers;
 });
@@ -184,17 +185,48 @@ export const receiveSentHypeByUser = createAsyncThunk(
 export const getAdminStatistics = createAsyncThunk(
   "app/getAdminStatistics",
   async () => {
+    const userData = [];
     const totalUsers = collection(db, "users");
     const totalSentHype = collection(db, "sentHypes");
+    const totalReceivedHype = collection(db, "receivedHypes");
 
     const data = await Promise.all([
       (await getCountFromServer(totalUsers)).data().count,
       (await getCountFromServer(totalSentHype)).data().count,
+      (await getCountFromServer(totalReceivedHype)).data().count,
     ]);
-    setUsersData({
+
+    userData.push({
       users: data[0],
       sentHypes: data[1],
-      receivedHypes: data[1],
+      receivedHypes: data[2],
     });
+    return userData;
+  },
+);
+
+export const getAllHypeSent = createAsyncThunk(
+  "app/getAllHypeSent",
+  async () => {
+    const allHypeSent = [];
+    const hypes = collection(db, "sentHypes");
+    const hypeSnap = await getDocs(hypes);
+    hypeSnap.forEach((hype) => {
+      allHypeSent.push(hype.data());
+    });
+    return allHypeSent;
+  },
+);
+
+export const getAllHypeReceived = createAsyncThunk(
+  "app/getAllHypeReceived",
+  async () => {
+    const allHypeReceived = [];
+    const hypes = collection(db, "receivedHypes");
+    const hypeSnap = await getDocs(hypes);
+    hypeSnap.forEach((hype) => {
+      allHypeReceived.push(hype);
+    });
+    return allHypeReceived;
   },
 );

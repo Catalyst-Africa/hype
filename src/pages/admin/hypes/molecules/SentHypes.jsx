@@ -8,6 +8,9 @@ import { Link } from "react-router-dom";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/styles/reusable/elements.styled";
 import { BsWhatsapp } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getAllHypeSent } from "@/setup/redux/slices/app/extraReducers";
 
 const hypesList = [
   {
@@ -201,6 +204,13 @@ const hypesList = [
 ];
 
 const SentHypes = () => {
+  const dispatch = useDispatch();
+  const hypesList = useSelector((state) => state.app.allHypeSent);
+  // console.log(allHype);
+
+  useEffect(() => {
+    dispatch(getAllHypeSent());
+  }, []);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isOpenDeleteHype, setIsOpenDeleteHype] = useState(false);
@@ -281,16 +291,23 @@ const SentHypes = () => {
                     <br />
                     <InfoCard1 style={{ color: "#868686" }}>
                       <span>
-                        Sent to: <b>BeyondLogic</b>
+                        Sent to: <b>{hype.name}</b>
                       </span>
-                      <span>08.14.2023 </span>
-                      <span>{hype.category}</span>
+                      <span>
+                        {new Date(hype?.timeStamp?.seconds * 1000)
+                          .toLocaleDateString()
+                          .split("/")
+                          .join(".")}
+                      </span>
+                      <span>{hype.selecthype}</span>
                     </InfoCard1>
                     <br />
                     <InfoCard2>
                       <InfoSocial>
                         <BsWhatsapp color="#4BBB16" />
-                        <p style={{ color: "#868686" }}>Whatsapp</p>
+                        <p style={{ color: "#868686" }}>
+                          {hype.selectsocial == "whatsapp" ? "Whatsapp" : ""}
+                        </p>
                       </InfoSocial>
                       <ViewHypeContainer>
                         <Link to="">
@@ -311,7 +328,7 @@ const SentHypes = () => {
               color="#FFB328"
             />
           )}
-          {currentPage} of {totalPages}
+          {hypesList.length > 0 ? `${currentPage} of ${totalPages}` : ""}
           {currentPage < totalPages && (
             <IoIosArrowForward
               onClick={() => handlePageChange(currentPage + 1)}

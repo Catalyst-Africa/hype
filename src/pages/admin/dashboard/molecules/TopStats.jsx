@@ -3,54 +3,35 @@ import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { SubTitle } from "@/styles/reusable/elements.styled";
 import { Link } from "react-router-dom";
-import { getCountFromServer, collection } from "firebase/firestore";
-import { db } from "@/setup/firebase/firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { getAdminStatistics } from "@/setup/redux/slices/app/extraReducers";
 
 const TopStats = () => {
-  const [usersData, setUsersData] = useState({
-    users: "",
-    sentHypes: "",
-    receivedHypes: "",
-    gemsUsed: "",
-  });
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.app);
+  console.log(data);
   useEffect(() => {
-    const getAdminData = async () => {
-      const totalUsers = collection(db, "users");
-      const totalSentHype = collection(db, "sentHypes");
-
-      const data = await Promise.all([
-        (await getCountFromServer(totalUsers)).data().count,
-        (await getCountFromServer(totalSentHype)).data().count,
-      ]);
-      setUsersData({
-        users: data[0],
-        sentHypes: data[1],
-        receivedHypes: data[1],
-      });
-      console.log(data);
-    };
-
-    getAdminData();
+    dispatch(getAdminStatistics());
   }, []);
 
   const Stats = [
     {
       name: "Users",
-      count: usersData.users,
+      count: data.totalUser,
       link: "/admin/users",
     },
     {
       name: "Sent Hypes",
-      count: usersData.sentHypes,
+      count: data.sentHypes,
       link: "/admin/sent-hypes",
     },
     {
       name: "Recieved Hypes",
-      count: usersData.receivedHypes,
+      count: data.receivedHypes,
     },
     {
       name: "Gems Used",
-      count: usersData.gemsUsed,
+      count: data.gemsUsed,
     },
   ];
   return (
