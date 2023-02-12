@@ -1,5 +1,5 @@
 import { SubTitle } from "@/styles/reusable/elements.styled";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import {
   Chart as ChartJS,
@@ -12,7 +12,11 @@ import {
 } from "chart.js";
 
 import { Bar } from "react-chartjs-2";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllHype,
+  getAllHypeSent,
+} from "@/setup/redux/slices/app/extraReducers";
 
 ChartJS.register(
   CategoryScale,
@@ -35,10 +39,15 @@ export const options = {
 const label = ["Statistics"];
 
 const Analytics = () => {
+  const dispatch = useDispatch();
   const hypesListSent = useSelector((state) => state.app.allHypeSent);
   const hypesList = useSelector((state) => state.app.hypes);
 
-  console.log("cool", hypesList);
+  useEffect(() => {
+    dispatch(getAllHype());
+    dispatch(getAllHypeSent());
+  }, []);
+
   const data = {
     labels: label,
     datasets: [
