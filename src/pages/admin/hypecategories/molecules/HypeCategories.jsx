@@ -107,7 +107,9 @@ const HypeCategories = () => {
   return (
     <>
       <HypeCategoriesContainer>
-        <FluidTitle>Categories</FluidTitle>
+        <FluidTitle>
+          Categories{` [${currentCategoriesList.length}]`}
+        </FluidTitle>
         <ButtonContainer>
           <Button onClick={handleAddOpenModal}>Add a Category</Button>
         </ButtonContainer>
@@ -118,10 +120,10 @@ const HypeCategories = () => {
                 <CategoryCard key={key}>
                   <p>{item}</p>
                   <CardInner>
-                    <FiEdit
+                    {/* <FiEdit
                       color="#FFB328"
                       onClick={() => handleEditOpenModal(item)}
-                    />
+                    /> */}
                     <RiDeleteBin2Line
                       color="#ff0000"
                       onClick={(e) => handleDeleteOpenModal(item)}
@@ -201,7 +203,7 @@ const HypeCategories = () => {
         <Modal handleClose={handleDeleteCloseModal}>
           <FluidTitle>Delete Category</FluidTitle>
           <br />
-          <SubTitle>ValentineHypes</SubTitle>
+          {/* <SubTitle>ValentineHypes</SubTitle> */}
           <p>Are you sure you want to delete this category?</p>
           <br />
           <ButtonUpdateContainer>

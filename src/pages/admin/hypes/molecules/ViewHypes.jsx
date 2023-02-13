@@ -53,7 +53,6 @@ const ViewHypes = () => {
   const handleDeleteOpenModal = (hype) => {
     setIsOpenDeleteHype(true);
     deleteMessage.current = hype;
-    console.log(deleteMessage.current);
   };
   const handleDeleteCloseModal = () => {
     setIsOpenDeleteHype(false);

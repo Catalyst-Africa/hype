@@ -87,7 +87,7 @@ const SendHype = () => {
     hypeId: "",
     selectsocial: "",
     whatsappnumber: "",
-    smsnumber: "",
+    // smsnumber: "",
   });
 
   const { errors, handleBlur, checkIsValid } = useFormValidation(
@@ -140,13 +140,13 @@ const SendHype = () => {
             smsnumber: "",
           });
         }
-        if (event?.target?.name === "smsnumber") {
-          setInitialData({
-            ...initialData,
-            smsnumber: inputValue,
-            whatsappnumber: "",
-          });
-        }
+        // if (event?.target?.name === "smsnumber") {
+        //   setInitialData({
+        //     ...initialData,
+        //     smsnumber: inputValue,
+        //     whatsappnumber: "",
+        //   });
+        // }
         if (/^[a-zA-Z0-9]+$/.test(inputValue) || inputValue === "") {
           setInitialData({
             ...initialData,
@@ -156,7 +156,6 @@ const SendHype = () => {
       }
     });
   };
-
   const handleHypesPrevious = () => {
     setCurrentIndex(currentIndex - 1);
     setInitialData({
@@ -242,9 +241,6 @@ const SendHype = () => {
       }
     }, 1000);
 
-    console.log(`https://hype-dev.netlify.app/hype/message/${docRef.id}`);
-
-    // set the submitted data here. example console.log("the submited data", initialData);
     setInitialData({
       name: "",
       selecthype: "",
@@ -424,7 +420,7 @@ const SendHype = () => {
                       Choose
                     </option>
                     <option value="whatsapp">Whatsapp</option>
-                    <option value="sms">SMS</option>
+                    {/* <option value="sms">SMS</option> */}
                   </SelectInputGroup>
                 </InputContainer>
                 <PhoneInputContainer>
@@ -460,38 +456,6 @@ const SendHype = () => {
                       )}
                     </>
                   )}
-                  {initialData.selectsocial === "sms" && (
-                    <>
-                      <Label>Recipent SMS Number</Label>
-                      <PhoneInputGroup
-                        style={
-                          isValidPhoneNumber(initialData.smsnumber || "")
-                            ? { border: "1px solid green" }
-                            : { border: "1px solid" }
-                        }
-                      >
-                        <PhoneInput
-                          defaultCountry="NG"
-                          international
-                          countryCallingCodeEditable={false}
-                          placeholder="Enter phone number"
-                          name="smsnumber"
-                          value={initialData.smsnumber}
-                          onChange={(value) =>
-                            handleInitialDataChange({
-                              target: { name: "smsnumber", value },
-                            })
-                          }
-                        />
-                      </PhoneInputGroup>
-                      {initialData.smsnumber &&
-                      isValidPhoneNumber(initialData.smsnumber || "") ? (
-                        ""
-                      ) : (
-                        <HelperText>Enter a valid phone number</HelperText>
-                      )}
-                    </>
-                  )}
                 </PhoneInputContainer>
               </FormShareGroupContainer>
               <Button
@@ -499,30 +463,24 @@ const SendHype = () => {
                   marginTop: "20px",
                   color: "#fff",
                   backgroundColor:
-                    (initialData.name &&
-                      initialData.selecthype &&
-                      initialData.selecthype !== "select" &&
-                      initialData.hype.length > 1 &&
-                      initialData.selectsocial === "whatsapp" &&
-                      initialData.whatsappnumber &&
-                      isValidPhoneNumber(initialData.whatsappnumber)) ||
-                    (initialData.selectsocial === "sms" &&
-                      initialData.smsnumber &&
-                      isValidPhoneNumber(initialData.smsnumber))
-                      ? ""
-                      : "#5E5E5E",
-                }}
-                disabled={
-                  (initialData.name &&
+                    initialData.name &&
                     initialData.selecthype &&
                     initialData.selecthype !== "select" &&
                     initialData.hype.length > 1 &&
                     initialData.selectsocial === "whatsapp" &&
                     initialData.whatsappnumber &&
-                    isValidPhoneNumber(initialData.whatsappnumber)) ||
-                  (initialData.selectsocial === "sms" &&
-                    initialData.smsnumber &&
-                    isValidPhoneNumber(initialData.smsnumber))
+                    isValidPhoneNumber(initialData.whatsappnumber)
+                      ? ""
+                      : "#5E5E5E",
+                }}
+                disabled={
+                  initialData.name &&
+                  initialData.selecthype &&
+                  initialData.selecthype !== "select" &&
+                  initialData.hype.length > 1 &&
+                  initialData.selectsocial === "whatsapp" &&
+                  initialData.whatsappnumber &&
+                  isValidPhoneNumber(initialData.whatsappnumber)
                     ? false
                     : true
                 }

@@ -44,13 +44,12 @@ const EditHype = () => {
     dispatch(updateHype({ formData, initialData }));
     setLoadingAdd(true);
 
-    // set the submitted data here. example console.log("the submited data", initialData);
     setLoadingAdd(false);
-    setFormData({
-      hypeCategory: "",
-      hype: "",
-      hypeId: "",
-    });
+    // setFormData({
+    //   hypeCategory: "",
+    //   hype: "",
+    //   hypeId: "",
+    // });
   };
 
   return (

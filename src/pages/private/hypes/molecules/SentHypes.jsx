@@ -50,8 +50,6 @@ const SentHypes = () => {
   const uniqueHypesCategories = [
     ...new Set(hypesList.map((item) => item.hypeId)),
   ];
-  console.log("list", hypesList);
-  console.log(uniqueHypesCategories);
   const handleDeleteOpenModal = () => {
     setIsOpenDeleteHype(true);
   };

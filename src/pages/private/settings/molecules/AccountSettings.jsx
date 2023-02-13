@@ -62,12 +62,9 @@ const AccountSettings = () => {
       const imageRef = ref(storage, `profilePhoto${user.username}`);
       await uploadBytes(imageRef, image);
       const url = await getDownloadURL(imageRef);
-      console.log(url);
       dispatch(updateUserDP(url));
       dispatch(updateLoading());
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   return (

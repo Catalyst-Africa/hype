@@ -76,8 +76,6 @@ const AddHype = () => {
         id: initialData.hypeId,
       }),
     );
-
-    // set the submitted data here. example console.log("the submited data", initialData);
     setInitialData({
       hypeCategory: "",
       hype: "",
