@@ -26,6 +26,10 @@ import { BiCheckbox, BiCheckboxSquare } from "react-icons/bi";
 import { AiFillBackward, AiFillForward } from "react-icons/ai";
 import { db } from "@/setup/firebase/firebase";
 import { useEffect } from "react";
+import "react-phone-number-input/style.css";
+import PhoneInput, {
+  isValidPhoneNumber,
+} from "react-phone-number-input";
 
 const SendHype = () => {
   const user = useSelector((state) => state.auth.user);
@@ -53,6 +57,8 @@ const SendHype = () => {
   const [loadingSend, setLoadingSend] = useState(false);
 
   const [hypes, setHypes] = useState([]);
+
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   //Get data from the backend
   useEffect(() => {
@@ -82,13 +88,14 @@ const SendHype = () => {
     hypeId: "",
     selectsocial: "",
     whatsappnumber: "",
-    smsnumber: "",
+    // smsnumber: "",
   });
 
   const { errors, handleBlur, checkIsValid } = useFormValidation(
     initialData,
     validation,
   );
+
   //Close Hype Sent Successful Modal
   const handleToggleModal = () => {
     setToggleModal(false);
@@ -97,12 +104,12 @@ const SendHype = () => {
 
   //Handle Hypes Changes
   const handleInitialDataChange = (event) => {
-    let inputValue = event.target.value;
+    let inputValue = event?.target?.value;
     setCurrentIndex(0);
 
     hypes?.forEach((hype) => {
-      if (event.target.name === "selecthype") {
-        if (event.target.value === "select") {
+      if (event?.target?.name === "selecthype") {
+        if (event?.target?.value === "select") {
           setInitialData({
             ...initialData,
             hype: "",
@@ -110,7 +117,7 @@ const SendHype = () => {
           });
           setSelectedHypesCategories({});
         } else if (
-          event.target.value === Object.values(hype)[0]
+          event?.target?.value === Object.values(hype)[0]
           // ||
           // event.target.value === Object.keys(hype)[1][0].category
         ) {
@@ -128,10 +135,16 @@ const SendHype = () => {
           });
         }
       } else {
+        if (event?.target?.name === "whatsappnumber") {
+          setInitialData({
+            ...initialData,
+            whatsappnumber: inputValue,
+          });
+        }
         if (/^[a-zA-Z0-9]+$/.test(inputValue) || inputValue === "") {
           setInitialData({
             ...initialData,
-            [event.target.name]: inputValue,
+            [event?.target?.name]: inputValue,
           });
         }
       }
@@ -366,53 +379,57 @@ const SendHype = () => {
                       Choose
                     </option>
                     <option value="whatsapp">Whatsapp</option>
-                    <option value="sms">SMS</option>
+                    {/* <option value="sms">SMS</option> */}
                   </SelectInputGroup>
                 </InputContainer>
-                <InputContainer>
+                <PhoneInputContainer>
                   {initialData.selectsocial === "whatsapp" && (
-                    <InputGroup
-                      name="whatsappnumber"
-                      type="number"
-                      id="whatsappnumber"
-                      label="Whatsapp number"
-                      placeholder="Recipients whatsapp number"
-                      value={initialData.whatsappnumber}
-                      onBlur={(e) => handleBlur(e)}
-                      onChange={handleInitialDataChange}
-                      helperText={errors.whatsappnumber}
-                      helperTextType={checkIsValid("whatsappnumber")}
-                    />
+                    <>
+                      <Label>Recipent Phone Number</Label>
+                      <PhoneInputGroup
+                        style={
+                          isValidPhoneNumber(initialData.whatsappnumber)
+                            ? { border: "1px solid green" }
+                            : { border: "1px solid" }
+                        }
+                      >
+                        <PhoneInput
+                          defaultCountry="NG"
+                          international
+                          countryCallingCodeEditable={false}
+                          placeholder="Enter phone number"
+                          name="whatsappnumber"
+                          value={initialData.whatsappnumber}
+                          onChange={(value) =>
+                            handleInitialDataChange({
+                              target: { name: "whatsappnumber", value },
+                            })
+                          }
+                        />
+                      </PhoneInputGroup>
+                      {initialData.whatsappnumber &&
+                      isValidPhoneNumber(initialData.whatsappnumber) ? (
+                        ""
+                      ) : (
+                        <HelperText>Enter a valid number</HelperText>
+                      )}
+                    </>
                   )}
-
-                  {initialData.selectsocial === "sms" && (
-                    <InputGroup
-                      name="smsnumber"
-                      type="number"
-                      id="smsnumber"
-                      label="Phone number"
-                      placeholder="Recipients phone number"
-                      value={initialData.smsnumber}
-                      onBlur={(e) => handleBlur(e)}
-                      onChange={handleInitialDataChange}
-                      helperText={errors.smsnumber}
-                      helperTextType={checkIsValid("smsnumber")}
-                    />
-                  )}
-                </InputContainer>
+                </PhoneInputContainer>
               </FormShareGroupContainer>
+
               <Button
                 style={{
+                  marginTop: "20px",
                   color: "#fff",
                   backgroundColor:
                     initialData.name &&
                     initialData.selecthype &&
                     initialData.selecthype !== "select" &&
                     initialData.hype.length > 1 &&
-                    (initialData.selectsocial === "whatsapp"
-                      ? initialData.whatsappnumber.length > 10
-                      : initialData.selectsocial === "sms" &&
-                        initialData.smsnumber.length > 10)
+                    initialData.selectsocial === "whatsapp" &&
+                    initialData.whatsappnumber &&
+                    isValidPhoneNumber(initialData.whatsappnumber)
                       ? ""
                       : "#5E5E5E",
                 }}
@@ -421,10 +438,9 @@ const SendHype = () => {
                   initialData.selecthype &&
                   initialData.selecthype !== "select" &&
                   initialData.hype.length > 1 &&
-                  (initialData.selectsocial === "whatsapp"
-                    ? initialData.whatsappnumber.length > 10
-                    : initialData.selectsocial === "sms" &&
-                      initialData.smsnumber.length > 10)
+                  initialData.selectsocial === "whatsapp" &&
+                  initialData.whatsappnumber &&
+                  isValidPhoneNumber(initialData.whatsappnumber)
                     ? false
                     : true
                 }
@@ -490,6 +506,39 @@ const SendHypeContainer = styled.div`
     padding: 18px 20px;
     margin-bottom: 100px;
   }
+
+  .PhoneInputInput {
+    background: transparent;
+    border: none;
+    color: black;
+    height: 100%;
+    outline: none;
+    width: 100%;
+    display: flex;
+    font-size: 14px;
+  }
+`;
+
+const Label = styled.label`
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: inline-block;
+  margin-top: 2px;
+`;
+
+const PhoneInputGroup = styled.div`
+  width: 100%;
+  height: 35px;
+  background: transparent;
+  border: 1px solid;
+  border-radius: 8px;
+  outline: none;
+  padding: 0px 12px;
+  gap: 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
 `;
 
 const SendHypeInnerContainer = styled.div`
@@ -527,7 +576,9 @@ const FormGroupContainer = styled.div`
 
 const FormShareGroupContainer = styled.div`
   display: flex;
+  align-items: center;
   gap: 27px;
+  position: relative;
 
   ${({ theme }) => theme.breakpoints.down("xl")} {
     flex-direction: column;
@@ -538,6 +589,12 @@ const InputContainer = styled.div`
   width: 100%;
 `;
 
+const PhoneInputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+`;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -608,4 +665,11 @@ const HypesNavigation = styled.div`
   ${({ theme }) => theme.breakpoints.down("md")} {
     justify-content: center;
   }
+`;
+
+const HelperText = styled.small`
+  position: absolute;
+  bottom: -20px;
+  display: inline-block;
+  color: #000;
 `;
