@@ -38,6 +38,9 @@ const Footer = () => {
               <a href="https://twitter.com/sharehype4fun/">
                 <li>Twitter</li>
               </a>
+              <a href="mailto:support@sharehype.fun">
+                <li>Support@sharehype.fun</li>
+              </a>
             </ul>
           </FooterSection>
         </FooterContainer>
