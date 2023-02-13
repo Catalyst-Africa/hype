@@ -15,6 +15,7 @@ import styled from "styled-components";
 const Users = () => {
   const dispatch = useDispatch();
   const usersList = useSelector((state) => state.app.users);
+  const email = useSelector((state) => state.auth.email);
   const userRef = useRef();
 
   useEffect(() => {
@@ -68,12 +69,16 @@ const Users = () => {
                     <span>{user.phone || "No phone number set yet!"}</span>
                   </InfoContainer>
                   <UserCardInner>
-                    <RiDeleteBin2Line
-                      color="#ff0000"
-                      onClick={(e) => {
-                        handleDeleteShowModal(user.userId);
-                      }}
-                    />
+                    {user.email !== "control@catalyst.africa" ? (
+                      <RiDeleteBin2Line
+                        color="#ff0000"
+                        onClick={(e) => {
+                          handleDeleteShowModal(user.userId);
+                        }}
+                      />
+                    ) : (
+                      ""
+                    )}
                   </UserCardInner>
                 </UserCard>
               );

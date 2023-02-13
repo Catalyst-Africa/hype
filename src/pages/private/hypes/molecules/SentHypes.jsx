@@ -47,9 +47,10 @@ const SentHypes = () => {
   const currentHypes = filteredHypes?.slice(startIndex, endIndex);
 
   const uniqueHypesCategories = [
-    ...new Set(hypesList.map((item) => item.category)),
+    ...new Set(hypesList.map((item) => item.hypeId)),
   ];
-
+  console.log(hypesList);
+  console.log(uniqueHypesCategories);
   const handleDeleteOpenModal = () => {
     setIsOpenDeleteHype(true);
   };
@@ -89,7 +90,7 @@ const SentHypes = () => {
         </SelectHypeCategoryContainer>
         <ViewHypesInnerContainer>
           {currentHypes ? (
-            currentHypes.map((hype, index) => {
+            currentHypes.reverse().map((hype, index) => {
               const randomColor =
                 colors[Math.floor(Math.random() * colors.length)];
               return (

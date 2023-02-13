@@ -14,7 +14,7 @@ import {
 import { Bar } from "react-chartjs-2";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getAllHype,
+  getAllUsers,
   getAllHypeSent,
 } from "@/setup/redux/slices/app/extraReducers";
 
@@ -41,10 +41,10 @@ const label = ["Statistics"];
 const Analytics = () => {
   const dispatch = useDispatch();
   const hypesListSent = useSelector((state) => state.app.allHypeSent);
-  const hypesList = useSelector((state) => state.app.hypes);
+  const totalUsers = useSelector((state) => state.app.totalUser);
 
   useEffect(() => {
-    dispatch(getAllHype());
+    dispatch(getAllUsers());
     dispatch(getAllHypeSent());
   }, []);
 
@@ -52,8 +52,8 @@ const Analytics = () => {
     labels: label,
     datasets: [
       {
-        label: "Total Hypes",
-        data: [hypesList?.length || 0],
+        label: "Total Users",
+        data: [totalUsers || 0],
         backgroundColor: "#36BFFA",
       },
       {
