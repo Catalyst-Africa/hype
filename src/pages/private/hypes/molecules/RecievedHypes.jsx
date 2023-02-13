@@ -142,7 +142,7 @@ const RecievedHypes = () => {
                         <p style={{ color: "#868686" }}>Whatsapp</p>
                       </InfoSocial>
                       <ViewHypeContainer>
-                        <Link to="">
+                        <Link to={`/hype/message/${hype?.docId}`}>
                           <em>View Hype</em>
                         </Link>
                       </ViewHypeContainer>

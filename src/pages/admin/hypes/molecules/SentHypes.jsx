@@ -310,7 +310,7 @@ const SentHypes = () => {
                         </p>
                       </InfoSocial>
                       <ViewHypeContainer>
-                        <Link to="">
+                        <Link to={`/hype/message/${hype?.docId}`}>
                           <em>View Hype</em>
                         </Link>
                       </ViewHypeContainer>
