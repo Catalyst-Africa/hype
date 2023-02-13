@@ -411,7 +411,7 @@ const SendHype = () => {
                       isValidPhoneNumber(initialData.whatsappnumber) ? (
                         ""
                       ) : (
-                        <HelperText>Enter a valid number</HelperText>
+                        <HelperText>Enter a valid phone number</HelperText>
                       )}
                     </>
                   )}
