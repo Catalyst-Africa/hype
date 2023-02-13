@@ -3,7 +3,7 @@ import { SubTitle } from "@/styles/reusable/elements.styled";
 import React, { useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { toast } from "react-hot-toast";
 import { useState } from "react";
@@ -16,6 +16,13 @@ import Header from "@/layouts/public/partials/Header";
 
 const HypeMessageView = () => {
   const [hype, setHype] = useState();
+
+  const location = useLocation();
+
+  console.log(location.state?.data);
+
+  if (location.state?.data !== null) {
+  }
 
   const user = useSelector((state) => state.auth.user);
   const firstname = user.displayName?.split(" ")[0];
@@ -88,6 +95,14 @@ const HypeMessageView = () => {
           <br />
           <p>{hype?.hype}</p>
           <br />
+          {location.state?.data !== null ? (
+            <>
+              <p>Receiver's Number: {hype?.whatsappnumber}</p>
+              <p>Sender: {hype?.sender || "anonymous"}</p>
+            </>
+          ) : (
+            ""
+          )}
         </HypeMessageCard>
       </HypeContainer>
       <HypeMesageFooter>
