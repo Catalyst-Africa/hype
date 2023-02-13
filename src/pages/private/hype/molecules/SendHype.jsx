@@ -4,6 +4,7 @@ import {
   getDocs,
   addDoc,
   serverTimestamp,
+  updateDoc,
 } from "firebase/firestore";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
@@ -198,6 +199,11 @@ const SendHype = () => {
       ...initialData,
       timeStamp: serverTimestamp(),
       sender: displayName ? firstname : "",
+    });
+
+    const updateId = doc(db, "sentHypes", docRef.id);
+    await updateDoc(updateId, {
+      docId: docRef.id,
     });
 
     // fetch(
