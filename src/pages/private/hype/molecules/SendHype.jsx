@@ -5,6 +5,7 @@ import {
   addDoc,
   serverTimestamp,
   updateDoc,
+  doc,
 } from "firebase/firestore";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
@@ -240,8 +241,6 @@ const SendHype = () => {
     setSelectedHypesCategories({});
     setLoadingSend(false);
   };
-
-  console.log("first", initialData);
 
   return (
     <>
