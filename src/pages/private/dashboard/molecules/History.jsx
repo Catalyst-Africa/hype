@@ -19,7 +19,7 @@ const History = () => {
 
   useEffect(() => {
     dispatch(getSentHypeByUser(user.uid));
-    user?.phonenumber.length > 0 && dispatch(receiveSentHypeByUser(user));
+    user?.phoneNumber?.length > 0 && dispatch(receiveSentHypeByUser(user));
   }, []);
 
   return (
