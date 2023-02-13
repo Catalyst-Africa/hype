@@ -17,6 +17,8 @@ const SentHypes = () => {
   const hypesList = useSelector((state) => state.app.allHypeSent);
   const currentLocation = window.location.pathname;
 
+  console.log(hypesList);
+
   useEffect(() => {
     dispatch(getAllHypeSent());
   }, []);
@@ -27,7 +29,7 @@ const SentHypes = () => {
   const filteredHypes =
     selectedCategory === "All"
       ? hypesList
-      : hypesList.filter((item) => item.category === selectedCategory);
+      : hypesList.filter((item) => item.hypeId === selectedCategory);
 
   const itemsPerPage = 12;
   const totalPages = Math.ceil(filteredHypes.length / itemsPerPage);
@@ -46,7 +48,7 @@ const SentHypes = () => {
   const currentHypes = filteredHypes?.slice(startIndex, endIndex);
 
   const uniqueHypesCategories = [
-    ...new Set(hypesList.map((item) => item.category)),
+    ...new Set(hypesList.map((item) => item.hypeId)),
   ];
 
   const handleDeleteOpenModal = () => {
@@ -108,7 +110,7 @@ const SentHypes = () => {
                           .split("/")
                           .join(".")}
                       </span>
-                      <span>{hype.selecthype}</span>
+                      <span>{hype.hypeId}</span>
                     </InfoCard1>
                     <br />
                     <InfoCard2>

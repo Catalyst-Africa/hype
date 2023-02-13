@@ -21,9 +21,6 @@ const HypeMessageView = () => {
 
   console.log(location.state?.data);
 
-  if (location.state?.data !== null) {
-  }
-
   const user = useSelector((state) => state.auth.user);
   const firstname = user.displayName?.split(" ")[0];
   const [width, setWidth] = useState(window.innerWidth);
@@ -95,7 +92,7 @@ const HypeMessageView = () => {
           <br />
           <p>{hype?.hype}</p>
           <br />
-          {location.state?.data !== null ? (
+          {location.state?.data === "/admin/sent-hypes" ? (
             <>
               <p>Receiver's Number: {hype?.whatsappnumber}</p>
               <p>Sender: {hype?.sender || "anonymous"}</p>
