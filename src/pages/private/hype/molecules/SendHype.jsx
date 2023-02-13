@@ -30,6 +30,7 @@ import { db } from "@/setup/firebase/firebase";
 import { useEffect } from "react";
 import "react-phone-number-input/style.css";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import { useCallback } from "react";
 
 const SendHype = () => {
   const user = useSelector((state) => state.auth.user);
@@ -207,25 +208,40 @@ const SendHype = () => {
       docId: docRef.id,
     });
 
-    // fetch(
-    //   `http://api.textmebot.com/send.php?recipient=${initialData.whatsappnumber[0].replace(
-    //     initialData.whatsappnumber[0],
-    //     "+234",
-    //   )}&apikey=qrLyqtDUxKVM&text=someone sent you a hype, $https://hype-dev.netlify.app/hype/message/${
-    //     (docRef.id,
-    //     {
-    //       method: "POST",
-    //       headers: {},
-    //       body: {
-    //         recipient: initialData.whatsappnumber[0].replace(
-    //           initialData.whatsappnumber[0],
-    //           "+234",
-    //         ),
+    const streakTimer = setInterval(() => {
+      // Get current time and date
+      const now = new Date().getTime();
 
-    //       },
-    //     })
-    //   } `,
-    // );
+      const x = serverTimestamp()?.seconds;
+
+      // distance between the current time and the countdown date
+      const distance = x - now;
+
+      if (distance < 0) {
+        clearInterval(streakTimer);
+
+        const newTimer = setInterval(async () => {
+          const next24Hours = new Date().getTime() + 86400;
+          const now = new Date().getTime();
+
+          const newDistance = next24Hours - now;
+
+          if (newDistance > 0) {
+            const updateStreak = doc(db, "users", user.uid);
+            await updateDoc(updateStreak, {
+              streak: Number(user?.streak) + 1,
+            });
+          } else {
+            clearInterval(newTimer);
+            const updateStreak = doc(db, "users", user.uid);
+            await updateDoc(updateStreak, {
+              streak: 1,
+            });
+          }
+        }, 1000);
+      }
+    }, 1000);
+
     console.log(`https://hype-dev.netlify.app/hype/message/${docRef.id}`);
 
     // set the submitted data here. example console.log("the submited data", initialData);

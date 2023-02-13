@@ -31,6 +31,7 @@ const initialState = {
     createdAt: "",
     username: "",
     isAdmin: "",
+    streak: "",
   },
 };
 
@@ -48,6 +49,7 @@ const authSlice = createSlice({
       state.user.bio = action.payload.data?.bio;
       state.user.createdAt = action.payload?.data?.timeStamp;
       state.user.username = action.payload?.data?.username;
+      state.user.streak = action.payload?.data?.streak;
       state.user.isAdmin = action.payload?.adminRole;
     },
     updateLoading: (state) => {
