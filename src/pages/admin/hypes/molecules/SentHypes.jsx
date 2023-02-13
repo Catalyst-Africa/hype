@@ -16,6 +16,7 @@ import { useTimeStampToDate } from "@/hooks";
 const SentHypes = () => {
   const dispatch = useDispatch();
   const hypesList = useSelector((state) => state.app.allHypeSent);
+  const currentLocation = window.location.pathname;
 
   useEffect(() => {
     dispatch(getAllHypeSent());
@@ -151,7 +152,10 @@ const SentHypes = () => {
                           </NumberContainer>
                         </InfoSocial>
                         <ViewHypeContainer>
-                          <Link to={`/hype/message/${hype?.docId}`}>
+                          <Link
+                            state={{ data: currentLocation }}
+                            to={`/hype/message/${hype?.docId}`}
+                          >
                             <em>View Hype</em>
                           </Link>
                         </ViewHypeContainer>
