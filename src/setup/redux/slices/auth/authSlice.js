@@ -158,7 +158,6 @@ const authSlice = createSlice({
       })
       .addCase(updateUserData.rejected, (state, action) => {
         state.loading = false;
-        console.log(action.error);
         toast.error(extractErrorMessage(action.error.message));
       })
       .addCase(updateUserDP.pending, (state) => {})
@@ -166,7 +165,6 @@ const authSlice = createSlice({
         toast.success("Profile Picture Successfully Updated");
       })
       .addCase(updateUserDP.rejected, (state, action) => {
-        console.log(action.error);
         toast.error(extractErrorMessage(action.error.message));
       })
       .addCase(deleteSingleUser.pending, (state) => {

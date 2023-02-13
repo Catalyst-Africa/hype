@@ -70,7 +70,6 @@ const appSlice = createSlice({
       })
       .addCase(addHypeCategories.rejected, (state, action) => {
         state.adminLoading = false;
-        console.log(action.error.message);
         toast.error(action.error.message);
       })
       .addCase(deleteHype.pending, (state) => {
