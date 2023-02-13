@@ -184,6 +184,24 @@ const SendHype = () => {
       sender: displayName ? firstname : "",
     });
 
+    fetch(
+      `http://api.textmebot.com/send.php?recipient=${initialData.whatsappnumber[0].replace(
+        initialData.whatsappnumber[0],
+        "+234",
+      )}&apikey=qrLyqtDUxKVM&text=someone sent you a hype, $https://hype-dev.netlify.app/hype/message/${
+        (docRef.id,
+        {
+          method: "POST",
+          headers: {},
+          body: {
+            recipient: initialData.whatsappnumber[0].replace(
+              initialData.whatsappnumber[0],
+              "+234",
+            ),
+          },
+        })
+      } `,
+    );
     console.log(`https://hype-dev.netlify.app/hype/message/${docRef.id}`);
 
     // set the submitted data here. example console.log("the submited data", initialData);

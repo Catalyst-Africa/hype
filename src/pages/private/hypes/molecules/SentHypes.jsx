@@ -90,7 +90,7 @@ const SentHypes = () => {
         </SelectHypeCategoryContainer>
         <ViewHypesInnerContainer>
           {currentHypes ? (
-            currentHypes.reverse().map((hype, index) => {
+            currentHypes.sort().map((hype, index) => {
               const randomColor =
                 colors[Math.floor(Math.random() * colors.length)];
               return (

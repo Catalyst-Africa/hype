@@ -168,7 +168,6 @@ export const receiveSentHypeByUser = createAsyncThunk(
       const data = doc.data();
       receivedHype.push(data);
     });
-    console.log(receivedHype);
     return receivedHype;
   },
 );
