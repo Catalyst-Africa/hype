@@ -89,7 +89,7 @@ const SentHypes = () => {
           </SelectHypeCategory>
         </SelectHypeCategoryContainer>
         <ViewHypesInnerContainer>
-          {currentHypes ? (
+          {currentHypes.length > 0 ? (
             currentHypes
               .sort((a, b) => {
                 // Convert the timestamps to day-month-year-hours-minutes-seconds date strings
