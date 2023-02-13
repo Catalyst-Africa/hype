@@ -17,7 +17,8 @@ const RecievedHypes = () => {
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    dispatch(receiveSentHypeByUser(user));
+    console.log(user?.phoneNumber?.length);
+    user?.phonenumer?.length > 0 && dispatch(receiveSentHypeByUser(user));
   }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -112,7 +113,7 @@ const RecievedHypes = () => {
                         .split("/")
                         .join(".")}
                     </span>
-                    <span>{hype.category}</span>
+                    <span>{hype.hypeId}</span>
                   </InfoCard1>
                   <br />
                   <InfoCard2>
