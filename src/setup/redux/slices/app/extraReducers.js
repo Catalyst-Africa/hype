@@ -10,7 +10,7 @@ import {
   arrayRemove,
   query,
   where,
-  addDoc,
+  deleteDoc,
   getCountFromServer,
 } from "firebase/firestore";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -45,6 +45,13 @@ export const addHypeCategories = createAsyncThunk(
     } else {
       throw new Error("Hype Category already exists!");
     }
+  },
+);
+
+export const deleteHypeCategories = createAsyncThunk(
+  "app/deleteHypeCategories",
+  async (document) => {
+    await deleteDoc(doc(db, "hype", document));
   },
 );
 

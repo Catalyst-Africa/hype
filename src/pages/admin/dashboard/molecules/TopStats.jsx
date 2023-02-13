@@ -9,7 +9,7 @@ import { getAdminStatistics } from "@/setup/redux/slices/app/extraReducers";
 const TopStats = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.app);
-  console.log(data);
+
   useEffect(() => {
     dispatch(getAdminStatistics());
   }, []);
@@ -27,7 +27,7 @@ const TopStats = () => {
     },
     {
       name: "Recieved Hypes",
-      count: data.receivedHypes || 0,
+      count: data.sentHypes || 0,
     },
     {
       name: "Gems Used",
