@@ -19,8 +19,6 @@ const HypeMessageView = () => {
 
   const location = useLocation();
 
-  console.log(location.state?.data);
-
   if (location.state?.data !== null) {
   }
 
