@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components';
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import HomeHeroImage1 from "../../../../assets/homeheroimage1.svg";
 import HomeHeroImage2 from "../../../../assets/homeheroimage2.svg";
 import HomeHeroImage3 from "../../../../assets/images/homeheroimage1.png";
 import HomeHeroImageBg from "../../../../assets/homeheroimagebg.svg";
-import { Title, SubTitle } from '@/styles/reusable/elements.styled';
-import { Button } from '@/styles/reusable/elements.styled';
-import { Link } from 'react-router-dom';
+import { Title, SubTitle } from "@/styles/reusable/elements.styled";
+import { Button } from "@/styles/reusable/elements.styled";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
-   const [width, setWidth] = useState(window.innerWidth);
-     useEffect(() => {
-       const handleResize = () => setWidth(window.innerWidth);
-       window.addEventListener("resize", handleResize);
-       return () => {
-         window.removeEventListener("resize", handleResize);
-       };
-     }, []);
+  const [width, setWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <Hero>
       <HeroInner1>
         <Title as="h1" color="#F69D00">
           Celebrate your loved ones
         </Title>
-        <SubTitle>Share a hype today</SubTitle>
+        <SubTitle>Make someone feel special today. Send them a hype.</SubTitle>
         <Link to="/send-hype">
-          <Button>Send a Hype</Button>
+          <Button>Send Hype!</Button>
         </Link>
       </HeroInner1>
       <HeroInner2>
@@ -37,9 +37,9 @@ const HeroSection = () => {
       </HeroInner2>
     </Hero>
   );
-}
+};
 
-export default HeroSection
+export default HeroSection;
 
 const Hero = styled.div`
   display: flex;
@@ -90,4 +90,3 @@ const HeroInner2 = styled.div`
     padding-top: 120px;
   }
 `;
-

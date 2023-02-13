@@ -24,7 +24,7 @@ const HomeIntro = () => {
     {
       icon: <FaBirthdayCake size={112} color="#6C63FF" />,
       bgColor: "#D2D1E0",
-      name: "BirthDay",
+      name: "Birthday",
     },
 
     {
@@ -47,22 +47,21 @@ const HomeIntro = () => {
             <img src={SectionOneImage} alt="Share Love" />
           </ImageContainer>
           <SectionInfo>
-            <FluidTitle>Share Love</FluidTitle>
+            <FluidTitle>Loved ones</FluidTitle>
             <br />
             <p>
-              Lorem ipsum dolor sit amet consectetur. In fermentum duis viverra
-              libero enim ut diam felis vitae egestas viverra turpis.
+              Show your loved ones how much you love them by sending them a hype
             </p>
           </SectionInfo>
         </SectionContainer>
         <SectionContainer>
           <InnerSectionContainer>
             <SectionInfo>
-              <FluidTitle>Send Birthday Wishes</FluidTitle>
+              <FluidTitle>Birthday Wishes</FluidTitle>
               <br />
               <p>
-                Lorem ipsum dolor sit amet consectetur. In fermentum duis
-                viverra libero enim ut diam felis vitae egestas viverra turpis.
+                WhatsApp texts are old now, Hype is the new way. Send a Birthday
+                Hype to the special person
               </p>
             </SectionInfo>
             <ImageContainer>
@@ -76,22 +75,23 @@ const HomeIntro = () => {
           </ImageContainer>
 
           <SectionInfo>
-            <FluidTitle>Celebrate your friend today</FluidTitle>
+            <FluidTitle>Celebrate a friend</FluidTitle>
             <br />
             <p>
-              Lorem ipsum dolor sit amet consectetur. In fermentum duis viverra
-              libero enim ut diam felis vitae egestas viverra turpis.
+              There's that one friend who always comes through. It's time to
+              hype them! Let them know that you care too.
             </p>
           </SectionInfo>
         </SectionContainer>
 
         <TemplatesContainer>
           <Title as="h1" color="#F69D00">
-            Templates for everything
+            Templates
           </Title>
           <br />
           <p>
-            Lorem ipsum dolor sit amet consectetur. In fermentum duis viverra.
+            No need to get stressed up thinking of special messages to send, we
+            have that handled for you. Just click, click and
           </p>
           <TemplatesInnerContainer>
             {TemplatesList

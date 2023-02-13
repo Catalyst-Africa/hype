@@ -270,7 +270,7 @@ const SendHype = () => {
                   <InputGroup
                     name="name"
                     id="name"
-                    label="Spread Positivity"
+                    label="Spread Happiness"
                     placeholder="Enter recipients name"
                     value={initialData.name}
                     onBlur={(e) => handleBlur(e)}
@@ -433,7 +433,7 @@ const SendHype = () => {
                       <Label>Recipent Whatsapp Number</Label>
                       <PhoneInputGroup
                         style={
-                          isValidPhoneNumber(initialData.whatsappnumber)
+                          isValidPhoneNumber(initialData.whatsappnumber || "")
                             ? { border: "1px solid green" }
                             : { border: "1px solid" }
                         }
@@ -453,7 +453,7 @@ const SendHype = () => {
                         />
                       </PhoneInputGroup>
                       {initialData.whatsappnumber &&
-                      isValidPhoneNumber(initialData.whatsappnumber) ? (
+                      isValidPhoneNumber(initialData.whatsappnumber || "") ? (
                         ""
                       ) : (
                         <HelperText>Enter a valid phone number</HelperText>
@@ -465,7 +465,7 @@ const SendHype = () => {
                       <Label>Recipent SMS Number</Label>
                       <PhoneInputGroup
                         style={
-                          isValidPhoneNumber(initialData.smsnumber)
+                          isValidPhoneNumber(initialData.smsnumber || "")
                             ? { border: "1px solid green" }
                             : { border: "1px solid" }
                         }
@@ -485,7 +485,7 @@ const SendHype = () => {
                         />
                       </PhoneInputGroup>
                       {initialData.smsnumber &&
-                      isValidPhoneNumber(initialData.smsnumber) ? (
+                      isValidPhoneNumber(initialData.smsnumber || "") ? (
                         ""
                       ) : (
                         <HelperText>Enter a valid phone number</HelperText>
