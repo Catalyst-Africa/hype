@@ -125,7 +125,7 @@ const SentHypes = () => {
                             .join(".")} */}
                           {useTimeStampToDate(hype?.timeStamp?.seconds)}
                         </span>
-                        <span>{hype.selecthype}</span>
+                        <span>{hype.hypeId}</span>
                       </InfoCard1>
                       <br />
                       <InfoCard2>
