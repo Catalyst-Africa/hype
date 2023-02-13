@@ -8,8 +8,10 @@ import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { SubTitle } from "@/styles/reusable/elements.styled";
 import ProgressBar from "@/pages/private/components/ProgressBar";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const TopStats = () => {
+  const streak = useSelector((state) => state.auth?.user?.streak);
   return (
     <>
       <StatsContainer>
@@ -24,9 +26,9 @@ const TopStats = () => {
             </GemInnerBlock> */}
             <ProgressBlock>
               <ProgressTitle>
-                You’re on a streak, 5 Days out 7days
+                You’re on a streak, {streak || 1} Days out 7days
               </ProgressTitle>
-              <ProgressBar bgcolor="#FFB328" completed={70} />
+              <ProgressBar bgcolor="#FFB328" completed={streak * 14.3} />
             </ProgressBlock>
           </GemBlock>
         </FirstCard>

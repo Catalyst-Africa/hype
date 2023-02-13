@@ -4,6 +4,8 @@ import {
   getDocs,
   addDoc,
   serverTimestamp,
+  updateDoc,
+  doc,
 } from "firebase/firestore";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
@@ -28,6 +30,7 @@ import { db } from "@/setup/firebase/firebase";
 import { useEffect } from "react";
 import "react-phone-number-input/style.css";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import { useCallback } from "react";
 
 const SendHype = () => {
   const user = useSelector((state) => state.auth.user);
@@ -200,25 +203,45 @@ const SendHype = () => {
       sender: displayName ? firstname : "",
     });
 
-    // fetch(
-    //   `http://api.textmebot.com/send.php?recipient=${initialData.whatsappnumber[0].replace(
-    //     initialData.whatsappnumber[0],
-    //     "+234",
-    //   )}&apikey=qrLyqtDUxKVM&text=someone sent you a hype, $https://hype-dev.netlify.app/hype/message/${
-    //     (docRef.id,
-    //     {
-    //       method: "POST",
-    //       headers: {},
-    //       body: {
-    //         recipient: initialData.whatsappnumber[0].replace(
-    //           initialData.whatsappnumber[0],
-    //           "+234",
-    //         ),
+    const updateId = doc(db, "sentHypes", docRef.id);
+    await updateDoc(updateId, {
+      docId: docRef.id,
+    });
 
-    //       },
-    //     })
-    //   } `,
-    // );
+    const streakTimer = setInterval(() => {
+      // Get current time and date
+      const now = new Date().getTime();
+
+      const x = serverTimestamp()?.seconds;
+
+      // distance between the current time and the countdown date
+      const distance = x - now;
+
+      if (distance < 0) {
+        clearInterval(streakTimer);
+
+        const newTimer = setInterval(async () => {
+          const next24Hours = new Date().getTime() + 86400;
+          const now = new Date().getTime();
+
+          const newDistance = next24Hours - now;
+
+          if (newDistance > 0) {
+            const updateStreak = doc(db, "users", user.uid);
+            await updateDoc(updateStreak, {
+              streak: Number(user?.streak) + 1,
+            });
+          } else {
+            clearInterval(newTimer);
+            const updateStreak = doc(db, "users", user.uid);
+            await updateDoc(updateStreak, {
+              streak: 1,
+            });
+          }
+        }, 1000);
+      }
+    }, 1000);
+
     console.log(`https://hype-dev.netlify.app/hype/message/${docRef.id}`);
 
     // set the submitted data here. example console.log("the submited data", initialData);
@@ -235,8 +258,6 @@ const SendHype = () => {
     setLoadingSend(false);
   };
 
-  console.log("first", initialData);
-
   return (
     <>
       <SendHypeContainer style={{ opacity: toggleModal ? "0.1" : "" }}>
@@ -249,7 +270,7 @@ const SendHype = () => {
                   <InputGroup
                     name="name"
                     id="name"
-                    label="Spread Happiness"
+                    label="Spread Positivity"
                     placeholder="Enter recipients name"
                     value={initialData.name}
                     onBlur={(e) => handleBlur(e)}
@@ -412,7 +433,7 @@ const SendHype = () => {
                       <Label>Recipent Whatsapp Number</Label>
                       <PhoneInputGroup
                         style={
-                          isValidPhoneNumber(initialData?.whatsappnumber || "")
+                          isValidPhoneNumber(initialData.whatsappnumber)
                             ? { border: "1px solid green" }
                             : { border: "1px solid" }
                         }
@@ -423,7 +444,7 @@ const SendHype = () => {
                           countryCallingCodeEditable={false}
                           placeholder="Enter phone number"
                           name="whatsappnumber"
-                          value={initialData?.whatsappnumber}
+                          value={initialData.whatsappnumber}
                           onChange={(value) =>
                             handleInitialDataChange({
                               target: { name: "whatsappnumber", value },
@@ -431,8 +452,8 @@ const SendHype = () => {
                           }
                         />
                       </PhoneInputGroup>
-                      {initialData?.whatsappnumber &&
-                      isValidPhoneNumber(initialData?.whatsappnumber || "") ? (
+                      {initialData.whatsappnumber &&
+                      isValidPhoneNumber(initialData.whatsappnumber) ? (
                         ""
                       ) : (
                         <HelperText>Enter a valid phone number</HelperText>
@@ -444,7 +465,7 @@ const SendHype = () => {
                       <Label>Recipent SMS Number</Label>
                       <PhoneInputGroup
                         style={
-                          isValidPhoneNumber(initialData?.smsnumber || "")
+                          isValidPhoneNumber(initialData.smsnumber)
                             ? { border: "1px solid green" }
                             : { border: "1px solid" }
                         }
@@ -455,7 +476,7 @@ const SendHype = () => {
                           countryCallingCodeEditable={false}
                           placeholder="Enter phone number"
                           name="smsnumber"
-                          value={initialData?.smsnumber}
+                          value={initialData.smsnumber}
                           onChange={(value) =>
                             handleInitialDataChange({
                               target: { name: "smsnumber", value },
@@ -463,8 +484,8 @@ const SendHype = () => {
                           }
                         />
                       </PhoneInputGroup>
-                      {initialData?.smsnumber &&
-                      isValidPhoneNumber(initialData?.smsnumber || "") ? (
+                      {initialData.smsnumber &&
+                      isValidPhoneNumber(initialData.smsnumber) ? (
                         ""
                       ) : (
                         <HelperText>Enter a valid phone number</HelperText>
@@ -478,30 +499,30 @@ const SendHype = () => {
                   marginTop: "20px",
                   color: "#fff",
                   backgroundColor:
-                    initialData.name &&
-                    initialData.selecthype &&
-                    initialData.selecthype !== "select" &&
-                    initialData.hype.length > 1 &&
-                    ((initialData.selectsocial === "whatsapp" &&
+                    (initialData.name &&
+                      initialData.selecthype &&
+                      initialData.selecthype !== "select" &&
+                      initialData.hype.length > 1 &&
+                      initialData.selectsocial === "whatsapp" &&
                       initialData.whatsappnumber &&
                       isValidPhoneNumber(initialData.whatsappnumber)) ||
-                      (initialData.selectsocial === "sms" &&
-                        initialData.smsnumber &&
-                        isValidPhoneNumber(initialData.smsnumber)))
+                    (initialData.selectsocial === "sms" &&
+                      initialData.smsnumber &&
+                      isValidPhoneNumber(initialData.smsnumber))
                       ? ""
                       : "#5E5E5E",
                 }}
                 disabled={
-                  initialData.name &&
-                  initialData.selecthype &&
-                  initialData.selecthype !== "select" &&
-                  initialData.hype.length > 1 &&
-                  ((initialData.selectsocial === "whatsapp" &&
+                  (initialData.name &&
+                    initialData.selecthype &&
+                    initialData.selecthype !== "select" &&
+                    initialData.hype.length > 1 &&
+                    initialData.selectsocial === "whatsapp" &&
                     initialData.whatsappnumber &&
                     isValidPhoneNumber(initialData.whatsappnumber)) ||
-                    (initialData.selectsocial === "sms" &&
-                      initialData.smsnumber &&
-                      isValidPhoneNumber(initialData.smsnumber)))
+                  (initialData.selectsocial === "sms" &&
+                    initialData.smsnumber &&
+                    isValidPhoneNumber(initialData.smsnumber))
                     ? false
                     : true
                 }
