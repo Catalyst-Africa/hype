@@ -4,8 +4,6 @@ import {
   getDocs,
   addDoc,
   serverTimestamp,
-  updateDoc,
-  doc,
 } from "firebase/firestore";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
@@ -202,11 +200,6 @@ const SendHype = () => {
       sender: displayName ? firstname : "",
     });
 
-    const updateId = doc(db, "sentHypes", docRef.id);
-    await updateDoc(updateId, {
-      docId: docRef.id,
-    });
-
     // fetch(
     //   `http://api.textmebot.com/send.php?recipient=${initialData.whatsappnumber[0].replace(
     //     initialData.whatsappnumber[0],
@@ -241,6 +234,8 @@ const SendHype = () => {
     setSelectedHypesCategories({});
     setLoadingSend(false);
   };
+
+  console.log("first", initialData);
 
   return (
     <>
@@ -417,7 +412,7 @@ const SendHype = () => {
                       <Label>Recipent Whatsapp Number</Label>
                       <PhoneInputGroup
                         style={
-                          isValidPhoneNumber(initialData.whatsappnumber)
+                          isValidPhoneNumber(initialData?.whatsappnumber || "")
                             ? { border: "1px solid green" }
                             : { border: "1px solid" }
                         }
@@ -428,7 +423,7 @@ const SendHype = () => {
                           countryCallingCodeEditable={false}
                           placeholder="Enter phone number"
                           name="whatsappnumber"
-                          value={initialData.whatsappnumber}
+                          value={initialData?.whatsappnumber}
                           onChange={(value) =>
                             handleInitialDataChange({
                               target: { name: "whatsappnumber", value },
@@ -436,8 +431,8 @@ const SendHype = () => {
                           }
                         />
                       </PhoneInputGroup>
-                      {initialData.whatsappnumber &&
-                      isValidPhoneNumber(initialData.whatsappnumber) ? (
+                      {initialData?.whatsappnumber &&
+                      isValidPhoneNumber(initialData?.whatsappnumber || "") ? (
                         ""
                       ) : (
                         <HelperText>Enter a valid phone number</HelperText>
@@ -449,7 +444,7 @@ const SendHype = () => {
                       <Label>Recipent SMS Number</Label>
                       <PhoneInputGroup
                         style={
-                          isValidPhoneNumber(initialData.smsnumber)
+                          isValidPhoneNumber(initialData?.smsnumber || "")
                             ? { border: "1px solid green" }
                             : { border: "1px solid" }
                         }
@@ -460,7 +455,7 @@ const SendHype = () => {
                           countryCallingCodeEditable={false}
                           placeholder="Enter phone number"
                           name="smsnumber"
-                          value={initialData.smsnumber}
+                          value={initialData?.smsnumber}
                           onChange={(value) =>
                             handleInitialDataChange({
                               target: { name: "smsnumber", value },
@@ -468,8 +463,8 @@ const SendHype = () => {
                           }
                         />
                       </PhoneInputGroup>
-                      {initialData.smsnumber &&
-                      isValidPhoneNumber(initialData.smsnumber) ? (
+                      {initialData?.smsnumber &&
+                      isValidPhoneNumber(initialData?.smsnumber || "") ? (
                         ""
                       ) : (
                         <HelperText>Enter a valid phone number</HelperText>
@@ -483,30 +478,30 @@ const SendHype = () => {
                   marginTop: "20px",
                   color: "#fff",
                   backgroundColor:
-                    (initialData.name &&
-                      initialData.selecthype &&
-                      initialData.selecthype !== "select" &&
-                      initialData.hype.length > 1 &&
-                      initialData.selectsocial === "whatsapp" &&
+                    initialData.name &&
+                    initialData.selecthype &&
+                    initialData.selecthype !== "select" &&
+                    initialData.hype.length > 1 &&
+                    ((initialData.selectsocial === "whatsapp" &&
                       initialData.whatsappnumber &&
                       isValidPhoneNumber(initialData.whatsappnumber)) ||
-                    (initialData.selectsocial === "sms" &&
-                      initialData.smsnumber &&
-                      isValidPhoneNumber(initialData.smsnumber))
+                      (initialData.selectsocial === "sms" &&
+                        initialData.smsnumber &&
+                        isValidPhoneNumber(initialData.smsnumber)))
                       ? ""
                       : "#5E5E5E",
                 }}
                 disabled={
-                  (initialData.name &&
-                    initialData.selecthype &&
-                    initialData.selecthype !== "select" &&
-                    initialData.hype.length > 1 &&
-                    initialData.selectsocial === "whatsapp" &&
+                  initialData.name &&
+                  initialData.selecthype &&
+                  initialData.selecthype !== "select" &&
+                  initialData.hype.length > 1 &&
+                  ((initialData.selectsocial === "whatsapp" &&
                     initialData.whatsappnumber &&
                     isValidPhoneNumber(initialData.whatsappnumber)) ||
-                  (initialData.selectsocial === "sms" &&
-                    initialData.smsnumber &&
-                    isValidPhoneNumber(initialData.smsnumber))
+                    (initialData.selectsocial === "sms" &&
+                      initialData.smsnumber &&
+                      isValidPhoneNumber(initialData.smsnumber)))
                     ? false
                     : true
                 }
