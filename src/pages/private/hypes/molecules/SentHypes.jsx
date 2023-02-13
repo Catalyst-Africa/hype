@@ -11,6 +11,7 @@ import { BsWhatsapp } from "react-icons/bs";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getSentHypeByUser } from "@/setup/redux/slices/app/extraReducers";
+import { useTimeStampToDate } from "../../../../hooks";
 
 const SentHypes = () => {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ const SentHypes = () => {
   const filteredHypes =
     selectedCategory === "All"
       ? hypesList
-      : hypesList.filter((item) => item.category === selectedCategory);
+      : hypesList.filter((item) => item.hypeId === selectedCategory);
 
   const itemsPerPage = 12;
   const totalPages = Math.ceil(filteredHypes.length / itemsPerPage);
@@ -49,7 +50,7 @@ const SentHypes = () => {
   const uniqueHypesCategories = [
     ...new Set(hypesList.map((item) => item.hypeId)),
   ];
-  console.log(hypesList);
+  console.log("list", hypesList);
   console.log(uniqueHypesCategories);
   const handleDeleteOpenModal = () => {
     setIsOpenDeleteHype(true);
@@ -66,7 +67,6 @@ const SentHypes = () => {
     "#D2D1E0",
     "#FCCFCF",
   ];
-
   return (
     <>
       <SentHypesContainer>
@@ -90,40 +90,59 @@ const SentHypes = () => {
         </SelectHypeCategoryContainer>
         <ViewHypesInnerContainer>
           {currentHypes ? (
-            currentHypes.reverse().map((hype, index) => {
-              const randomColor =
-                colors[Math.floor(Math.random() * colors.length)];
-              return (
-                <HypeCard key={index} style={{ backgroundColor: randomColor }}>
-                  <p>{hype.hype}</p>
-                  <br />
-                  <InfoCard1 style={{ color: "#868686" }}>
-                    <span>
-                      Sent to: <b>{hype.name}</b>
-                    </span>
-                    <span>
-                      {new Date(hype?.timeStamp?.seconds * 1000)
-                        .toLocaleDateString()
-                        .split("/")
-                        .join(".")}
-                    </span>
-                    <span>{hype.hypeId}</span>
-                  </InfoCard1>
-                  <br />
-                  <InfoCard2>
-                    <InfoSocial>
-                      <BsWhatsapp color="#4BBB16" />
-                      <p style={{ color: "#868686" }}>Whatsapp</p>
-                    </InfoSocial>
-                    <ViewHypeContainer>
-                      <Link to="#">
-                        <em>View Hype</em>
-                      </Link>
-                    </ViewHypeContainer>
-                  </InfoCard2>
-                </HypeCard>
-              );
-            })
+            currentHypes
+              .sort((a, b) => {
+                // Convert the timestamps to day-month-year-hours-minutes-seconds date strings
+                const dateA = useTimeStampToDate(a.timeStamp.seconds);
+                const dateB = useTimeStampToDate(b.timeStamp.seconds);
+
+                // Compare the dates in descending order
+                if (dateA < dateB) {
+                  return 1;
+                } else if (dateA > dateB) {
+                  return -1;
+                } else {
+                  return 0;
+                }
+              })
+              .map((hype, index) => {
+                const randomColor =
+                  colors[Math.floor(Math.random() * colors.length)];
+                return (
+                  <HypeCard
+                    key={index}
+                    style={{ backgroundColor: randomColor }}
+                  >
+                    <p>{hype.hype}</p>
+                    <br />
+                    <InfoCard1 style={{ color: "#868686" }}>
+                      <span>
+                        Sent to: <b>{hype.name}</b>
+                      </span>
+                      <span>
+                        {/* {new Date(hype?.timeStamp?.seconds * 1000)
+                          .toLocaleDateString()
+                          .split("/")
+                          .join(".")} */}
+                        {useTimeStampToDate(hype?.timeStamp?.seconds)}
+                      </span>
+                      <span>{hype.hypeId}</span>
+                    </InfoCard1>
+                    <br />
+                    <InfoCard2>
+                      <InfoSocial>
+                        <BsWhatsapp color="#4BBB16" />
+                        <p style={{ color: "#868686" }}>Whatsapp</p>
+                      </InfoSocial>
+                      <ViewHypeContainer>
+                        <Link to="#">
+                          <em>View Hype</em>
+                        </Link>
+                      </ViewHypeContainer>
+                    </InfoCard2>
+                  </HypeCard>
+                );
+              })
           ) : (
             <div
               style={{
