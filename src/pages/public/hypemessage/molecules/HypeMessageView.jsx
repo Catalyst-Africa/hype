@@ -19,8 +19,6 @@ const HypeMessageView = () => {
 
   const location = useLocation();
 
-  console.log(location.state?.data);
-
   const user = useSelector((state) => state.auth.user);
   const firstname = user.displayName?.split(" ")[0];
   const [width, setWidth] = useState(window.innerWidth);
