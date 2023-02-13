@@ -16,9 +16,12 @@ import {
 } from "@/setup/redux/slices/app/extraReducers";
 import { OverlayLoader } from "@/components/ui";
 import { useEffect } from "react";
+import { useRef } from "react";
+import { deleteHypeCategories } from "@/setup/redux/slices/app/extraReducers";
 
 const HypeCategories = () => {
   const dispatch = useDispatch();
+  const deleteCategoryRef = useRef();
 
   useEffect(() => {
     dispatch(getAllHypeCategories());
@@ -60,7 +63,8 @@ const HypeCategories = () => {
     setIsOpenEditCategory(false);
   };
 
-  const handleDeleteOpenModal = () => {
+  const handleDeleteOpenModal = (item) => {
+    deleteCategoryRef.current = item;
     setIsOpenDeleteEditCategory(true);
   };
   const handleDeleteCloseModal = () => {
@@ -79,6 +83,14 @@ const HypeCategories = () => {
   };
 
   const handleEditCategory = () => {};
+
+  const handleDeleteCategory = () => {
+    dispatch(deleteHypeCategories(deleteCategoryRef.current));
+    setIsOpenDeleteEditCategory(false);
+    setTimeout(() => {
+      dispatch(getAllHypeCategories());
+    }, 3000);
+  };
 
   const [initialData, setInitialData] = useState({
     category: "",
@@ -112,7 +124,7 @@ const HypeCategories = () => {
                     />
                     <RiDeleteBin2Line
                       color="#ff0000"
-                      onClick={handleDeleteOpenModal}
+                      onClick={(e) => handleDeleteOpenModal(item)}
                     />
                   </CardInner>
                 </CategoryCard>
@@ -193,7 +205,12 @@ const HypeCategories = () => {
           <p>Are you sure you want to delete this category?</p>
           <br />
           <ButtonUpdateContainer>
-            <Button style={{ backgroundColor: "#ff0000" }}>Delete</Button>
+            <Button
+              onClick={handleDeleteCategory}
+              style={{ backgroundColor: "#ff0000" }}
+            >
+              Delete
+            </Button>
           </ButtonUpdateContainer>
         </Modal>
       )}

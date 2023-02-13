@@ -13,6 +13,7 @@ import {
   getAdminStatistics,
   getAllHypeReceived,
   getAllHypeSent,
+  deleteHypeCategories,
 } from "./extraReducers";
 import { toast } from "react-hot-toast";
 import { extractErrorMessage } from "@/helpers/helpers";
@@ -72,6 +73,17 @@ const appSlice = createSlice({
         console.log(action.error.message);
         toast.error(action.error.message);
       })
+      .addCase(deleteHype.pending, (state) => {
+        state.adminLoading = true;
+      })
+      .addCase(deleteHype.fulfilled, (state) => {
+        state.adminLoading = false;
+        toast.success("Hype category deleted successfully!");
+      })
+      .addCase(deleteHype.rejected, (state) => {
+        state.adminLoading = false;
+        toast.error(action.error.message);
+      })
       .addCase(getAllHypeCategories.pending, (state) => {
         // state.adminLoading = false;
       })
@@ -107,15 +119,15 @@ const appSlice = createSlice({
         state.adminLoading = false;
         toast.error(action.error.message);
       })
-      .addCase(deleteHype.pending, (state) => {
+      .addCase(deleteHypeCategories.pending, (state) => {
         state.adminLoading = true;
       })
-      .addCase(deleteHype.fulfilled, (state, { payload }) => {
+      .addCase(deleteHypeCategories.fulfilled, (state, { payload }) => {
         state.adminLoading = false;
         // state.hypeCategories = payload;
         toast.success("Hype has been deleted successfully!");
       })
-      .addCase(deleteHype.rejected, (state, action) => {
+      .addCase(deleteHypeCategories.rejected, (state, action) => {
         state.adminLoading = false;
         toast.error(action.error.message);
       })
