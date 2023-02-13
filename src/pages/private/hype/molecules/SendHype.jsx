@@ -249,7 +249,7 @@ const SendHype = () => {
                   <InputGroup
                     name="name"
                     id="name"
-                    label="Spread Positivity"
+                    label="Spread Happiness"
                     placeholder="Enter recipients name"
                     value={initialData.name}
                     onBlur={(e) => handleBlur(e)}
