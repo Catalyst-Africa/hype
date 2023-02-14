@@ -20,25 +20,23 @@ const App = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.app.loading);
   const userUpdateLoading = useSelector((state) => state.auth.rerender);
+  const authFulfilled = useSelector((state) => state.auth.googleAuth);
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        console.log(user);
         const role = await user.getIdTokenResult();
         const adminRole = role.claims.admin;
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
-        console.log(docSnap.data());
         const data = docSnap.data();
         dispatch(updateAuth(true));
         dispatch(updateUser({ ...user, data, adminRole }));
-        // dispatch(updateAuth(false));
       } else {
         dispatch(updateAuth(false));
       }
     });
-  }, [auth, userUpdateLoading]);
+  }, [auth, userUpdateLoading, authFulfilled]);
 
   if (loading) {
     return <OverlayLoader />;

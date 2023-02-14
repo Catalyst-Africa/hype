@@ -27,6 +27,7 @@ export const getAllUsers = createAsyncThunk("app/getAllUsers", async () => {
       name: user.data().name,
       email: user.data().email,
       phone: user.data().phonenumber,
+      timestamp: user.data().timeStamp,
     });
     // }
   });

@@ -53,8 +53,13 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async () => {
       username: `@${auth.currentUser?.displayName.toLowerCase().split(" ")[0]}`,
       phonenumber: "",
       bio: "Hey there, I am active on Hype!",
-      strek: 1,
+      streak: 1,
     });
+
+    //Check for user
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    const docSnap = await getDoc(docRef);
+    return docSnap.data();
   } else return docSnap.data();
 });
 
@@ -87,6 +92,7 @@ export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
       streak: 1,
     });
   }
+  return docSnap.data();
 });
 
 export const sendEmailVerificationLink = createAsyncThunk(
