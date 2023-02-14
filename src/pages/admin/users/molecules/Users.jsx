@@ -14,7 +14,21 @@ import styled from "styled-components";
 
 const Users = () => {
   const dispatch = useDispatch();
-  const usersList = useSelector((state) => state.app.users);
+  const allUsers = useSelector((state) => state.app.users);
+  const usersList = [...allUsers].sort((a, b) => {
+    const dateA = a?.timestamp?.seconds;
+    const dateB = b?.timestamp?.seconds;
+
+    // Compare the dates in descending order
+    if (dateA < dateB) {
+      return 1;
+    } else if (dateA > dateB) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  console.log(usersList);
   const email = useSelector((state) => state.auth.email);
   const userRef = useRef();
 
@@ -57,51 +71,36 @@ const Users = () => {
         <FluidTitle>{`Users [${usersList.length}]`}</FluidTitle>
         <br />
         {currentUsersList
-          ? currentUsersList
-              .sort((a, b) => {
-                // console.log(a.timestamp.seconds);
-                const dateA = a?.timestamp?.seconds;
-                const dateB = b?.timestamp?.seconds;
-
-                // Compare the dates in descending order
-                if (dateA < dateB) {
-                  return 1;
-                } else if (dateA > dateB) {
-                  return -1;
-                } else {
-                  return 0;
-                }
-              })
-              .map((user, index) => {
-                return (
-                  <UserCard key={index}>
-                    <InfoContainer>
-                      <AiOutlineUser />
-                      <span>{user.name}</span>
-                    </InfoContainer>
-                    <InfoContainer>
-                      <AiOutlineMail />
-                      <span>{user.email}</span>
-                    </InfoContainer>
-                    <InfoContainer>
-                      <AiFillPhone />
-                      <span>{user.phone || "No phone number set yet!"}</span>
-                    </InfoContainer>
-                    <UserCardInner>
-                      {user.email !== "control@catalyst.africa" ? (
-                        <RiDeleteBin2Line
-                          color="#ff0000"
-                          onClick={(e) => {
-                            handleDeleteShowModal(user.userId);
-                          }}
-                        />
-                      ) : (
-                        ""
-                      )}
-                    </UserCardInner>
-                  </UserCard>
-                );
-              })
+          ? currentUsersList.map((user, index) => {
+              return (
+                <UserCard key={index}>
+                  <InfoContainer>
+                    <AiOutlineUser />
+                    <span>{user.name}</span>
+                  </InfoContainer>
+                  <InfoContainer>
+                    <AiOutlineMail />
+                    <span>{user.email}</span>
+                  </InfoContainer>
+                  <InfoContainer>
+                    <AiFillPhone />
+                    <span>{user.phone || "No phone number set yet!"}</span>
+                  </InfoContainer>
+                  <UserCardInner>
+                    {user.email !== "control@catalyst.africa" ? (
+                      <RiDeleteBin2Line
+                        color="#ff0000"
+                        onClick={(e) => {
+                          handleDeleteShowModal(user.userId);
+                        }}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </UserCardInner>
+                </UserCard>
+              );
+            })
           : []}
         <br />
         <UsersNavigation>

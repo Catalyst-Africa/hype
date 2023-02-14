@@ -84,9 +84,7 @@ const HypeMessageView = () => {
         <Header style={{ background: "#ff0000" }} />
         <HypeMessageCard>
           <SubTitle>
-            {hype?.sender === undefined ||
-              (hype.sender === null &&
-                "You have received a hype from an anonymous star")}
+            {!hype?.sender && "You have received a hype from an anonymous star"}
           </SubTitle>
           <br />
 
