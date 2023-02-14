@@ -132,10 +132,14 @@ const SentHypes = () => {
                           <a
                             href={`https://wa.me/${hype?.whatsappnumber.substring(
                               1,
-                            )}?text=https://hype-dev.netlify.app/hype/message/${
-                              hype?.docId
-                            }`}
+                            )}?text=Heyy ${
+                              hype.name
+                            } %0A%0A You've just been hyped %0A%0A See what someone said about you here -
+                              %0A%0A https://sharehype.fun/hype/message/${
+                                hype?.docId
+                              }%0A%0A P.S: Please save this number as "hype" to be able to click the link.`}
                             target="_blank"
+                            rel="noopener noreferrer"
                           >
                             {hype?.whatsappnumber}
                           </a>
