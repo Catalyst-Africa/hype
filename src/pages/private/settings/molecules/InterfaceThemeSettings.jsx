@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { SubTitle } from "@/styles/reusable/elements.styled";
-import { BiCheckbox, BiCheckboxSquare } from "react-icons/bi";
 import theme1 from "../../../../assets/theme1.svg";
 import theme2 from "../../../../assets/theme2.svg";
 import { Button } from "@/styles/reusable/elements.styled";
-import { FluidTitle } from "@/styles/reusable/elements.styled";
 
 const InterfaceThemeSettings = () => {
   const [checkBoxToggle, setCheckBoxToggle] = useState(false);
@@ -24,7 +22,7 @@ const InterfaceThemeSettings = () => {
   return (
     <InterfaceThemeSettingsContainer>
       <SubTitle style={{ color: "#5B5A5B" }}>
-        Change the appearance across all of your workspaces.
+        Change your dashboard appearance.
       </SubTitle>
 
       <SubTitle style={{ color: "#5B5A5B" }}>

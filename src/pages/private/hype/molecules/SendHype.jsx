@@ -216,7 +216,7 @@ const SendHype = () => {
       // distance between the current time and the countdown date
       const distance = x - now;
 
-      if (distance < 0) {
+      if (distance < 1) {
         clearInterval(streakTimer);
 
         const newTimer = setInterval(async () => {
@@ -225,7 +225,7 @@ const SendHype = () => {
 
           const newDistance = next24Hours - now;
 
-          if (newDistance > 0) {
+          if (newDistance >= 0) {
             const updateStreak = doc(db, "users", user.uid);
             await updateDoc(updateStreak, {
               streak: Number(user?.streak) + 1,
@@ -571,7 +571,7 @@ const PhoneInputGroup = styled.div`
   width: 100%;
   height: 35px;
   background: transparent;
-  border: 1px solid;
+  border: 1px solid #d4d4d4;
   border-radius: 8px;
   outline: none;
   padding: 0px 12px;
@@ -579,6 +579,10 @@ const PhoneInputGroup = styled.div`
   font-size: 12px;
   display: flex;
   align-items: center;
+
+  :hover {
+    border: 1px solid;
+  }
 `;
 
 const SendHypeInnerContainer = styled.div`
