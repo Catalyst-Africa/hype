@@ -94,6 +94,9 @@ const HypeMessageView = () => {
             <>
               <p>Receiver's Number: {hype?.whatsappnumber}</p>
               <p>Sender: {hype?.sender || "anonymous"}</p>
+              <p>
+                hypeLink: {`https://sharehype.fun/hype/message/${hype?.docId}`}
+              </p>
             </>
           ) : (
             ""
