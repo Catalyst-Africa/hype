@@ -15,7 +15,20 @@ import { useTimeStampToDate } from "@/hooks";
 
 const SentHypes = () => {
   const dispatch = useDispatch();
-  const hypesList = useSelector((state) => state.app.allHypeSent);
+  const allHypes = useSelector((state) => state.app.allHypeSent);
+  const hypesList = [...allHypes].sort((a, b) => {
+    const dateA = a?.timeStamp?.seconds;
+    const dateB = b?.timeStamp?.seconds;
+
+    // Compare the dates in descending order
+    if (dateA < dateB) {
+      return 1;
+    } else if (dateA > dateB) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
   const currentLocation = window.location.pathname;
 
   useEffect(() => {
@@ -89,80 +102,65 @@ const SentHypes = () => {
         </SelectHypeCategoryContainer>
         <ViewHypesInnerContainer>
           {currentHypes
-            ? currentHypes
-                .sort((a, b) => {
-                  // Convert the timestamps to day-month-year-hours-minutes-seconds date strings
-                  const dateA = a?.timeStamp?.seconds;
-                  const dateB = b?.timeStamp?.seconds;
-
-                  // Compare the dates in descending order
-                  if (dateA < dateB) {
-                    return 1;
-                  } else if (dateA > dateB) {
-                    return -1;
-                  } else {
-                    return 0;
-                  }
-                })
-                .map((hype, index) => {
-                  const randomColor =
-                    colors[Math.floor(Math.random() * colors.length)];
-                  return (
-                    <HypeCard
-                      key={index}
-                      style={{ backgroundColor: randomColor }}
-                    >
-                      <p>{hype.hype}</p>
-                      <br />
-                      <InfoCard1 style={{ color: "#868686" }}>
-                        <span>
-                          Sent to: <b>{hype.name}</b>
-                        </span>
-                        <span>
-                          {/* {new Date(hype?.timeStamp?.seconds * 1000)
+            ? currentHypes.map((hype, index) => {
+                const randomColor =
+                  colors[Math.floor(Math.random() * colors.length)];
+                return (
+                  <HypeCard
+                    key={index}
+                    style={{ backgroundColor: randomColor }}
+                  >
+                    <p>{hype.hype}</p>
+                    <br />
+                    <InfoCard1 style={{ color: "#868686" }}>
+                      <span>
+                        Sent to: <b>{hype.name}</b>
+                      </span>
+                      <span>
+                        {/* {new Date(hype?.timeStamp?.seconds * 1000)
                             .toLocaleDateString()
                             .split("/")
                             .join(".")} */}
-                          {useTimeStampToDate(hype?.timeStamp?.seconds)}
-                        </span>
-                        <span>{hype.hypeId}</span>
-                      </InfoCard1>
-                      <br />
-                      <InfoCard2>
-                        <InfoSocial>
-                          <NumberContainer>
-                            <a
-                              href={`https://wa.me/${hype?.whatsappnumber.substring(
-                                1,
-                              )}?text=https://hype-dev.netlify.app/hype/message/${
-                                hype?.docId
-                              }`}
-                              target="_blank"
-                            >
-                              {hype?.whatsappnumber}
-                            </a>
-                            <NumberInner>
-                              <BsWhatsapp color="#4BBB16" />
-                              <p style={{ color: "#868686" }}>
-                                {hype.selectsocial == "whatsapp"
-                                  ? "Whatsapp"
-                                  : ""}
-                              </p>
-                            </NumberInner>
-                          </NumberContainer>
-                        </InfoSocial>
-                        <ViewHypeContainer>
-                          <Link
-                            state={{ data: currentLocation }}
-                            to={`/hype/message/${hype?.docId}`}
+                        {useTimeStampToDate(hype?.timeStamp?.seconds)}
+                      </span>
+                      <span>{hype.hypeId}</span>
+                    </InfoCard1>
+                    <br />
+                    <InfoCard2>
+                      <InfoSocial>
+                        <NumberContainer>
+                          <a
+                            href={`https://wa.me/${hype?.whatsappnumber.substring(
+                              1,
+                            )}?text=https://hype-dev.netlify.app/hype/message/${
+                              hype?.docId
+                            }`}
+                            target="_blank"
                           >
-                            <em>View Hype</em>
-                          </Link>
-                        </ViewHypeContainer>
-                      </InfoCard2>
-                    </HypeCard>
-                  );
-                })
+                            {hype?.whatsappnumber}
+                          </a>
+                          <NumberInner>
+                            <BsWhatsapp color="#4BBB16" />
+                            <p style={{ color: "#868686" }}>
+                              {hype.selectsocial == "whatsapp"
+                                ? "Whatsapp"
+                                : ""}
+                            </p>
+                          </NumberInner>
+                        </NumberContainer>
+                      </InfoSocial>
+                      <ViewHypeContainer>
+                        <Link
+                          state={{ data: currentLocation }}
+                          to={`/hype/message/${hype?.docId}`}
+                        >
+                          <em>View Hype</em>
+                        </Link>
+                      </ViewHypeContainer>
+                    </InfoCard2>
+                  </HypeCard>
+                );
+              })
             : ""}
         </ViewHypesInnerContainer>
         <HypesNavigation>
