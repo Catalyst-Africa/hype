@@ -28,7 +28,7 @@ const Users = () => {
       return 0;
     }
   });
-  console.log(usersList);
+
   const email = useSelector((state) => state.auth.email);
   const userRef = useRef();
 

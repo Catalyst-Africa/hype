@@ -17,6 +17,8 @@ import {
 } from "@/setup/redux/slices/auth/extraReducers";
 import { updateLoading } from "@/setup/redux/slices/auth/authSlice";
 
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+
 const AccountSettings = () => {
   const user = useSelector((state) => state.auth.user);
   const loading = useSelector((state) => state.auth.loading);
@@ -42,10 +44,12 @@ const AccountSettings = () => {
   // Destructured form data
   const { bio, username, phonenumber } = formData;
 
+  const [phoneNumber, setPhoneNumber] = useState(phonenumber);
+
   // Handle Submit for changes to user information
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(updateUserData({ user, bio, username, phonenumber }));
+    dispatch(updateUserData({ user, bio, username, phonenumber: phoneNumber }));
     dispatch(updateLoading());
   };
 
@@ -134,15 +138,34 @@ const AccountSettings = () => {
             />
           </InputContainer>
           <InputContainer>
-            <InputGroup
-              type="number"
-              id="phonenumber"
-              label="Phone number"
-              placeholder="Phone number"
-              value={formData.phonenumber}
-              onBlur={(e) => handleBlur(e)}
-              onChange={(e) => handleChange(e)}
-            />
+            <PhoneInputContainer>
+              <>
+                <Label>Phone number</Label>
+                <PhoneInputGroup
+                  style={
+                    isValidPhoneNumber(phoneNumber || "")
+                      ? { border: "1px solid green" }
+                      : { border: "1px solid" }
+                  }
+                >
+                  <PhoneInput
+                    international
+                    countryCallingCodeEditable={true}
+                    placeholder="Enter phone number"
+                    name="whatsappnumber"
+                    value={phoneNumber}
+                    onChange={(value) => setPhoneNumber(value)}
+                  />
+                </PhoneInputGroup>
+                {phoneNumber && isValidPhoneNumber(phoneNumber || "") ? (
+                  <HelperText style={{ color: "green" }}>
+                    Phone number is valid
+                  </HelperText>
+                ) : (
+                  <HelperText>please enter a valid number</HelperText>
+                )}
+              </>
+            </PhoneInputContainer>
           </InputContainer>
         </FormGroupContainer>
         <FormGroupContainer>
@@ -174,6 +197,56 @@ const AccountSettingsContainer = styled.div`
   gap: 18px;
   border-top: 3px solid #eeeeee;
   padding-top: 20px;
+
+  .PhoneInputInput {
+    background: transparent;
+    border: none;
+    color: black;
+    height: 100%;
+    outline: none;
+    width: 100%;
+    display: flex;
+    font-size: 14px;
+  }
+`;
+
+const Label = styled.label`
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: inline-block;
+  margin-top: 3px;
+`;
+
+const PhoneInputGroup = styled.div`
+  width: 100%;
+  height: 35px;
+  background: transparent;
+  border: 1px solid #d4d4d4;
+  border-radius: 8px;
+  outline: none;
+  padding: 0px 12px;
+  gap: 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+
+  :hover {
+    border: 1px solid;
+  }
+`;
+
+const PhoneInputContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+`;
+
+const HelperText = styled.small`
+  margin-top: 2px;
+  display: inline-block;
+  color: #000;
 `;
 
 const ProfilePhotoContainer = styled.div`

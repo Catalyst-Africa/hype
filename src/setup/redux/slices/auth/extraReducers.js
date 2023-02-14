@@ -53,7 +53,7 @@ export const googleAuth = createAsyncThunk("auth/googleAuth", async () => {
       username: `@${auth.currentUser?.displayName.toLowerCase().split(" ")[0]}`,
       phonenumber: "",
       bio: "Hey there, I am active on Hype!",
-      streak: 1,
+      streak: 0,
     });
 
     //Check for user
@@ -89,7 +89,7 @@ export const signUp = createAsyncThunk("auth/signUp", async (formData) => {
       username: `@${name.toLowerCase().split(" ")[0]}`,
       phonenumber: "",
       bio: "Hey there, I am active on Hype!",
-      streak: 1,
+      streak: 0,
     });
   }
   return docSnap.data();
