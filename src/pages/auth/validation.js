@@ -11,7 +11,7 @@ export const validation = (formData, key, value) => {
     }
   } else if (key === "password") {
     if (
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!#.?<>|^%%*?&]{8,20}$/.test(
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!#%*?.<>^&])[A-Za-z\d@$!#.<>^%*?&]{8,20}$/.test(
         value,
       )
     ) {
