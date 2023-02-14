@@ -24,13 +24,16 @@ const App = () => {
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        console.log(user);
         const role = await user.getIdTokenResult();
         const adminRole = role.claims.admin;
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
+        console.log(docSnap.data());
         const data = docSnap.data();
         dispatch(updateAuth(true));
         dispatch(updateUser({ ...user, data, adminRole }));
+        // dispatch(updateAuth(false));
       } else {
         dispatch(updateAuth(false));
       }

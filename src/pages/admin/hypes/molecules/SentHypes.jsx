@@ -92,8 +92,8 @@ const SentHypes = () => {
             ? currentHypes
                 .sort((a, b) => {
                   // Convert the timestamps to day-month-year-hours-minutes-seconds date strings
-                  const dateA = useTimeStampToDate(a?.timeStamp?.seconds);
-                  const dateB = useTimeStampToDate(b?.timeStamp?.seconds);
+                  const dateA = a?.timeStamp?.seconds;
+                  const dateB = b?.timeStamp?.seconds;
 
                   // Compare the dates in descending order
                   if (dateA < dateB) {

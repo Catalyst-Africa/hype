@@ -83,10 +83,16 @@ const HypeMessageView = () => {
       >
         <Header style={{ background: "#ff0000" }} />
         <HypeMessageCard>
-          <SubTitle>You have received a hype from an anonymous star</SubTitle>
+          <SubTitle>
+            {hype?.sender === undefined ||
+              (hype.sender === null &&
+                "You have received a hype from an anonymous star")}
+          </SubTitle>
           <br />
 
-          <SubTitle>To {hype?.name} with love.</SubTitle>
+          <SubTitle>
+            To {hype?.name} with love. {hype?.sender && `From: ${hype?.sender}`}
+          </SubTitle>
           <br />
           <p>{hype?.hype}</p>
           <br />
@@ -112,9 +118,9 @@ const HypeMessageView = () => {
           </TryHype>
         ) : (
           <TryHype>
-            <p>Join us to send hypes!</p>
+            <p>It's your turn to spread happiness</p>
             <Link to="/signup">
-              <Button>Try hype</Button>
+              <Button>Hype someone now</Button>
             </Link>
           </TryHype>
         )}
