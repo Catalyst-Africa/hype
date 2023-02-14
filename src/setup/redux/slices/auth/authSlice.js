@@ -20,6 +20,7 @@ import {
 const initialState = {
   loading: false,
   rerender: false,
+  googleAuth: true,
   user: {
     uid: "",
     email: "",
@@ -61,8 +62,9 @@ const authSlice = createSlice({
       .addCase(googleAuth.pending, (state) => {
         state.loading = true;
       })
-      .addCase(googleAuth.fulfilled, (state) => {
+      .addCase(googleAuth.fulfilled, (state, { payload }) => {
         state.loading = false;
+        state.googleAuth = false;
         toast.success("Successfully signed in!");
       })
 

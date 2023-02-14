@@ -45,6 +45,10 @@ const Users = () => {
 
   const handleDeleteUser = () => {
     dispatch(deleteSingleUser(userRef.current));
+    handleDeleteCloseModal();
+    setTimeout(() => {
+      dispatch(getAllUsers());
+    }, 3000);
   };
 
   return (
@@ -53,36 +57,51 @@ const Users = () => {
         <FluidTitle>{`Users [${usersList.length}]`}</FluidTitle>
         <br />
         {currentUsersList
-          ? currentUsersList.sort().map((user, index) => {
-              return (
-                <UserCard key={index}>
-                  <InfoContainer>
-                    <AiOutlineUser />
-                    <span>{user.name}</span>
-                  </InfoContainer>
-                  <InfoContainer>
-                    <AiOutlineMail />
-                    <span>{user.email}</span>
-                  </InfoContainer>
-                  <InfoContainer>
-                    <AiFillPhone />
-                    <span>{user.phone || "No phone number set yet!"}</span>
-                  </InfoContainer>
-                  <UserCardInner>
-                    {user.email !== "control@catalyst.africa" ? (
-                      <RiDeleteBin2Line
-                        color="#ff0000"
-                        onClick={(e) => {
-                          handleDeleteShowModal(user.userId);
-                        }}
-                      />
-                    ) : (
-                      ""
-                    )}
-                  </UserCardInner>
-                </UserCard>
-              );
-            })
+          ? currentUsersList
+              .sort((a, b) => {
+                // console.log(a.timestamp.seconds);
+                const dateA = a?.timestamp?.seconds;
+                const dateB = b?.timestamp?.seconds;
+
+                // Compare the dates in descending order
+                if (dateA < dateB) {
+                  return 1;
+                } else if (dateA > dateB) {
+                  return -1;
+                } else {
+                  return 0;
+                }
+              })
+              .map((user, index) => {
+                return (
+                  <UserCard key={index}>
+                    <InfoContainer>
+                      <AiOutlineUser />
+                      <span>{user.name}</span>
+                    </InfoContainer>
+                    <InfoContainer>
+                      <AiOutlineMail />
+                      <span>{user.email}</span>
+                    </InfoContainer>
+                    <InfoContainer>
+                      <AiFillPhone />
+                      <span>{user.phone || "No phone number set yet!"}</span>
+                    </InfoContainer>
+                    <UserCardInner>
+                      {user.email !== "control@catalyst.africa" ? (
+                        <RiDeleteBin2Line
+                          color="#ff0000"
+                          onClick={(e) => {
+                            handleDeleteShowModal(user.userId);
+                          }}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </UserCardInner>
+                  </UserCard>
+                );
+              })
           : []}
         <br />
         <UsersNavigation>
