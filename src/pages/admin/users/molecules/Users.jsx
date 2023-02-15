@@ -10,6 +10,7 @@ import { AiOutlineUser, AiFillPhone, AiOutlineMail } from "react-icons/ai";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
+import { CSVLink } from "react-csv";
 import styled from "styled-components";
 
 const Users = () => {
@@ -65,12 +66,38 @@ const Users = () => {
     }, 3000);
   };
 
+  const headers = [
+    {
+      label: "Name",
+      key: "name",
+    },
+    {
+      label: "Email",
+      key: "email",
+    },
+  ];
+
+  const data = allUsers?.map((user) => {
+    return {
+      name: user.name,
+      email: user.email,
+    };
+  });
+
+  const csvreport = {
+    data: data,
+    headers: headers,
+    filename: "Hype_Users_Report.csv",
+  };
+
   return (
     <>
       <UserContainer>
         <FluidTitle>{`Users [${usersList.length}]`}</FluidTitle>
         <ButtonContainer>
-          <Button>Export Users</Button>
+          <Button>
+            <CSVLink {...csvreport}>Export Users</CSVLink>
+          </Button>
         </ButtonContainer>
         <br />
         {currentUsersList
