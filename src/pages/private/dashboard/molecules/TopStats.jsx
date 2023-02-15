@@ -27,7 +27,7 @@ const TopStats = () => {
             <ProgressBlock>
               <ProgressTitle>
                 {streak ? "You’re on a streak" : "No streak yet"}, {streak || 0}{" "}
-                Days out 7days
+                Days out of 7 days
               </ProgressTitle>
               <ProgressBar
                 bgcolor="#FFB328"

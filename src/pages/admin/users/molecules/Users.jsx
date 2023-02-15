@@ -69,6 +69,9 @@ const Users = () => {
     <>
       <UserContainer>
         <FluidTitle>{`Users [${usersList.length}]`}</FluidTitle>
+        <ButtonContainer>
+          <Button>Export Users</Button>
+        </ButtonContainer>
         <br />
         {currentUsersList
           ? currentUsersList.map((user, index) => {
@@ -171,6 +174,14 @@ const UserCard = styled.div`
     justify-content: flex-start;
     align-items: flex-start;
     gap: 5px;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  button {
+    padding: 10px 15px;
   }
 `;
 
