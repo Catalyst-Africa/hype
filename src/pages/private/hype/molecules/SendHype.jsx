@@ -8,7 +8,7 @@ import {
   doc,
 } from "firebase/firestore";
 import styled from "styled-components";
-import { FluidTitle } from "@/styles/reusable/elements.styled";
+import { FluidTitle, SubTitle } from "@/styles/reusable/elements.styled";
 import {
   InputGroup,
   TextAreaInputGroup,
@@ -30,7 +30,6 @@ import { db } from "@/setup/firebase/firebase";
 import { useEffect } from "react";
 import "react-phone-number-input/style.css";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
-import { useCallback } from "react";
 
 const SendHype = () => {
   const user = useSelector((state) => state.auth.user);
@@ -511,20 +510,34 @@ const SendHype = () => {
       </SendHypeContainer>
       {toggleModal ? (
         <SentHypeModalContainer>
-          <Link to="/dashboard">
-            <AiFillCloseCircle
-              color="#FFB328"
-              cursor="pointer"
-              onClick={handleToggleModal}
-              size="50px"
-            />
-          </Link>
+          <CloseModalButton>
+            <Link to="/dashboard">
+              <AiFillCloseCircle
+                color="#FFB328"
+                cursor="pointer"
+                onClick={handleToggleModal}
+                size="50px"
+              />
+            </Link>
+          </CloseModalButton>
 
           <Modal>
             <img src={hypesent} alt="hypesent" width="80%" />
             <br />
             <br />
             <FluidTitle>hype sent</FluidTitle>
+            <br />
+            <SubTitle>
+              We did like get your
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLScXnrHx9MVFbSZ57JnzHm6czkOUFSwndZ8sKEctEyPHvozEWA/viewform?usp=sf_link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {" "}
+                feedback
+              </a>
+            </SubTitle>
           </Modal>
         </SentHypeModalContainer>
       ) : (
@@ -664,15 +677,13 @@ const SentHypeModalContainer = styled.div`
   text-align: center;
   border-radius: 10px;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12);
-
-  //use svg or a tag depending on if the react icon is nested inside the Link tag
-  a {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
 `;
-
+const CloseModalButton = styled.div`
+  //use svg or a tag depending on if the react icon is nested inside the Link tag
+  position: absolute;
+  top: 10px;
+  right: 10px;
+`;
 const Modal = styled.div`
   display: flex;
   flex-direction: column;
