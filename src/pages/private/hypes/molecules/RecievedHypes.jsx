@@ -18,7 +18,9 @@ const RecievedHypes = () => {
   const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    user?.phonenumer?.length > 0 && dispatch(receiveSentHypeByUser(user));
+    if (user?.phoneNumber?.length > 0) {
+      dispatch(receiveSentHypeByUser(user));
+    }
   }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
