@@ -18,7 +18,7 @@ import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 import { useSelector } from "react-redux";
 import { Button } from "@/styles/reusable/elements.styled";
-import sendhypebg from "@/assets/sendhypebg.svg";
+import sendhypebg from "@/assets/sendhypebg.png";
 import { BiRefresh } from "react-icons/bi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Loader } from "@/styles/reusable/elements.styled";
