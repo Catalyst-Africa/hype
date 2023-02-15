@@ -23,8 +23,8 @@ export default defineConfig({
         theme_color: "#f49d3f",
         background_color: "#ffffff",
         display: "standalone",
-        start_url: "/",
-        id: "/",
+        start_url: "/dashboard",
+        id: "/dashboard",
         icons: [
           {
             src: "icon-192x192.png",
