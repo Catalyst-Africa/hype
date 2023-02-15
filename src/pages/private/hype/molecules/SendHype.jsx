@@ -30,7 +30,6 @@ import { db } from "@/setup/firebase/firebase";
 import { useEffect } from "react";
 import "react-phone-number-input/style.css";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
-import { useCallback } from "react";
 
 const SendHype = () => {
   const user = useSelector((state) => state.auth.user);
@@ -529,7 +528,7 @@ const SendHype = () => {
             <FluidTitle>hype sent</FluidTitle>
             <br />
             <SubTitle>
-              We did like to here your
+              We did like get your
               <a
                 href="https://docs.google.com/forms/d/e/1FAIpQLScXnrHx9MVFbSZ57JnzHm6czkOUFSwndZ8sKEctEyPHvozEWA/viewform?usp=sf_link"
                 target="_blank"
