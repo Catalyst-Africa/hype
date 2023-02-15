@@ -147,7 +147,6 @@ const AccountSettings = () => {
                       ? { border: "" }
                       : { border: "1px solid #ff0000" }
                   }
-                  onBlur={(e) => handleBlur(e)}
                 >
                   <PhoneInput
                     international
