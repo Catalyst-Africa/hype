@@ -144,9 +144,10 @@ const AccountSettings = () => {
                 <PhoneInputGroup
                   style={
                     isValidPhoneNumber(phoneNumber || "")
-                      ? { border: "1px solid green" }
-                      : { border: "1px solid" }
+                      ? { border: "" }
+                      : { border: "1px solid #ff0000" }
                   }
+                  onBlur={(e) => handleBlur(e)}
                 >
                   <PhoneInput
                     international
@@ -158,11 +159,11 @@ const AccountSettings = () => {
                   />
                 </PhoneInputGroup>
                 {phoneNumber && isValidPhoneNumber(phoneNumber || "") ? (
-                  <HelperText style={{ color: "green" }}>
-                    Phone number is valid
-                  </HelperText>
+                  ""
                 ) : (
-                  <HelperText>please enter a valid number</HelperText>
+                  <HelperText style={{ color: "#ff0000" }}>
+                    please enter a valid number
+                  </HelperText>
                 )}
               </>
             </PhoneInputContainer>
