@@ -6,7 +6,7 @@ import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/styles/reusable/elements.styled";
-import sendhypebg from "@/assets/sendhypebg.svg";
+import sendhypebg from "@/assets/sendhypebg.png";
 import { Loader } from "@/styles/reusable/elements.styled";
 import { useLocation } from "react-router-dom";
 import { updateHype } from "@/setup/redux/slices/app/extraReducers";

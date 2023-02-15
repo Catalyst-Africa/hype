@@ -8,7 +8,7 @@ import { validation } from "@/pages/auth/validation";
 import { useDispatch, useSelector } from "react-redux";
 import { addHype } from "@/setup/redux/slices/app/extraReducers";
 import { Button } from "@/styles/reusable/elements.styled";
-import sendhypebg from "@/assets/sendhypebg.svg";
+import sendhypebg from "@/assets/sendhypebg.png";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Loader } from "@/styles/reusable/elements.styled";
 import hypesent from "../../../../assets/hypesent.svg";
