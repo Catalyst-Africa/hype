@@ -49,7 +49,7 @@ const adminApi = hypeApi.injectEndpoints({
           hypeSnap.forEach((hype) => {
             allHype = [...allHype, ...hype.data().hypes];
           });
-          return allHype;
+          return { data: allHype };
         } catch (err) {
           toast.error(extractErrorMessage(err.message));
         }
@@ -134,14 +134,27 @@ const adminApi = hypeApi.injectEndpoints({
           const hypeCategories = collection(db, "hype");
           const hypeCategoriesSnap = await getDocs(hypeCategories);
           hypeCategoriesSnap.forEach((hypeCategory) => {
-            allHypeCategories.push(hypeCategory.id);
+            id = hypeCategory.id;
+            allHypeCategories.push(id);
           });
-          return allHypeCategories;
+          return { data: allHypeCategories };
         } catch (err) {
           toast.error(extractErrorMessage(err));
         }
       },
       providesTags: ["hypeCategory"],
+    }),
+    getAllHypeAndCat: builder.query({
+      queryFn: async () => {
+        const allHypeAndCat = [];
+        const hypeCategories = collection(db, "hype");
+        const hypeCategoriesSnap = await getDocs(hypeCategories);
+        hypeCategoriesSnap.forEach((hypeCategory) => {
+          const id = hypeCategory.id;
+          allHypeAndCat.push({ id, ...hypeCategory.data() });
+        });
+        return { data: allHypeAndCat };
+      },
     }),
     addHypeCategories: builder.mutation({
       queryFn: async (hypeName) => {
@@ -206,4 +219,5 @@ export const {
   useAddHypeCategoriesMutation,
   useGetAllHypeSentQuery,
   useGetAllHypeReceivedQuery,
+  useGetAllHypeAndCatQuery,
 } = adminApi;

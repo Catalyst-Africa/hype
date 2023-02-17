@@ -62,7 +62,6 @@ const userApi = hypeApi.injectEndpoints({
       queryFn: async (user) => {
         try {
           const sentHype = [];
-          console.log(user);
           const q = query(
             collection(db, "sentHypes"),
             where("userId", "==", user),

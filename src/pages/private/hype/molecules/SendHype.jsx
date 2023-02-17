@@ -16,7 +16,6 @@ import {
 } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
-import { useSelector } from "react-redux";
 import { Button } from "@/styles/reusable/elements.styled";
 import sendhypebg from "@/assets/sendhypebg.svg";
 import { BiRefresh } from "react-icons/bi";
@@ -27,14 +26,16 @@ import { Link } from "react-router-dom";
 import { BiCheckbox, BiCheckboxSquare } from "react-icons/bi";
 import { AiFillBackward, AiFillForward } from "react-icons/ai";
 import { db } from "@/setup/firebase/firebase";
-import { useEffect } from "react";
 import "react-phone-number-input/style.css";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
-import { useCallback } from "react";
+import { useGetAllHypeAndCatQuery } from "@/setup/redux/slices/api/nestedApis/adminApi";
+import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
 
 const SendHype = () => {
-  const user = useSelector((state) => state.auth.user);
-  const firstname = user?.displayName?.split(" ")[0];
+  //Get data from the backend
+  const { data: hypes = [] } = useGetAllHypeAndCatQuery();
+  const { data: user } = useGetUserDataQuery();
+  const firstname = user?.name?.split(" ")[0];
 
   //Displayname toggle Send annonymous hype
   const [displayName, setDisplayName] = useState(true);
@@ -56,28 +57,6 @@ const SendHype = () => {
 
   //Loading for when sending hypes
   const [loadingSend, setLoadingSend] = useState(false);
-
-  const [hypes, setHypes] = useState([]);
-
-  //Get data from the backend
-  useEffect(() => {
-    const getAllHype = async () => {
-      const x = [];
-      try {
-        const querySnapshot = await getDocs(collection(db, "hype"));
-        querySnapshot.forEach((doc) => {
-          const id = doc.id;
-          x.push({ id, ...doc.data() });
-        });
-        setHypes(x);
-      } catch (err) {
-        err;
-      }
-    };
-    getAllHype();
-  }, []);
-
-  useEffect(() => {}, []);
 
   //Hypes Initial Data
   const [initialData, setInitialData] = useState({
