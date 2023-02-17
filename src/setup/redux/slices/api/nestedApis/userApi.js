@@ -101,23 +101,20 @@ const userApi = hypeApi.injectEndpoints({
       },
       providesTags: ["userHype"],
     }),
-    sendHype: builder.mutation({
+    sendHypes: builder.mutation({
       queryFn: async ({ user, initialData, displayName }) => {
-        try {
-          const docRef = await addDoc(collection(db, "sentHypes"), {
-            userId: user.uid,
-            ...initialData,
-            timeStamp: serverTimestamp(),
-            sender: displayName ? firstname : "",
-          });
+        const docRef = await addDoc(collection(db, "sentHypes"), {
+          userId: auth.currentUser.uid,
+          ...initialData,
+          timeStamp: serverTimestamp(),
+          sender: displayName ? user?.name : "",
+        });
 
-          const updateId = doc(db, "sentHypes", docRef.id);
-          await updateDoc(updateId, {
-            docId: docRef.id,
-          });
-        } catch (err) {
-          toast.error(extractErrorMessage(err.message));
-        }
+        const updateId = doc(db, "sentHypes", docRef.id);
+        await updateDoc(updateId, {
+          docId: docRef.id,
+        });
+        return true;
       },
       invalidatesTags: ["userHype"],
     }),
@@ -129,6 +126,6 @@ export const {
   useUpdateUserDataMutation,
   useGetSentHypeByUserQuery,
   useGetReceivedHypeByUserQuery,
-  useSendHypeMutation,
+  useSendHypesMutation,
   useUpdateUserDPMutation,
 } = userApi;

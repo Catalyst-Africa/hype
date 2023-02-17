@@ -18,11 +18,6 @@ const SentHypes = () => {
   const user = useSelector((state) => state.auth.user);
   useGetSentHypeByUserQuery;
   const { data: hypesList } = useGetSentHypeByUserQuery(user.uid);
-  // const hypesList = useSelector((state) => state.app.usersSentHype);
-
-  // useEffect(() => {
-  //   dispatch(getSentHypeByUser(user.uid));
-  // }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");

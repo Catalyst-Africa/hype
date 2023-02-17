@@ -28,14 +28,19 @@ import { AiFillBackward, AiFillForward } from "react-icons/ai";
 import { db } from "@/setup/firebase/firebase";
 import "react-phone-number-input/style.css";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import {
+  useGetUserDataQuery,
+  useSendHypesMutation,
+} from "@/setup/redux/slices/api/nestedApis/userApi";
 import { useGetAllHypeAndCatQuery } from "@/setup/redux/slices/api/nestedApis/adminApi";
-import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
+import { toast } from "react-hot-toast";
 
 const SendHype = () => {
   //Get data from the backend
   const { data: hypes = [] } = useGetAllHypeAndCatQuery();
-  const { data: user } = useGetUserDataQuery();
-  const firstname = user?.name?.split(" ")[0];
+  const [sendHypes, { isLoading: sending }] = useSendHypesMutation();
+  const { data: userData } = useGetUserDataQuery();
+  const firstname = userData?.name?.split(" ")[0];
 
   //Displayname toggle Send annonymous hype
   const [displayName, setDisplayName] = useState(true);
@@ -173,64 +178,57 @@ const SendHype = () => {
     e.preventDefault();
     setLoadingSend(true);
 
-    // Add a new document with a generated id.
-    const docRef = await addDoc(collection(db, "sentHypes"), {
-      userId: user.uid,
-      ...initialData,
-      timeStamp: serverTimestamp(),
-      sender: displayName ? firstname : "",
-    });
+    try {
+      // Add a new document with a generated id.
+      await sendHypes({ user: userData, initialData, displayName }).unwrap();
 
-    const updateId = doc(db, "sentHypes", docRef.id);
-    await updateDoc(updateId, {
-      docId: docRef.id,
-    });
+      const streakTimer = setInterval(() => {
+        // Get current time and date
+        const now = new Date().getTime();
 
-    const streakTimer = setInterval(() => {
-      // Get current time and date
-      const now = new Date().getTime();
+        const x = serverTimestamp()?.seconds;
 
-      const x = serverTimestamp()?.seconds;
+        // distance between the current time and the countdown date
+        const distance = x - now;
 
-      // distance between the current time and the countdown date
-      const distance = x - now;
+        if (distance < 1) {
+          clearInterval(streakTimer);
 
-      if (distance < 1) {
-        clearInterval(streakTimer);
+          const newTimer = setInterval(async () => {
+            const next24Hours = new Date().getTime() + 86400;
+            const now = new Date().getTime();
 
-        const newTimer = setInterval(async () => {
-          const next24Hours = new Date().getTime() + 86400;
-          const now = new Date().getTime();
+            const newDistance = next24Hours - now;
 
-          const newDistance = next24Hours - now;
+            if (newDistance >= 0) {
+              const updateStreak = doc(db, "users", user.uid);
+              await updateDoc(updateStreak, {
+                streak: Number(user?.streak) + 1,
+              });
+            } else {
+              clearInterval(newTimer);
+              const updateStreak = doc(db, "users", user.uid);
+              await updateDoc(updateStreak, {
+                streak: 1,
+              });
+            }
+          }, 1000);
+        }
+      }, 1000);
 
-          if (newDistance >= 0) {
-            const updateStreak = doc(db, "users", user.uid);
-            await updateDoc(updateStreak, {
-              streak: Number(user?.streak) + 1,
-            });
-          } else {
-            clearInterval(newTimer);
-            const updateStreak = doc(db, "users", user.uid);
-            await updateDoc(updateStreak, {
-              streak: 1,
-            });
-          }
-        }, 1000);
-      }
-    }, 1000);
-
-    setInitialData({
-      name: "",
-      selecthype: "",
-      hype: "",
-      selectsocial: "",
-      whatsappnumber: "",
-      smsnumber: "",
-    });
-    setToggleModal(true);
-    setSelectedHypesCategories({});
-    setLoadingSend(false);
+      setInitialData({
+        name: "",
+        selecthype: "",
+        hype: "",
+        selectsocial: "",
+        whatsappnumber: "",
+        smsnumber: "",
+      });
+      setToggleModal(true);
+      toast.success(`Your Hype is on it's way to ${initialData.name}`);
+      setSelectedHypesCategories({});
+      setLoadingSend(false);
+    } catch (err) {}
   };
 
   return (
