@@ -138,7 +138,7 @@ export const forgotPassword = createAsyncThunk(
 
 export const resetPassword = createAsyncThunk(
   "auth/resetPassword",
-  async (oobCode, password) => {
+  async ({ oobCode, password }) => {
     await confirmPasswordReset(auth, oobCode, password);
     auth.currentUser && (await signOut(auth));
   },

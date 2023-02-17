@@ -162,7 +162,7 @@ export const receiveSentHypeByUser = createAsyncThunk(
     // Create a reference to query sentHype collection for whatsapp
     const qWhatsapp = query(
       collection(db, "sentHypes"),
-      where("whatsappnumber", "==", user?.phoneNumber),
+      where("whatsappnumber", "==", user),
     );
     const sentHypeCountDoc = await getDocs(qWhatsapp);
     sentHypeCountDoc.forEach(async (doc) => {

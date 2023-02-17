@@ -25,6 +25,7 @@ const App = () => {
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        console.log(user);
         const role = await user.getIdTokenResult();
         const adminRole = role.claims.admin;
         const docRef = doc(db, "users", user.uid);

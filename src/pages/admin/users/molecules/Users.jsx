@@ -95,9 +95,9 @@ const Users = () => {
       <UserContainer>
         <FluidTitle>{`Users [${usersList.length}]`}</FluidTitle>
         <ButtonContainer>
-          <Button>
-            <CSVLink {...csvreport}>Export Users</CSVLink>
-          </Button>
+          <CSVLink {...csvreport}>
+            <Button>Export Users</Button>
+          </CSVLink>
         </ButtonContainer>
         <br />
         {currentUsersList

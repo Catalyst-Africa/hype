@@ -1,18 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
+import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
 
 const ProfileHero = () => {
-  const user = useSelector((state) => state.auth.user);
-  const firstname = user?.displayName?.split(" ")[0];
+  const { data: user } = useGetUserDataQuery();
   return (
     <>
       <ProfileHeroContainer>
-        <ProfileImage src={user.photoURL} alt={user.displayName} />
+        <ProfileImage src={user?.photoUrl} alt={user?.name} />
         <TitleContainer>
-          <FluidTitle color="#fff">{firstname}</FluidTitle>
-          <span>{user.username}</span>
+          <FluidTitle color="#fff">{user?.name}</FluidTitle>
+          <span>{user?.username}</span>
         </TitleContainer>
         <FluidTitle color="#fff">Gems & Polls</FluidTitle>
       </ProfileHeroContainer>

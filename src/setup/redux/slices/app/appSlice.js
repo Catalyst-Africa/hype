@@ -41,7 +41,9 @@ const appSlice = createSlice({
   reducers: {
     updateTheme: (state) => {
       state.theme =
-        JSON.stringify(theme) === JSON.stringify(light) ? dark : light;
+        JSON.stringify(theme) === JSON.stringify(light)
+          ? JSON.stringify(dark)
+          : JSON.stringify(light);
     },
     updateAuth: (state, action) => {
       state.loggedIn = action.payload;

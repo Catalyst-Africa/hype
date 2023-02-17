@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 import AuthContainer from "@/pages/auth/components/AuthContainer";
@@ -9,12 +8,13 @@ import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 import { InputGroup } from "@/components/ui";
 import { Button, Loader } from "@/styles/reusable/elements.styled";
-import { signUp } from "@/setup/redux/slices/auth/extraReducers";
+import { useSignUpMutation } from "@/setup/redux/slices/api/nestedApis/authApi";
+import { toast } from "react-hot-toast";
+import { extractErrorMessage } from "@/helpers/helpers";
 
 const SignUpForm = () => {
   const [passwordType, setPasswordType] = useState(true);
-  const dispatch = useDispatch();
-  const loading = useSelector((state) => state.auth.loading);
+  const [signUp, { isLoading }] = useSignUpMutation();
 
   const initialData = {
     name: "",
@@ -31,9 +31,16 @@ const SignUpForm = () => {
     validateOnSubmit,
   } = useFormValidation(initialData, validation);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    validateOnSubmit() && dispatch(signUp(formData));
+    try {
+      validateOnSubmit() &&
+        (await signUp(formData).unwrap(),
+        toast.success("Successfully created an account!"));
+    } catch (err) {
+      console.log(err);
+      toast.error(err.message);
+    }
   };
 
   return (
@@ -80,7 +87,9 @@ const SignUpForm = () => {
             helperText={errors.password}
             helperTextType={checkIsValid("password")}
           />
-          <Button $fullWidth>{loading ? <Loader /> : "Create account"}</Button>
+          <Button $fullWidth>
+            {isLoading ? <Loader /> : "Create account"}
+          </Button>
           <div style={{ textAlign: "center" }}>
             <small>
               By continuing, you’re agreeing to our
