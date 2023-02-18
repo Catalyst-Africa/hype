@@ -242,6 +242,22 @@ const SendHype = () => {
     }
   };
 
+  const [value, setValue] = useState();
+
+  const handleContactPicker = () => {
+    navigator?.contacts?.pickContact(
+      (contact) => {
+        const phoneNumbers = contact?.phoneNumbers;
+        if (phoneNumbers && phoneNumbers?.length > 0) {
+          // Set the phone number from the selected contact
+          setValue(phoneNumbers[0].value);
+        }
+      },
+      (error) => {
+        console.error(error);
+      },
+    );
+  };
   return (
     <>
       <SendHypeContainer style={{ opacity: toggleModal ? "0.1" : "" }}>
@@ -486,7 +502,12 @@ const SendHype = () => {
                 </span>
               </Button>
             </Form>
+            <br />
+            <br />
+            {value}
+            <button onClick={handleContactPicker}>Select Contact</button>
           </HypeForm>
+
           <HypeImage>
             <img
               src={sendhypebg}
