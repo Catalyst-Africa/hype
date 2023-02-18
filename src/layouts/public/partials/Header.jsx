@@ -3,10 +3,12 @@ import styled from "styled-components";
 import { Logo } from "@/components/ui";
 import { Button } from "@/styles/reusable/elements.styled";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
 
 const Header = () => {
-  const user = useSelector((state) => state.auth.user);
-  const firstname = user.displayName?.split(" ")[0];
+  const { data: user } = useGetUserDataQuery();
+  const firstname = user?.name?.split(" ")[0];
+
   const { pathname } = useLocation();
 
   return (
