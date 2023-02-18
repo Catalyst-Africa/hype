@@ -70,7 +70,7 @@ const authApi = hypeApi.injectEndpoints({
             });
 
             toast.success("Successfully signed in!");
-            return reponse;
+            return true;
           } else return docSnap.data();
         } catch (err) {
           toast.error(extractErrorMessage(err.message));
