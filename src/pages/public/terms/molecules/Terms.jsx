@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import Intro from "../../components/Intro";
 
 const Terms = () => {
   return (
     <>
       <MainContainer>
-      <br />
+        <br />
         <p>
           Welcome to Hype!, a social tool designed to spread positivity and
           happiness by giving users a channel to send positive messages to
