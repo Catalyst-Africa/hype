@@ -227,12 +227,16 @@ const SendHype = () => {
     }
   };
 
-  const [selectedContact, setSelectedContact] = useState(null);
+  const [selectedPhoneNumber, setSelectedPhoneNumber] = useState(null);
 
-  const handleContactChange = async () => {
-    const [contact] = await navigator?.contacts?.select(["name", "email", "tel"]);
-    setSelectedContact(contact);
-  };
+const handleContactChange = async () => {
+  const [contact] = await navigator?.contacts?.select(["tel"]);
+  if (contact) {
+    const phoneNumber = contact.tel[0]?.value;
+    setSelectedPhoneNumber(phoneNumber);
+  }
+};
+
 
 
   return (
@@ -531,12 +535,10 @@ const SendHype = () => {
       ) : (
         ""
       )}
-      <button onClick={handleContactChange}>Select Contact</button>
-      <input
-        type="text"
-        value={selectedContact ? selectedContact.name[0] : ""}
-        readOnly
-      />
+      <div>
+        <button onClick={handleContactChange}>Select Contact</button>
+        <input type="text" value={selectedPhoneNumber || ""} readOnly />
+      </div>
     </>
   );
 };
