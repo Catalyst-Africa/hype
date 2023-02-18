@@ -7,14 +7,14 @@ import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { Link } from "react-router-dom";
 import { logOut } from "@/setup/redux/slices/auth/extraReducers";
 import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
-import { signOut } from "firebase/auth";
 
 const Header = () => {
+  const dispatch = useDispatch();
   const { data: user } = useGetUserDataQuery();
   const firstname = user?.name?.split(" ")[0];
 
-  const handleLogout = async () => {
-    await signOut();
+  const handleLogout = () => {
+    dispatch(logOut());
   };
 
   return (
