@@ -7,11 +7,12 @@ import { SiRubygems } from "react-icons/si";
 import { IoMdSettings } from "react-icons/io";
 import { BiGroup } from "react-icons/bi";
 import { Link, NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
+import { auth } from "@/setup/firebase/firebase";
 
 const SideBar = () => {
-  const { data: currentUser } = useGetUserDataQuery();
+  const { data: currentUser } =
+    auth?.currentUser !== null && useGetUserDataQuery();
   const creationTime = new Date(
     currentUser?.timeStamp?.seconds * 1000,
   ).toDateString();

@@ -4,9 +4,10 @@ import { Logo } from "@/components/ui";
 import { Button } from "@/styles/reusable/elements.styled";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
+import { auth } from "@/setup/firebase/firebase";
 
 const Header = () => {
-  const { data: user } = useGetUserDataQuery();
+  const { data: user } = auth?.currentUser !== null && useGetUserDataQuery();
   const firstname = user?.name?.split(" ")[0];
 
   const { pathname } = useLocation();
