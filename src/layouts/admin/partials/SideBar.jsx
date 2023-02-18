@@ -12,7 +12,7 @@ import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi
 const SideBar = () => {
   const { data: currentUser } = useGetUserDataQuery();
   const creationTime = new Date(
-    currentUser.timeStamp?.seconds * 1000,
+    currentUser?.timeStamp?.seconds * 1000,
   ).toDateString();
   const date = [creationTime.split(" ")[1], creationTime.split(" ")[3]];
   return (
