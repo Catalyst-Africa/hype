@@ -4,9 +4,10 @@ import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { SubTitle } from "@/styles/reusable/elements.styled";
 import { Link } from "react-router-dom";
 import { useGetAdminStatisticsQuery } from "@/setup/redux/slices/api/nestedApis/adminApi";
+import { auth } from "@/setup/firebase/firebase";
 
 const TopStats = () => {
-  const { data } = useGetAdminStatisticsQuery();
+  const { data } = auth?.currentUser !== null && useGetAdminStatisticsQuery();
   const Stats = [
     {
       name: "Users",

@@ -16,6 +16,7 @@ import {
   useGetAllUsersQuery,
   useGetAllHypeSentQuery,
 } from "@/setup/redux/slices/api/nestedApis/adminApi";
+import { auth } from "@/setup/firebase/firebase";
 
 ChartJS.register(
   CategoryScale,
@@ -38,8 +39,10 @@ export const options = {
 const label = ["Statistics"];
 
 const Analytics = () => {
-  const { data: hypesListSent } = useGetAllHypeSentQuery();
-  const { data: totalUsers } = useGetAllUsersQuery();
+  const { data: hypesListSent } =
+    auth?.currentUser !== null && useGetAllHypeSentQuery();
+  const { data: totalUsers } =
+    auth?.currentUser !== null && useGetAllUsersQuery();
 
   const data = {
     labels: label,
