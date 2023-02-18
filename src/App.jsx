@@ -13,14 +13,10 @@ import { OverlayLoader } from "@/components/ui";
 import { auth } from "@/setup/firebase/firebase";
 import { updateAuth } from "@/setup/redux/slices/app/appSlice";
 import { updateUser } from "@/setup/redux/slices/auth/authSlice";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "./setup/firebase/firebase";
 
 const App = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.app.loading);
-  const userUpdateLoading = useSelector((state) => state.auth.rerender);
-  const authFulfilled = useSelector((state) => state.auth.googleAuth);
 
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
@@ -33,7 +29,7 @@ const App = () => {
         dispatch(updateAuth(false));
       }
     });
-  }, [auth, userUpdateLoading, authFulfilled]);
+  }, [auth]);
 
   if (loading) {
     return <OverlayLoader />;
