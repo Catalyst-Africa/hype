@@ -9,9 +9,12 @@ import { SubTitle } from "@/styles/reusable/elements.styled";
 import ProgressBar from "@/pages/private/components/ProgressBar";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
 
 const TopStats = () => {
-  const streak = useSelector((state) => state.auth?.user?.streak);
+  const { data: currentUser } = useGetUserDataQuery();
+
+  const streak = currentUser?.streak;
   return (
     <>
       <StatsContainer>
