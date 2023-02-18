@@ -2,28 +2,28 @@ import { SubTitle, Title } from "@/styles/reusable/elements.styled";
 import { Button } from "@/styles/reusable/elements.styled";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { FaEdit } from "react-icons/fa";
 import { IoMdNotifications } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { BsToggleOff, BsToggleOn } from "react-icons/bs";
+import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
 
 const ProfileCard = () => {
-  const user = useSelector((state) => state.auth.user);
-  const firstname = user.displayName?.split(" ")[0];
+  const { data: user } = useGetUserDataQuery();
+  // const firstname = user.displayName?.split(" ")[0];
   const [toggleNotification, setToggleNotification] = useState(true);
   return (
     <>
       <ProfileContainer>
         <ProfileInfo>
           <TopDivider />
-          <ProfileImage src={user.photoURL} alt={user.displayName} />
+          <ProfileImage src={user?.photoUrl} alt={user?.displayName} />
           <TitleContainer>
-            <FluidTitle>{firstname}</FluidTitle>
+            <FluidTitle>{user?.name}</FluidTitle>
             <ProfileBio>
-              <p>{user.username}</p>
-              <p>{user.bio}</p>
+              <p>{user?.username}</p>
+              <p>{user?.bio}</p>
             </ProfileBio>
           </TitleContainer>
           <Link to="/send-hype">
@@ -44,7 +44,7 @@ const ProfileCard = () => {
                 Phone Number
               </SubTitle>
               <SubTitle style={{ color: "#6C6C6C", fontSize: "16px" }}>
-                {user.phoneNumber ? user.phoneNumber : "N/A"}
+                {user?.phonenumber ? user?.phonenumber : "N/A"}
               </SubTitle>
             </InfoCard>
           </InfoContainer>

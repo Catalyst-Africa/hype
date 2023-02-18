@@ -1,37 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { SubTitle } from "@/styles/reusable/elements.styled";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { getAdminStatistics } from "@/setup/redux/slices/app/extraReducers";
+import { useGetAdminStatisticsQuery } from "@/setup/redux/slices/api/nestedApis/adminApi";
 
 const TopStats = () => {
-  const dispatch = useDispatch();
-  const data = useSelector((state) => state.app);
-
-  useEffect(() => {
-    dispatch(getAdminStatistics());
-  }, []);
-
+  const { data } = useGetAdminStatisticsQuery();
   const Stats = [
     {
       name: "Users",
-      count: data.totalUser || 0,
+      count: data?.[0]?.users || 0,
       link: "/admin/users",
     },
     {
       name: "Sent Hypes",
-      count: data.sentHypes || 0,
+      count: data?.[0]?.sentHypes || 0,
       link: "/admin/sent-hypes",
     },
     {
       name: "Recieved Hypes",
-      count: data.sentHypes || 0,
+      count: data?.[0]?.sentHypes || 0,
     },
     {
       name: "Gems Used",
-      count: data.gemsUsed || 0,
+      count: data?.[0]?.gemsUsed || 0,
     },
   ];
   return (

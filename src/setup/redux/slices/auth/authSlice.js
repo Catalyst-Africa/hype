@@ -72,36 +72,13 @@ const authSlice = createSlice({
         state.loading = false;
         toast.error(extractErrorMessage(action.error.message));
       })
-
-      .addCase(signUp.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(signUp.fulfilled, (state) => {
-        state.loading = false;
-        toast.success("Successfully created an account!");
-      })
-      .addCase(signUp.rejected, (state, action) => {
-        state.loading = false;
-        toast.error(extractErrorMessage(action.error.message));
-      })
-      .addCase(sendEmailVerificationLink.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(sendEmailVerificationLink.fulfilled, (state) => {
-        state.loading = false;
-        toast.success("Verification link resent to your email");
-      })
-      .addCase(sendEmailVerificationLink.rejected, (state, action) => {
-        state.loading = false;
-        toast.error(extractErrorMessage(action.error.message));
-      })
       .addCase(verifyEmail.pending, (state) => {
         state.loading = true;
       })
       .addCase(verifyEmail.fulfilled, (state, action) => {
         state.loading = false;
         state.user.emailVerified = action.payload;
-        toast.success("Email verified successfully");
+        // toast.success("Email verified successfully");
       })
       .addCase(verifyEmail.rejected, (state, action) => {
         state.loading = false;

@@ -1,18 +1,31 @@
-import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 
 import AuthContainer from "@/pages/auth/components/AuthContainer";
 import { Button, FluidTitle, Loader } from "@/styles/reusable/elements.styled";
 import verifyicon from "@/assets/verify.svg";
-
 import {
-  sendEmailVerificationLink,
-  logOut,
-} from "@/setup/redux/slices/auth/extraReducers";
+  useSendEmailVerificationLinkMutation,
+  useLogOutMutation,
+} from "@/setup/redux/slices/api/nestedApis/authApi";
+import { toast } from "react-hot-toast";
+import { extractErrorMessage } from "@/helpers/helpers";
 
 const VerifyEmail = () => {
-  const dispatch = useDispatch();
-  const loading = useSelector((state) => state.auth.loading);
+  const [sendEmailVerificationLink, { isLoading: verificationIsLoading }] =
+    useSendEmailVerificationLinkMutation();
+  const [logOut, { isLoading: logoutIsLoading }] = useLogOutMutation();
+
+  const handleResend = async () => {
+    try {
+      await sendEmailVerificationLink().unwrap();
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  const handleLogout = async () => {
+    await logOut();
+  };
 
   return (
     <>
@@ -34,18 +47,10 @@ const VerifyEmail = () => {
               <strong>Didn’t receive a link?</strong>
             </small>
           </div>
-          <Button
-            $fullWidth
-            type="button"
-            onClick={() => dispatch(sendEmailVerificationLink())}
-          >
-            {loading ? <Loader /> : "Resend Verification Link"}
+          <Button $fullWidth type="button" onClick={() => handleResend()}>
+            {verificationIsLoading ? <Loader /> : "Resend Verification Link"}
           </Button>
-          <Button
-            $type="outlined"
-            type="button"
-            onClick={() => dispatch(logOut())}
-          >
+          <Button $type="outlined" type="button" onClick={() => handleLogout()}>
             Sign Out
           </Button>
         </VerifyEmailContainer>

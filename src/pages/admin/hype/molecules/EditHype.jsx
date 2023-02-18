@@ -4,52 +4,41 @@ import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { TextAreaInputGroup, SelectInputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
-import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/styles/reusable/elements.styled";
 import sendhypebg from "@/assets/sendhypebg.png";
 import { Loader } from "@/styles/reusable/elements.styled";
 import { useLocation } from "react-router-dom";
-import { updateHype } from "@/setup/redux/slices/app/extraReducers";
+import { toast } from "react-hot-toast";
+import { extractErrorMessage } from "@/helpers/helpers";
+import { useUpdateHypeMutation } from "@/setup/redux/slices/api/nestedApis/adminApi";
 
 const EditHype = () => {
-  const user = useSelector((state) => state.auth.user);
-  const firstname = user?.displayName?.split(" ")[0];
   const location = useLocation();
-  const dispatch = useDispatch();
-  updateHype;
+  const [updateHype, { isLoading }] = useUpdateHypeMutation();
 
   //Loading for when adding hypes
-  const [loadingAdd, setLoadingAdd] = useState(false);
+  // const [loadingAdd, setLoadingAdd] = useState(false);
 
   //Hypes Initial Data
   const [initialData, setInitialData] = useState({
-    hypeCategory: location.state?.hypeData?.category,
-    hype: location.state?.hypeData?.message,
-    hypeId: location.state?.hypeData?.id,
+    category: location.state?.hypeData?.category,
+    id: location.state?.hypeData?.id,
+    message: location.state?.hypeData?.message,
   });
 
-  const {
-    errors,
-    handleBlur,
-    setFormData,
-    handleChange,
-    checkIsValid,
-    formData,
-  } = useFormValidation(initialData, validation);
+  const { errors, handleBlur, handleChange, checkIsValid, formData } =
+    useFormValidation(initialData, validation);
 
   //Handle Add Hype Submit
   const handleEditHypeSubmit = async (e) => {
     e.preventDefault();
-
-    dispatch(updateHype({ formData, initialData }));
-    setLoadingAdd(true);
-
-    setLoadingAdd(false);
-    // setFormData({
-    //   hypeCategory: "",
-    //   hype: "",
-    //   hypeId: "",
-    // });
+    try {
+      await updateHype({ alteredValue: formData, staticValue: initialData });
+      toast.success("Hype successfully updated");
+    } catch (err) {
+      console.log(err);
+      toast.error(extractErrorMessage(err.message));
+    }
   };
 
   return (
@@ -69,16 +58,16 @@ const EditHype = () => {
                 >
                   <SelectInputGroup
                     name="hypeCategory"
-                    id="hypeCategory"
+                    id="category"
                     onBlur={(e) => handleBlur(e)}
                     onChange={(e) => handleChange(e)}
-                    helperText={errors.hypeCategory}
-                    helperTextType={checkIsValid("hypeCategory")}
-                    value={formData.hypeCategory}
+                    helperText={errors.category}
+                    helperTextType={checkIsValid("category")}
+                    value={formData.category}
                     defaultValue="select"
                   >
-                    <option value={formData.hypeCategory}>
-                      {formData.hypeCategory}
+                    <option value={formData.category}>
+                      {formData.category}
                     </option>
                   </SelectInputGroup>
                 </InputContainer>
@@ -87,13 +76,13 @@ const EditHype = () => {
                 <InputContainer>
                   <TextAreaInputGroup
                     name="hype"
-                    id="hype"
+                    id="message"
                     placeholder="Hype message"
-                    value={formData.hype}
+                    value={formData.message}
                     onBlur={(e) => handleBlur(e)}
                     onChange={(e) => handleChange(e)}
                     helperText={errors.hype}
-                    helperTextType={checkIsValid("hype")}
+                    helperTextType={checkIsValid("message")}
                     rows={15}
                     readOnly
                   />
@@ -104,16 +93,16 @@ const EditHype = () => {
                 style={{
                   color: "#fff",
                   backgroundColor:
-                    initialData.hypeCategory && initialData.hype
+                    initialData.category && initialData.message
                       ? ""
                       : "#5E5E5E",
                 }}
                 disabled={
-                  initialData.hypeCategory && initialData.hype ? false : true
+                  initialData.category && initialData.message ? false : true
                 }
               >
                 <span style={{ display: "flex", gap: "10px" }}>
-                  {loadingAdd ? (
+                  {isLoading ? (
                     <Loader style={{ width: "20px", height: "20px" }} />
                   ) : (
                     ""

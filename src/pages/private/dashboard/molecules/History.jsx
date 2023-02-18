@@ -1,26 +1,31 @@
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { SubTitle } from "@/styles/reusable/elements.styled";
-import React, { useEffect } from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { BsCheck } from "react-icons/bs";
 import { BiEnvelope } from "react-icons/bi";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-  getSentHypeByUser,
-  receiveSentHypeByUser,
-} from "@/setup/redux/slices/app/extraReducers";
+  useGetSentHypeByUserQuery,
+  useGetReceivedHypeByUserQuery,
+} from "@/setup/redux/slices/api/nestedApis/userApi";
+import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
+import { auth } from "@/setup/firebase/firebase";
 
 const History = () => {
-  const user = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch();
-  const hype = useSelector((state) => state.app.usersSentHype);
-  const receivedHype = useSelector((state) => state.app.usersReceivedHype);
+  const { data: user } = useGetUserDataQuery();
 
-  useEffect(() => {
-    dispatch(getSentHypeByUser(user.uid));
-    user?.phoneNumber?.length > 0 && dispatch(receiveSentHypeByUser(user));
-  }, []);
+  const skip = useRef(true);
+  if (user?.phonenumber?.length > 0) skip.current = false;
+
+  const { data: hype } = useGetSentHypeByUserQuery(auth.currentUser.uid);
+  const { data: receivedHype } = useGetReceivedHypeByUserQuery(
+    user?.phonenumber,
+    {
+      skip: skip.current,
+    },
+  );
 
   return (
     <HistoryContainer>

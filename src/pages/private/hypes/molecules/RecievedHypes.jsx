@@ -1,5 +1,5 @@
 import { FluidTitle, SubTitle } from "@/styles/reusable/elements.styled";
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { FiEdit } from "react-icons/fi";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
@@ -8,20 +8,21 @@ import { Link } from "react-router-dom";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/styles/reusable/elements.styled";
 import { BsWhatsapp } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
-import { receiveSentHypeByUser } from "@/setup/redux/slices/app/extraReducers";
 import { useTimeStampToDate } from "../../../../hooks";
+import {
+  useGetReceivedHypeByUserQuery,
+  useGetUserDataQuery,
+} from "@/setup/redux/slices/api/nestedApis/userApi";
 
 const RecievedHypes = () => {
-  const dispatch = useDispatch();
-  const hypesList = useSelector((state) => state.app.usersReceivedHype);
-  const user = useSelector((state) => state.auth.user);
+  // const dispatch = useDispatch();
+  const { data: user } = useGetUserDataQuery();
+  const skip = useRef(true);
+  if (user?.phonenumber?.length > 0) skip.current = false;
 
-  useEffect(() => {
-    if (user?.phoneNumber?.length > 0) {
-      dispatch(receiveSentHypeByUser(user));
-    }
-  }, []);
+  const { data: hypesList } = useGetReceivedHypeByUserQuery(user?.phonenumber, {
+    skip: skip.current,
+  });
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -33,7 +34,7 @@ const RecievedHypes = () => {
       : hypesList.filter((item) => item.hypeId === selectedCategory);
 
   const itemsPerPage = 12;
-  const totalPages = Math.ceil(filteredHypes.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredHypes?.length / itemsPerPage);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -49,7 +50,7 @@ const RecievedHypes = () => {
   const currentHypes = filteredHypes?.slice(startIndex, endIndex);
 
   const uniqueHypesCategories = [
-    ...new Set(hypesList.map((item) => item.hypeId)),
+    ...new Set(hypesList?.map((item) => item.hypeId)),
   ];
 
   const handleDeleteOpenModal = () => {
@@ -71,7 +72,7 @@ const RecievedHypes = () => {
   return (
     <>
       <RecievedHypesContainer>
-        <FluidTitle>{`Recieved Hypes [${hypesList.length}]`}</FluidTitle>
+        <FluidTitle>{`Recieved Hypes [${hypesList?.length || 0}]`}</FluidTitle>
         <SelectHypeCategoryContainer>
           <SelectHypeCategory
             onChange={handleCategoryChange}
@@ -79,7 +80,7 @@ const RecievedHypes = () => {
           >
             <option value="All">All</option>
             {uniqueHypesCategories
-              ? uniqueHypesCategories.map((hype, index) => {
+              ? uniqueHypesCategories?.map((hype, index) => {
                   return (
                     <option key={index} value={hype}>
                       {hype}
@@ -90,7 +91,7 @@ const RecievedHypes = () => {
           </SelectHypeCategory>
         </SelectHypeCategoryContainer>
         <ViewHypesInnerContainer>
-          {currentHypes.length > 0 ? (
+          {currentHypes?.length > 0 ? (
             currentHypes
               .sort((a, b) => {
                 // Convert the timestamps to day-month-year-hours-minutes-seconds date strings
@@ -106,7 +107,7 @@ const RecievedHypes = () => {
                   return 0;
                 }
               })
-              .map((hype, index) => {
+              ?.map((hype, index) => {
                 const randomColor =
                   colors[Math.floor(Math.random() * colors.length)];
                 return (
@@ -172,7 +173,7 @@ const RecievedHypes = () => {
               color="#FFB328"
             />
           )}
-          {hypesList.length > 0 ? `${currentPage} of ${totalPages}` : ""}
+          {hypesList?.length > 0 ? `${currentPage} of ${totalPages}` : ""}
           {currentPage < totalPages && (
             <IoIosArrowForward
               onClick={() => handlePageChange(currentPage + 1)}

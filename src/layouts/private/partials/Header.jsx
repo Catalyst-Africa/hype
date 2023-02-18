@@ -4,10 +4,11 @@ import { AiOutlineSearch, AiFillBell } from "react-icons/ai";
 
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { Link } from "react-router-dom";
+import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
 
 const Header = () => {
-  const user = useSelector((state) => state.auth.user);
-  const firstname = user.displayName?.split(" ")[0];
+  const { data: user } = useGetUserDataQuery();
+  const firstname = user?.name?.split(" ")[0];
 
   return (
     <HeaderElement>
@@ -28,7 +29,7 @@ const Header = () => {
           <Profile>
             <span>{firstname}</span>
             <div>
-              <img src={user.photoURL} alt={user.displayName} />
+              <img src={user?.photoUrl} alt={user?.name} />
             </div>
           </Profile>
         </Link>

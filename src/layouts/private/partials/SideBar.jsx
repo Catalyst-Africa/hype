@@ -8,12 +8,12 @@ import { IoMdSettings } from "react-icons/io";
 import { BiGroup } from "react-icons/bi";
 import { Link, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
 
 const SideBar = () => {
-  const currentUser = useSelector((state) => state.auth.user);
-
+  const { data: currentUser } = useGetUserDataQuery();
   const creationTime = new Date(
-    currentUser.createdAt?.seconds * 1000,
+    currentUser.timeStamp?.seconds * 1000,
   ).toDateString();
   const date = [creationTime.split(" ")[1], creationTime.split(" ")[3]];
   return (

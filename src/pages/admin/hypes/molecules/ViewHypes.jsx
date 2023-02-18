@@ -1,5 +1,5 @@
 import { FluidTitle, SubTitle } from "@/styles/reusable/elements.styled";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FiEdit } from "react-icons/fi";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
@@ -7,23 +7,22 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/styles/reusable/elements.styled";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllHype, deleteHype } from "@/setup/redux/slices/app/extraReducers";
 import { useRef } from "react";
-import { deleteSingleUser } from "@/setup/redux/slices/auth/extraReducers";
+import {
+  useGetAllHypeQuery,
+  useDeleteHypeMutation,
+} from "@/setup/redux/slices/api/nestedApis/adminApi";
+import { toast } from "react-hot-toast";
+import { extractErrorMessage } from "@/helpers/helpers";
 
 const ViewHypes = () => {
-  const dispatch = useDispatch();
-  const hypesList = useSelector((state) => state.app.hypes);
+  const { data: hypesList } = useGetAllHypeQuery();
+  const [deleteHype, { isLoading }] = useDeleteHypeMutation();
   const deleteMessage = useRef("");
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isOpenDeleteHype, setIsOpenDeleteHype] = useState(false);
-
-  useEffect(() => {
-    dispatch(getAllHype());
-  }, [isOpenDeleteHype]);
 
   const filteredHypes =
     selectedCategory === "All"
@@ -57,15 +56,20 @@ const ViewHypes = () => {
   const handleDeleteCloseModal = () => {
     setIsOpenDeleteHype(false);
   };
-  const handleDeleteHype = () => {
-    dispatch(deleteHype(deleteMessage.current));
-    handleDeleteCloseModal();
+  const handleDeleteHype = async () => {
+    try {
+      await deleteHype(deleteMessage.current).unwrap();
+      toast.success("Hype deleted successfully!");
+      handleDeleteCloseModal();
+    } catch (err) {
+      toast.error(extractErrorMessage(err.message));
+    }
   };
 
   return (
     <>
       <ViewHypesContainer>
-        <FluidTitle>{`Hypes [${hypesList?.length}]`}</FluidTitle>
+        <FluidTitle>{`Hypes [${hypesList?.length || 0}]`}</FluidTitle>
         <SelectHypeCategoryContainer>
           <SelectHypeCategory
             onChange={handleCategoryChange}
@@ -120,7 +124,7 @@ const ViewHypes = () => {
               color="#FFB328"
             />
           )}
-          {currentPage} of {totalPages}
+          {hypesList?.length > 0 ? `${currentPage} of ${totalPages}` : ""}
           {currentPage < totalPages && (
             <IoIosArrowForward
               onClick={() => handlePageChange(currentPage + 1)}

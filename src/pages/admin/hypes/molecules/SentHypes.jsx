@@ -8,14 +8,12 @@ import { Link } from "react-router-dom";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/styles/reusable/elements.styled";
 import { BsWhatsapp } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getAllHypeSent } from "@/setup/redux/slices/app/extraReducers";
 import { useTimeStampToDate } from "@/hooks";
+import { useGetAllHypeSentQuery } from "@/setup/redux/slices/api/nestedApis/adminApi";
 
 const SentHypes = () => {
-  const dispatch = useDispatch();
-  const allHypes = useSelector((state) => state.app.allHypeSent);
+  const { data: allHypes = [] } = useGetAllHypeSentQuery();
   const hypesList = [...allHypes].sort((a, b) => {
     const dateA = a?.timeStamp?.seconds;
     const dateB = b?.timeStamp?.seconds;
@@ -31,9 +29,9 @@ const SentHypes = () => {
   });
   const currentLocation = window.location.pathname;
 
-  useEffect(() => {
-    dispatch(getAllHypeSent());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAllHypeSent());
+  // }, []);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isOpenDeleteHype, setIsOpenDeleteHype] = useState(false);
@@ -44,7 +42,7 @@ const SentHypes = () => {
       : hypesList.filter((item) => item.hypeId === selectedCategory);
 
   const itemsPerPage = 12;
-  const totalPages = Math.ceil(filteredHypes.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredHypes?.length / itemsPerPage);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -82,7 +80,7 @@ const SentHypes = () => {
   return (
     <>
       <SentHypesContainer>
-        <FluidTitle>{`Sent Hypes [${hypesList.length}]`}</FluidTitle>
+        <FluidTitle>{`Sent Hypes [${hypesList?.length || 0}]`}</FluidTitle>
         <SelectHypeCategoryContainer>
           <SelectHypeCategory
             onChange={handleCategoryChange}
@@ -90,7 +88,7 @@ const SentHypes = () => {
           >
             <option value="All">All</option>
             {uniqueHypesCategories
-              ? uniqueHypesCategories.map((hype, index) => {
+              ? uniqueHypesCategories?.map((hype, index) => {
                   return (
                     <option key={index} value={hype}>
                       {hype}
@@ -102,7 +100,7 @@ const SentHypes = () => {
         </SelectHypeCategoryContainer>
         <ViewHypesInnerContainer>
           {currentHypes
-            ? currentHypes.map((hype, index) => {
+            ? currentHypes?.map((hype, index) => {
                 const randomColor =
                   colors[Math.floor(Math.random() * colors.length)];
                 return (

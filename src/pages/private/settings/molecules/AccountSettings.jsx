@@ -1,37 +1,32 @@
 import { SubTitle } from "@/styles/reusable/elements.styled";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/styles/reusable/elements.styled";
 import { InputGroup, TextAreaInputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
-import { doc, updateDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db, storage } from "@/setup/firebase/firebase";
+import { storage } from "@/setup/firebase/firebase";
 import { OverlayLoader } from "@/components/ui";
 import { extractErrorMessage } from "@/helpers/helpers";
-import {
-  updateUserData,
-  updateUserDP,
-} from "@/setup/redux/slices/auth/extraReducers";
-import { updateLoading } from "@/setup/redux/slices/auth/authSlice";
-
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import {
+  useGetUserDataQuery,
+  useUpdateUserDataMutation,
+  useUpdateUserDPMutation,
+} from "@/setup/redux/slices/api/nestedApis/userApi";
+import { toast } from "react-hot-toast";
 
 const AccountSettings = () => {
-  const user = useSelector((state) => state.auth.user);
-  const loading = useSelector((state) => state.auth.loading);
-  const [submitted, setSubmitted] = useState(false);
-  const dispatch = useDispatch();
-  const firstname = user.displayName;
+  const { data: user, isLoading: dataRetrieving } = useGetUserDataQuery();
   const initialData = {
-    name: firstname,
-    email: user.email,
-    username: user.username,
-    phonenumber: user.phoneNumber || "",
-    bio: user.bio,
+    name: user?.name,
+    email: user?.email,
+    username: user?.username,
+    phonenumber: user?.phonenumber,
+    bio: user?.bio,
   };
+
   const {
     formData,
     errors,
@@ -41,16 +36,28 @@ const AccountSettings = () => {
     validateOnSubmit,
   } = useFormValidation(initialData, validation);
 
-  // Destructured form data
-  const { bio, username, phonenumber } = formData;
+  const [updateUserData, { isLoading: isUpdating }] =
+    useUpdateUserDataMutation();
+  const [updateUserDP, { isLoading: imageLoading }] = useUpdateUserDPMutation();
 
-  const [phoneNumber, setPhoneNumber] = useState(phonenumber);
+  const { bio, phonenumber, username } = formData;
+
+  const [phoneNumber, setPhoneNumber] = useState(initialData?.phonenumber);
 
   // Handle Submit for changes to user information
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(updateUserData({ user, bio, username, phonenumber: phoneNumber }));
-    dispatch(updateLoading());
+    try {
+      await updateUserData({
+        user,
+        bio,
+        username,
+        phonenumber: phoneNumber,
+      }).unwrap();
+      toast.success("Profile Successfully updated!");
+    } catch (err) {
+      toast.error(extractErrorMessage(err.message));
+    }
   };
 
   // Function to Pop-up browse computer
@@ -66,16 +73,18 @@ const AccountSettings = () => {
       const imageRef = ref(storage, `profilePhoto${user.username}`);
       await uploadBytes(imageRef, image);
       const url = await getDownloadURL(imageRef);
-      dispatch(updateUserDP(url));
-      dispatch(updateLoading());
-    } catch (err) {}
+      await updateUserDP(url).unwrap;
+      toast.success("Profile picture successfully updated");
+    } catch (err) {
+      toast.error(extractErrorMessage(err.message));
+    }
   };
 
   return (
     <AccountSettingsContainer>
       <SubTitle style={{ color: "#9D9D9D" }}>Your Profile Picture</SubTitle>
       <ProfilePhotoContainer>
-        <ProfilePhoto src={user.photoURL} alt={user.displayName} />
+        <ProfilePhoto src={user?.photoUrl} alt={user?.name} />
         <label htmlFor="upload">
           Upload New
           <input
@@ -99,10 +108,11 @@ const AccountSettings = () => {
               id="name"
               label="Name"
               placeholder="Name"
-              value={formData.name}
+              // value={formData?.name}
+              defaultValue={initialData?.name}
               onBlur={(e) => handleBlur(e)}
               onChange={(e) => handleChange(e)}
-              helperText={errors.name}
+              helperText={errors?.name}
               helperTextType={checkIsValid("name")}
               disabled
             />
@@ -113,10 +123,11 @@ const AccountSettings = () => {
               id="email"
               label="Email address"
               placeholder="Email address"
-              value={formData.email}
+              // value={formData?.email}
+              defaultValue={initialData?.email}
               onBlur={(e) => handleBlur(e)}
               onChange={(e) => handleChange(e)}
-              helperText={errors.email}
+              helperText={errors?.email}
               helperTextType={checkIsValid("email")}
               disabled
             />
@@ -129,10 +140,11 @@ const AccountSettings = () => {
               id="username"
               label="Username"
               placeholder="@Username"
-              value={formData.username}
+              // value={formData?.username}
+              defaultValue={initialData?.username}
               onBlur={(e) => handleBlur(e)}
               onChange={(e) => handleChange(e)}
-              helperText={errors.username}
+              helperText={errors?.username}
               helperTextType={checkIsValid("username")}
               maxLength="20"
             />
@@ -153,11 +165,13 @@ const AccountSettings = () => {
                     countryCallingCodeEditable={true}
                     placeholder="Enter phone number"
                     name="whatsappnumber"
+                    // value={phoneNumber}
                     value={phoneNumber}
                     onChange={(value) => setPhoneNumber(value)}
                   />
                 </PhoneInputGroup>
-                {phoneNumber && isValidPhoneNumber(phoneNumber || "") ? (
+                {formData.phonenumber &&
+                isValidPhoneNumber(initialData.phonenumber || "") ? (
                   ""
                 ) : (
                   <HelperText style={{ color: "#ff0000" }}>
@@ -175,7 +189,7 @@ const AccountSettings = () => {
               id="bio"
               label="Bio"
               placeholder="Bio"
-              value={formData.bio}
+              defaultValue={initialData?.bio}
               onBlur={(e) => handleBlur(e)}
               onChange={(e) => handleChange(e)}
               maxLength="200"
@@ -184,7 +198,7 @@ const AccountSettings = () => {
         </FormGroupContainer>
         <Button style={{ maxWidth: "200px" }}>Update Profile</Button>
       </Form>
-      {loading && <OverlayLoader transparent />}
+      {isUpdating && <OverlayLoader transparent />}
     </AccountSettingsContainer>
   );
 };

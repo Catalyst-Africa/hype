@@ -8,7 +8,7 @@ import {
   doc,
 } from "firebase/firestore";
 import styled from "styled-components";
-import { FluidTitle, SubTitle } from "@/styles/reusable/elements.styled";
+import { FluidTitle } from "@/styles/reusable/elements.styled";
 import {
   InputGroup,
   TextAreaInputGroup,
@@ -16,9 +16,8 @@ import {
 } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
-import { useSelector } from "react-redux";
 import { Button } from "@/styles/reusable/elements.styled";
-import sendhypebg from "@/assets/sendhypebg.png";
+import sendhypebg from "@/assets/sendhypebg.svg";
 import { BiRefresh } from "react-icons/bi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Loader } from "@/styles/reusable/elements.styled";
@@ -27,13 +26,22 @@ import { Link } from "react-router-dom";
 import { BiCheckbox, BiCheckboxSquare } from "react-icons/bi";
 import { AiFillBackward, AiFillForward } from "react-icons/ai";
 import { db } from "@/setup/firebase/firebase";
-import { useEffect } from "react";
 import "react-phone-number-input/style.css";
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+import {
+  useGetUserDataQuery,
+  useSendHypesMutation,
+} from "@/setup/redux/slices/api/nestedApis/userApi";
+import { useGetAllHypeAndCatQuery } from "@/setup/redux/slices/api/nestedApis/adminApi";
+import { toast } from "react-hot-toast";
+import { extractErrorMessage } from "@/helpers/helpers";
 
 const SendHype = () => {
-  const user = useSelector((state) => state.auth.user);
-  const firstname = user?.displayName?.split(" ")[0];
+  //Get data from the backend
+  const { data: hypes = [] } = useGetAllHypeAndCatQuery();
+  const [sendHypes, { isLoading: sending }] = useSendHypesMutation();
+  const { data: userData } = useGetUserDataQuery();
+  const firstname = userData?.name?.split(" ")[0];
 
   //Displayname toggle Send annonymous hype
   const [displayName, setDisplayName] = useState(true);
@@ -55,28 +63,6 @@ const SendHype = () => {
 
   //Loading for when sending hypes
   const [loadingSend, setLoadingSend] = useState(false);
-
-  const [hypes, setHypes] = useState([]);
-
-  //Get data from the backend
-  useEffect(() => {
-    const getAllHype = async () => {
-      const x = [];
-      try {
-        const querySnapshot = await getDocs(collection(db, "hype"));
-        querySnapshot.forEach((doc) => {
-          const id = doc.id;
-          x.push({ id, ...doc.data() });
-        });
-        setHypes(x);
-      } catch (err) {
-        err;
-      }
-    };
-    getAllHype();
-  }, []);
-
-  useEffect(() => {}, []);
 
   //Hypes Initial Data
   const [initialData, setInitialData] = useState({
@@ -193,64 +179,59 @@ const SendHype = () => {
     e.preventDefault();
     setLoadingSend(true);
 
-    // Add a new document with a generated id.
-    const docRef = await addDoc(collection(db, "sentHypes"), {
-      userId: user.uid,
-      ...initialData,
-      timeStamp: serverTimestamp(),
-      sender: displayName ? firstname : "",
-    });
+    try {
+      // Add a new document with a generated id.
+      await sendHypes({ user: userData, initialData, displayName }).unwrap();
 
-    const updateId = doc(db, "sentHypes", docRef.id);
-    await updateDoc(updateId, {
-      docId: docRef.id,
-    });
+      const streakTimer = setInterval(() => {
+        // Get current time and date
+        const now = new Date().getTime();
 
-    const streakTimer = setInterval(() => {
-      // Get current time and date
-      const now = new Date().getTime();
+        const x = serverTimestamp()?.seconds;
 
-      const x = serverTimestamp()?.seconds;
+        // distance between the current time and the countdown date
+        const distance = x - now;
 
-      // distance between the current time and the countdown date
-      const distance = x - now;
+        if (distance < 1) {
+          clearInterval(streakTimer);
 
-      if (distance < 1) {
-        clearInterval(streakTimer);
+          const newTimer = setInterval(async () => {
+            const next24Hours = new Date().getTime() + 86400;
+            const now = new Date().getTime();
 
-        const newTimer = setInterval(async () => {
-          const next24Hours = new Date().getTime() + 86400;
-          const now = new Date().getTime();
+            const newDistance = next24Hours - now;
 
-          const newDistance = next24Hours - now;
+            if (newDistance >= 0) {
+              const updateStreak = doc(db, "users", user.uid);
+              await updateDoc(updateStreak, {
+                streak: Number(user?.streak) + 1,
+              });
+            } else {
+              clearInterval(newTimer);
+              const updateStreak = doc(db, "users", user.uid);
+              await updateDoc(updateStreak, {
+                streak: 1,
+              });
+            }
+          }, 1000);
+        }
+      }, 1000);
 
-          if (newDistance >= 0) {
-            const updateStreak = doc(db, "users", user.uid);
-            await updateDoc(updateStreak, {
-              streak: Number(user?.streak) + 1,
-            });
-          } else {
-            clearInterval(newTimer);
-            const updateStreak = doc(db, "users", user.uid);
-            await updateDoc(updateStreak, {
-              streak: 1,
-            });
-          }
-        }, 1000);
-      }
-    }, 1000);
-
-    setInitialData({
-      name: "",
-      selecthype: "",
-      hype: "",
-      selectsocial: "",
-      whatsappnumber: "",
-      smsnumber: "",
-    });
-    setToggleModal(true);
-    setSelectedHypesCategories({});
-    setLoadingSend(false);
+      setInitialData({
+        name: "",
+        selecthype: "",
+        hype: "",
+        selectsocial: "",
+        whatsappnumber: "",
+        smsnumber: "",
+      });
+      setToggleModal(true);
+      toast.success(`Your Hype is on it's way to ${initialData.name}`);
+      setSelectedHypesCategories({});
+      setLoadingSend(false);
+    } catch (err) {
+      toast.error(extractErrorMessage(err.message));
+    }
   };
 
   return (
@@ -510,16 +491,14 @@ const SendHype = () => {
       </SendHypeContainer>
       {toggleModal ? (
         <SentHypeModalContainer>
-          <CloseModalButton>
-            <Link to="/dashboard">
-              <AiFillCloseCircle
-                color="#FFB328"
-                cursor="pointer"
-                onClick={handleToggleModal}
-                size="50px"
-              />
-            </Link>
-          </CloseModalButton>
+          <Link to="/dashboard">
+            <AiFillCloseCircle
+              color="#FFB328"
+              cursor="pointer"
+              onClick={handleToggleModal}
+              size="50px"
+            />
+          </Link>
 
           <Modal>
             <img src={hypesent} alt="hypesent" width="80%" />
@@ -534,7 +513,6 @@ const SendHype = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {" "}
                 feedback
               </a>
             </SubTitle>
@@ -677,13 +655,15 @@ const SentHypeModalContainer = styled.div`
   text-align: center;
   border-radius: 10px;
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12);
-`;
-const CloseModalButton = styled.div`
+
   //use svg or a tag depending on if the react icon is nested inside the Link tag
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  a {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
 `;
+
 const Modal = styled.div`
   display: flex;
   flex-direction: column;

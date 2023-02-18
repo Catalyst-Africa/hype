@@ -6,15 +6,15 @@ import { BiLogOut } from "react-icons/bi";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { Link } from "react-router-dom";
 import { logOut } from "@/setup/redux/slices/auth/extraReducers";
+import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
+import { signOut } from "firebase/auth";
 
 const Header = () => {
-  const user = useSelector((state) => state.auth.user);
-  const firstname = user.displayName?.split(" ")[0];
+  const { data: user } = useGetUserDataQuery();
+  const firstname = user?.name?.split(" ")[0];
 
-  const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    dispatch(logOut());
+  const handleLogout = async () => {
+    await signOut();
   };
 
   return (
@@ -22,8 +22,8 @@ const Header = () => {
       <Greeting>
         <FluidTitle>
           {document.body.clientWidth <= 960
-            ? `Hello, ${firstname}`
-            : `Hello, ${firstname || "User"}`}
+            ? `Hello, ${firstname || "Admin"}`
+            : `Hello, ${firstname || "Admin"}`}
           !
         </FluidTitle>
       </Greeting>
@@ -43,7 +43,7 @@ const Header = () => {
           <Profile>
             <span>{firstname}</span>
             <div>
-              <img src={user.photoURL} alt={user.displayName} />
+              <img src={user?.photoUrl} alt={user?.name} />
             </div>
           </Profile>
           <BiLogOut color="#ff0000" onClick={handleLogout} />

@@ -8,19 +8,14 @@ import { Link } from "react-router-dom";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/styles/reusable/elements.styled";
 import { BsWhatsapp } from "react-icons/bs";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getSentHypeByUser } from "@/setup/redux/slices/app/extraReducers";
+import { useSelector } from "react-redux";
 import { useTimeStampToDate } from "../../../../hooks";
+import { useGetSentHypeByUserQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
 
 const SentHypes = () => {
-  const dispatch = useDispatch();
-  const hypesList = useSelector((state) => state.app.usersSentHype);
   const user = useSelector((state) => state.auth.user);
-
-  useEffect(() => {
-    dispatch(getSentHypeByUser(user.uid));
-  }, []);
+  useGetSentHypeByUserQuery;
+  const { data: hypesList } = useGetSentHypeByUserQuery(user.uid);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -32,7 +27,7 @@ const SentHypes = () => {
       : hypesList.filter((item) => item.hypeId === selectedCategory);
 
   const itemsPerPage = 12;
-  const totalPages = Math.ceil(filteredHypes.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredHypes?.length / itemsPerPage);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -48,7 +43,7 @@ const SentHypes = () => {
   const currentHypes = filteredHypes?.slice(startIndex, endIndex);
 
   const uniqueHypesCategories = [
-    ...new Set(hypesList.map((item) => item.hypeId)),
+    ...new Set(hypesList?.map((item) => item.hypeId)),
   ];
   const handleDeleteOpenModal = () => {
     setIsOpenDeleteHype(true);
@@ -68,7 +63,7 @@ const SentHypes = () => {
   return (
     <>
       <SentHypesContainer>
-        <FluidTitle>{`Sent Hypes [${hypesList.length}]`}</FluidTitle>
+        <FluidTitle>{`Sent Hypes [${hypesList?.length || 0}]`}</FluidTitle>
         <SelectHypeCategoryContainer>
           <SelectHypeCategory
             onChange={handleCategoryChange}
@@ -87,7 +82,7 @@ const SentHypes = () => {
           </SelectHypeCategory>
         </SelectHypeCategoryContainer>
         <ViewHypesInnerContainer>
-          {currentHypes.length > 0 ? (
+          {currentHypes?.length > 0 ? (
             currentHypes
               .sort((a, b) => {
                 // Convert the timestamps to day-month-year-hours-minutes-seconds date strings
@@ -103,7 +98,7 @@ const SentHypes = () => {
                   return 0;
                 }
               })
-              .map((hype, index) => {
+              ?.map((hype, index) => {
                 const randomColor =
                   colors[Math.floor(Math.random() * colors.length)];
                 return (
@@ -162,7 +157,7 @@ const SentHypes = () => {
               color="#FFB328"
             />
           )}
-          {hypesList.length > 0 ? `${currentPage} of ${totalPages}` : ""}
+          {hypesList?.length > 0 ? `${currentPage} of ${totalPages}` : ""}
           {currentPage < totalPages && (
             <IoIosArrowForward
               onClick={() => handlePageChange(currentPage + 1)}
