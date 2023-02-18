@@ -230,7 +230,7 @@ const SendHype = () => {
   const [selectedContact, setSelectedContact] = useState(null);
 
   const handleContactChange = async () => {
-    const [contact] = await navigator.contacts.select(["name", "email", "tel"]);
+    const [contact] = await navigator?.contacts?.select(["name", "email", "tel"]);
     setSelectedContact(contact);
   };
 
