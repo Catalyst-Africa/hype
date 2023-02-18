@@ -258,6 +258,7 @@ const SendHype = () => {
       },
     );
   };
+  console.log(selectedHypesCategories);
   return (
     <>
       <SendHypeContainer style={{ opacity: toggleModal ? "0.1" : "" }}>
