@@ -112,6 +112,21 @@ const SendHype = () => {
         }
       } else {
         if (event?.target?.name === "whatsappnumber") {
+          navigator?.contacts?.pickContact(
+            (contact) => {
+              const phoneNumbers = contact?.phoneNumbers;
+              if (phoneNumbers && phoneNumbers.length > 0) {
+                setInitialData({
+                  ...initialData,
+                  whatsappnumber: inputValue || phoneNumbers[0]?.value,
+                  smsnumber: "",
+                });
+              }
+            },
+            (error) => {
+              console.error(error);
+            },
+          );
           setInitialData({
             ...initialData,
             whatsappnumber: inputValue,
