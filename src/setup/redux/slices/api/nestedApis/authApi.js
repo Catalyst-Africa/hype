@@ -153,7 +153,7 @@ const authApi = hypeApi.injectEndpoints({
         try {
           const response = await signOut(auth);
           toast.success("Successfully signed out");
-          return response;
+          return true;
         } catch (err) {
           toast.error(extractErrorMessage(err.message));
         }
