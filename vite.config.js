@@ -37,14 +37,6 @@ export default defineConfig({
             type: "image/png",
           },
         ],
-        permissions: {
-          android: {
-            requested: ["READ_CONTACTS"],
-          },
-          ios: {
-            requested: ["contacts"],
-          },
-        },
       },
     }),
   ],
