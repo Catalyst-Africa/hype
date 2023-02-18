@@ -16,7 +16,7 @@ export default defineConfig({
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
       },
-      includeAssets: ["favicon.png", "apple-touch-icon.png", "masked-icon.png"],
+      includeAssets: ["favicon.png", "apple-touch-icon.png"],
       manifest: {
         name: "Hype!",
         short_name: "Hype!",
@@ -37,6 +37,14 @@ export default defineConfig({
             type: "image/png",
           },
         ],
+        permissions: {
+          android: {
+            requested: ["READ_CONTACTS"],
+          },
+          ios: {
+            requested: ["contacts"],
+          },
+        },
       },
     }),
   ],

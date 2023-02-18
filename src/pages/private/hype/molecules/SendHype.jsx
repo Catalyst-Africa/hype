@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { serverTimestamp, updateDoc, doc } from "firebase/firestore";
 import styled from "styled-components";
-import { FluidTitle } from "@/styles/reusable/elements.styled";
+import { FluidTitle, SubTitle } from "@/styles/reusable/elements.styled";
 import {
   InputGroup,
   TextAreaInputGroup,
@@ -112,6 +112,21 @@ const SendHype = () => {
         }
       } else {
         if (event?.target?.name === "whatsappnumber") {
+          navigator?.contacts?.pickContact(
+            (contact) => {
+              const phoneNumbers = contact?.phoneNumbers;
+              if (phoneNumbers && phoneNumbers.length > 0) {
+                setInitialData({
+                  ...initialData,
+                  whatsappnumber: inputValue || phoneNumbers[0]?.value,
+                  smsnumber: "",
+                });
+              }
+            },
+            (error) => {
+              console.error(error);
+            },
+          );
           setInitialData({
             ...initialData,
             whatsappnumber: inputValue,
@@ -484,14 +499,16 @@ const SendHype = () => {
       </SendHypeContainer>
       {toggleModal ? (
         <SentHypeModalContainer>
-          <Link to="/dashboard">
-            <AiFillCloseCircle
-              color="#FFB328"
-              cursor="pointer"
-              onClick={handleToggleModal}
-              size="50px"
-            />
-          </Link>
+          <CloseButtonLink>
+            <Link to="/dashboard">
+              <AiFillCloseCircle
+                color="#FFB328"
+                cursor="pointer"
+                onClick={handleToggleModal}
+                size="50px"
+              />
+            </Link>
+          </CloseButtonLink>
 
           <Modal>
             <img src={hypesent} alt="hypesent" width="80%" />
@@ -499,16 +516,23 @@ const SendHype = () => {
             <br />
             <FluidTitle>hype sent</FluidTitle>
             <br />
-            <SubTitle>
-              We did like get your
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLScXnrHx9MVFbSZ57JnzHm6czkOUFSwndZ8sKEctEyPHvozEWA/viewform?usp=sf_link"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                feedback
-              </a>
-            </SubTitle>
+            <FeedBackContainer>
+              <SubTitle>
+                Take a minute to tell us how you feel about Hype.
+              </SubTitle>
+              <FeebackButtonContainer>
+                <a
+                  href="https://docs.google.com/forms/d/e/1FAIpQLScXnrHx9MVFbSZ57JnzHm6czkOUFSwndZ8sKEctEyPHvozEWA/viewform?usp=sf_link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Button>Yes</Button>
+                </a>
+                <Link to="/dashboard">
+                  <Button $type="outlined">Do it later</Button>
+                </Link>
+              </FeebackButtonContainer>
+            </FeedBackContainer>
           </Modal>
         </SentHypeModalContainer>
       ) : (
@@ -650,11 +674,12 @@ const SentHypeModalContainer = styled.div`
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.12);
 
   //use svg or a tag depending on if the react icon is nested inside the Link tag
-  a {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
+`;
+
+const CloseButtonLink = styled.a`
+  position: absolute;
+  top: 10px;
+  right: 10px;
 `;
 
 const Modal = styled.div`
@@ -701,4 +726,19 @@ const HelperText = styled.small`
   bottom: -20px;
   display: inline-block;
   color: #000;
+`;
+
+const FeedBackContainer = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 40px;
+`;
+
+const FeebackButtonContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
 `;
