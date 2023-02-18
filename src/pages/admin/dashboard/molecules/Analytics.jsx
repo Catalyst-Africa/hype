@@ -51,7 +51,7 @@ const Analytics = () => {
       },
       {
         label: "Sent Hypes",
-        data: [hypesListSent.length || 0],
+        data: [hypesListSent?.length || 0],
         backgroundColor: "#12B76A",
       },
     ],

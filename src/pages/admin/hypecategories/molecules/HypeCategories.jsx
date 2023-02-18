@@ -9,31 +9,30 @@ import { InputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { SubTitle } from "@/styles/reusable/elements.styled";
 import { validation } from "@/pages/auth/validation";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  addHypeCategories,
-  getAllHypeCategories,
-} from "@/setup/redux/slices/app/extraReducers";
+
 import { OverlayLoader } from "@/components/ui";
-import { useEffect } from "react";
 import { useRef } from "react";
-import { deleteHypeCategories } from "@/setup/redux/slices/app/extraReducers";
+import {
+  useAddHypeCategoryMutation,
+  useGetAllHypeCategoriesQuery,
+  useDeleteHypeCategoryMutation,
+} from "@/setup/redux/slices/api/nestedApis/adminApi";
+import { toast } from "react-hot-toast";
+import { extractErrorMessage } from "@/helpers/helpers";
 
 const HypeCategories = () => {
-  const dispatch = useDispatch();
+  const { data: hypeCategoriesList } = useGetAllHypeCategoriesQuery();
+  const [addHypeCategory, { isLoading: addHypeLoading }] =
+    useAddHypeCategoryMutation();
+  const [deleteHypeCategory, { isLoading: deleteHypeLoading }] =
+    useDeleteHypeCategoryMutation();
+
   const deleteCategoryRef = useRef();
-
-  useEffect(() => {
-    dispatch(getAllHypeCategories());
-  }, []);
-
-  const loading = useSelector((state) => state.app.adminLoading);
-  const hypeCategoriesList = useSelector((state) => state.app.hypeCategories);
 
   // Logic for pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(hypeCategoriesList.length / itemsPerPage);
+  const totalPages = Math.ceil(hypeCategoriesList?.length / itemsPerPage);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -73,23 +72,26 @@ const HypeCategories = () => {
 
   // Handler for adding new categories
   const handleAddCategory = async () => {
-    dispatch(addHypeCategories(formData.category));
-    loading === false &&
-      setTimeout(() => {
-        dispatch(getAllHypeCategories());
-      }, 3000);
-    setIsOpenAddCategory(false);
-    formData.category = "";
+    try {
+      await addHypeCategory(formData.category).unwrap();
+      setIsOpenAddCategory(false);
+      toast.success("Hype category added successfully");
+      formData.category = "";
+    } catch (err) {
+      toast.error(extractErrorMessage(err.message));
+    }
   };
 
   const handleEditCategory = () => {};
 
-  const handleDeleteCategory = () => {
-    dispatch(deleteHypeCategories(deleteCategoryRef.current));
-    setIsOpenDeleteEditCategory(false);
-    setTimeout(() => {
-      dispatch(getAllHypeCategories());
-    }, 3000);
+  const handleDeleteCategory = async () => {
+    try {
+      await deleteHypeCategory(deleteCategoryRef.current).unwrap();
+      setIsOpenDeleteEditCategory(false);
+      toast.success("Hype Category successfully deleted");
+    } catch (err) {
+      toast.error(extractErrorMessage(err.message));
+    }
   };
 
   const [initialData, setInitialData] = useState({
@@ -108,7 +110,7 @@ const HypeCategories = () => {
     <>
       <HypeCategoriesContainer>
         <FluidTitle>
-          Categories{` [${currentCategoriesList.length}]`}
+          Categories{` [${hypeCategoriesList?.length || 0}]`}
         </FluidTitle>
         <ButtonContainer>
           <Button onClick={handleAddOpenModal}>Add a Category</Button>
@@ -143,7 +145,10 @@ const HypeCategories = () => {
               color="#FFB328"
             />
           )}
-          {currentPage} of {totalPages}
+          {hypeCategoriesList?.length > 0
+            ? `${currentPage} of ${totalPages}`
+            : ""}
+          {/* {currentPage} of {totalPages} */}
           {currentPage < totalPages && (
             <IoIosArrowForward
               onClick={() => handlePageChange(currentPage + 1)}
@@ -216,7 +221,7 @@ const HypeCategories = () => {
           </ButtonUpdateContainer>
         </Modal>
       )}
-      {loading ? <OverlayLoader transparent /> : ""}
+      {addHypeLoading || deleteHypeLoading ? <OverlayLoader transparent /> : ""}
     </>
   );
 };

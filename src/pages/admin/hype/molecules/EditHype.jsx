@@ -12,38 +12,33 @@ import { useLocation } from "react-router-dom";
 import { updateHype } from "@/setup/redux/slices/app/extraReducers";
 import { toast } from "react-hot-toast";
 import { extractErrorMessage } from "@/helpers/helpers";
+import { useUpdateHypeMutation } from "@/setup/redux/slices/api/nestedApis/adminApi";
 
 const EditHype = () => {
   const location = useLocation();
   const [updateHype, { isLoading }] = useUpdateHypeMutation();
 
-  console.log(isLoading);
   //Loading for when adding hypes
   // const [loadingAdd, setLoadingAdd] = useState(false);
 
   //Hypes Initial Data
   const [initialData, setInitialData] = useState({
-    hypeCategory: location.state?.hypeData?.category,
-    hype: location.state?.hypeData?.message,
-    hypeId: location.state?.hypeData?.id,
+    category: location.state?.hypeData?.category,
+    id: location.state?.hypeData?.id,
+    message: location.state?.hypeData?.message,
   });
 
-  const {
-    errors,
-    handleBlur,
-    setFormData,
-    handleChange,
-    checkIsValid,
-    formData,
-  } = useFormValidation(initialData, validation);
+  const { errors, handleBlur, handleChange, checkIsValid, formData } =
+    useFormValidation(initialData, validation);
 
   //Handle Add Hype Submit
   const handleEditHypeSubmit = async (e) => {
     e.preventDefault();
     try {
-      await updateHype(formData, initialData);
+      await updateHype({ alteredValue: formData, staticValue: initialData });
       toast.success("Hype successfully updated");
     } catch (err) {
+      console.log(err);
       toast.error(extractErrorMessage(err.message));
     }
   };
@@ -65,16 +60,16 @@ const EditHype = () => {
                 >
                   <SelectInputGroup
                     name="hypeCategory"
-                    id="hypeCategory"
+                    id="category"
                     onBlur={(e) => handleBlur(e)}
                     onChange={(e) => handleChange(e)}
-                    helperText={errors.hypeCategory}
-                    helperTextType={checkIsValid("hypeCategory")}
-                    value={formData.hypeCategory}
+                    helperText={errors.category}
+                    helperTextType={checkIsValid("category")}
+                    value={formData.category}
                     defaultValue="select"
                   >
-                    <option value={formData.hypeCategory}>
-                      {formData.hypeCategory}
+                    <option value={formData.category}>
+                      {formData.category}
                     </option>
                   </SelectInputGroup>
                 </InputContainer>
@@ -83,13 +78,13 @@ const EditHype = () => {
                 <InputContainer>
                   <TextAreaInputGroup
                     name="hype"
-                    id="hype"
+                    id="message"
                     placeholder="Hype message"
-                    value={formData.hype}
+                    value={formData.message}
                     onBlur={(e) => handleBlur(e)}
                     onChange={(e) => handleChange(e)}
                     helperText={errors.hype}
-                    helperTextType={checkIsValid("hype")}
+                    helperTextType={checkIsValid("message")}
                     rows={15}
                     readOnly
                   />
@@ -100,16 +95,16 @@ const EditHype = () => {
                 style={{
                   color: "#fff",
                   backgroundColor:
-                    initialData.hypeCategory && initialData.hype
+                    initialData.category && initialData.message
                       ? ""
                       : "#5E5E5E",
                 }}
                 disabled={
-                  initialData.hypeCategory && initialData.hype ? false : true
+                  initialData.category && initialData.message ? false : true
                 }
               >
                 <span style={{ display: "flex", gap: "10px" }}>
-                  {isLoading === true ? (
+                  {isLoading ? (
                     <Loader style={{ width: "20px", height: "20px" }} />
                   ) : (
                     ""

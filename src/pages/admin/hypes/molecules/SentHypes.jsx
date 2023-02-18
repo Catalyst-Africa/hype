@@ -15,7 +15,6 @@ import { useGetAllHypeSentQuery } from "@/setup/redux/slices/api/nestedApis/admi
 
 const SentHypes = () => {
   const { data: allHypes = [] } = useGetAllHypeSentQuery();
-  console.log(allHypes);
   const hypesList = [...allHypes].sort((a, b) => {
     const dateA = a?.timeStamp?.seconds;
     const dateB = b?.timeStamp?.seconds;
@@ -82,7 +81,7 @@ const SentHypes = () => {
   return (
     <>
       <SentHypesContainer>
-        <FluidTitle>{`Sent Hypes [${hypesList?.length}]`}</FluidTitle>
+        <FluidTitle>{`Sent Hypes [${hypesList?.length || 0}]`}</FluidTitle>
         <SelectHypeCategoryContainer>
           <SelectHypeCategory
             onChange={handleCategoryChange}

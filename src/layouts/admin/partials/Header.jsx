@@ -22,8 +22,8 @@ const Header = () => {
       <Greeting>
         <FluidTitle>
           {document.body.clientWidth <= 960
-            ? `Hello, ${firstname}`
-            : `Hello, ${firstname || "User"}`}
+            ? `Hello, ${firstname || "Admin"}`
+            : `Hello, ${firstname || "Admin"}`}
           !
         </FluidTitle>
       </Greeting>

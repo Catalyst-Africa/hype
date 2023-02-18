@@ -3,29 +3,28 @@ import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { SubTitle } from "@/styles/reusable/elements.styled";
 import { Link } from "react-router-dom";
-import { useGetAdminStatisticsMutation } from "@/setup/redux/slices/api/nestedApis/adminApi";
+import { useGetAdminStatisticsQuery } from "@/setup/redux/slices/api/nestedApis/adminApi";
 
 const TopStats = () => {
-  const { data } = useGetAdminStatisticsMutation();
-
+  const { data } = useGetAdminStatisticsQuery();
   const Stats = [
     {
       name: "Users",
-      count: data.users || 0,
+      count: data?.[0]?.users || 0,
       link: "/admin/users",
     },
     {
       name: "Sent Hypes",
-      count: data.sentHypes || 0,
+      count: data?.[0]?.sentHypes || 0,
       link: "/admin/sent-hypes",
     },
     {
       name: "Recieved Hypes",
-      count: data.sentHypes || 0,
+      count: data?.[0]?.sentHypes || 0,
     },
     {
       name: "Gems Used",
-      count: data.gemsUsed || 0,
+      count: data?.[0]?.gemsUsed || 0,
     },
   ];
   return (

@@ -12,10 +12,17 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { CSVLink } from "react-csv";
 import styled from "styled-components";
+import {
+  useGetAllUsersQuery,
+  useDeleteUserMutation,
+} from "@/setup/redux/slices/api/nestedApis/adminApi";
+import { toast } from "react-hot-toast";
+import { extractErrorMessage } from "@/helpers/helpers";
 
 const Users = () => {
-  const dispatch = useDispatch();
-  const allUsers = useSelector((state) => state.app.users);
+  const { data: allUsers = [] } = useGetAllUsersQuery();
+  const [deleteUser, { isLoading: deleteLoading }] = useDeleteUserMutation();
+
   const usersList = [...allUsers].sort((a, b) => {
     const dateA = a?.timestamp?.seconds;
     const dateB = b?.timestamp?.seconds;
@@ -30,17 +37,12 @@ const Users = () => {
     }
   });
 
-  const email = useSelector((state) => state.auth.email);
   const userRef = useRef();
-
-  useEffect(() => {
-    dispatch(getAllUsers());
-  }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [isOpenDeleteUser, setIsOpenDeleteUser] = useState(false);
   const itemsPerPage = 10;
-  const totalPages = Math.ceil(usersList.length / itemsPerPage);
+  const totalPages = Math.ceil(usersList?.length / itemsPerPage);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -58,12 +60,13 @@ const Users = () => {
     setIsOpenDeleteUser(false);
   };
 
-  const handleDeleteUser = () => {
-    dispatch(deleteSingleUser(userRef.current));
-    handleDeleteCloseModal();
-    setTimeout(() => {
-      dispatch(getAllUsers());
-    }, 3000);
+  const handleDeleteUser = async () => {
+    try {
+      await deleteUser(userRef.current.uid).unwrap();
+      handleDeleteCloseModal();
+    } catch (err) {
+      toast.error(extractErrorMessage(err.message));
+    }
   };
 
   const headers = [
@@ -93,7 +96,7 @@ const Users = () => {
   return (
     <>
       <UserContainer>
-        <FluidTitle>{`Users [${usersList.length}]`}</FluidTitle>
+        <FluidTitle>{`Users [${usersList?.length || 0}]`}</FluidTitle>
         <ButtonContainer>
           <CSVLink {...csvreport}>
             <Button>Export Users</Button>
@@ -101,7 +104,7 @@ const Users = () => {
         </ButtonContainer>
         <br />
         {currentUsersList
-          ? currentUsersList.map((user, index) => {
+          ? currentUsersList?.map((user, index) => {
               return (
                 <UserCard key={index}>
                   <InfoContainer>
@@ -121,7 +124,7 @@ const Users = () => {
                       <RiDeleteBin2Line
                         color="#ff0000"
                         onClick={(e) => {
-                          handleDeleteShowModal(user.userId);
+                          handleDeleteShowModal(user);
                         }}
                       />
                     ) : (
@@ -141,7 +144,8 @@ const Users = () => {
               color="#FFB328"
             />
           )}
-          {currentPage} of {totalPages}
+          {allUsers?.length > 0 ? `${currentPage} of ${totalPages}` : ""}
+
           {currentPage < totalPages && (
             <IoIosArrowForward
               onClick={() => handlePageChange(currentPage + 1)}
@@ -155,7 +159,7 @@ const Users = () => {
         <Modal handleClose={handleDeleteCloseModal}>
           <FluidTitle>Delete User</FluidTitle>
           <br />
-          <SubTitle>Username</SubTitle>
+          <SubTitle>{userRef.current.name}</SubTitle>
           <p>Are you sure you want to delete this User?</p>
           <br />
           <ButtonDeleteContainer>

@@ -5,27 +5,26 @@ import { FluidTitle } from "@/styles/reusable/elements.styled";
 import { TextAreaInputGroup, SelectInputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
-import { useDispatch, useSelector } from "react-redux";
-import { addHype } from "@/setup/redux/slices/app/extraReducers";
 import { Button } from "@/styles/reusable/elements.styled";
 import sendhypebg from "@/assets/sendhypebg.svg";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Loader } from "@/styles/reusable/elements.styled";
 import hypesent from "../../../../assets/hypesent.svg";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { getAllHypeCategories } from "@/setup/redux/slices/app/extraReducers";
 import { useId } from "react";
+import { useAddHypeMutation } from "@/setup/redux/slices/api/nestedApis/adminApi";
+import { useGetAllHypeCategoriesQuery } from "@/setup/redux/slices/api/nestedApis/adminApi";
+import { toast } from "react-hot-toast";
+import { extractErrorMessage } from "@/helpers/helpers";
 
 const AddHype = () => {
-  const user = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch();
+  const [addHype, { isLoading }] = useAddHypeMutation();
+  const { data: hypeCategories } = useGetAllHypeCategoriesQuery();
 
-  useEffect(() => {
-    dispatch(getAllHypeCategories());
-  }, []);
-  const hypeCategories = useSelector((state) => state.app.hypeCategories);
-  const firstname = user?.displayName?.split(" ")[0];
+  // useEffect(() => {
+  //   dispatch(getAllHypeCategories());
+  // }, []);
+  // const hypeCategories = useSelector((state) => state.app.hypeCategories);
 
   //Success Hype Modal
   const [toggleModal, setToggleModal] = useState(false);
@@ -66,22 +65,24 @@ const AddHype = () => {
   //Handle Add Hype Submit
   const handleAddHypeSubmit = async (e) => {
     e.preventDefault();
-    setLoadingAdd(true);
 
     // Dispatch AddHype action
-    dispatch(
-      addHype({
+    try {
+      await addHype({
         category: initialData.hypeCategory,
         hype: initialData.hype,
         id: initialData.hypeId,
-      }),
-    );
-    setInitialData({
-      hypeCategory: "",
-      hype: "",
-    });
-    setToggleModal(true);
-    setLoadingAdd(false);
+      }).unwrap();
+
+      toast.success("Hype successfully added");
+      setInitialData({
+        hypeCategory: "",
+        hype: "",
+      });
+      setToggleModal(true);
+    } catch (err) {
+      toast.error(extractErrorMessage(err.message));
+    }
   };
 
   return (
@@ -148,7 +149,7 @@ const AddHype = () => {
                 }
               >
                 <span style={{ display: "flex", gap: "10px" }}>
-                  {loadingAdd ? (
+                  {isLoading ? (
                     <Loader style={{ width: "20px", height: "20px" }} />
                   ) : (
                     ""

@@ -119,13 +119,13 @@ export const deleteHype = createAsyncThunk(
     const docSnap = await getDoc(hypeRef);
 
     // Atomically remove a hype to the "hypes" array field.
-    await updateDoc(hypeRef, {
-      hypes: arrayRemove({
-        category: initialData.category,
-        id: initialData.id,
-        message: initialData.message,
-      }),
-    });
+    // await updateDoc(hypeRef, {
+    //   hypes: arrayRemove({
+    //     category: initialData.category,
+    //     id: initialData.id,
+    //     message: initialData.message,
+    //   }),
+    // });
   },
 );
 

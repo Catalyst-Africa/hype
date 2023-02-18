@@ -11,16 +11,18 @@ import {
   doc,
   collection,
   getCountFromServer,
+  arrayRemove,
+  deleteDoc,
 } from "firebase/firestore";
-import { db } from "@/setup/firebase/firebase";
+import { db, functions } from "@/setup/firebase/firebase";
+import { httpsCallable } from "firebase/functions";
 
 const adminApi = hypeApi.injectEndpoints({
   baseQuery: fakeBaseQuery(),
-  tagTypes: ["hype", "hypeCategory", "userHype"],
+  tagTypes: ["hype", "hypeCategory", "userHype", "user"],
   endpoints: (builder) => ({
     getAllUsers: builder.query({
       queryFn: async () => {
-        // try {
         const allUsers = [];
         const users = collection(db, "users");
         const usersSnap = await getDocs(users);
@@ -34,10 +36,17 @@ const adminApi = hypeApi.injectEndpoints({
           });
         });
         return { data: allUsers };
-        // } catch (err) {
-        //   toast.error(extractErrorMessage(err.message));
-        // }
       },
+      providesTags: ["user"],
+    }),
+    deleteUser: builder.mutation({
+      queryFn: async (user) => {
+        const deleteOneUser = httpsCallable(functions, "deleteUser");
+        deleteOneUser({ uid: user });
+        const userRef = doc(db, "users", user);
+        await deleteDoc(userRef);
+      },
+      invalidatesTags: ["user"],
     }),
     getAllHype: builder.query({
       queryFn: async () => {
@@ -57,91 +66,101 @@ const adminApi = hypeApi.injectEndpoints({
     }),
     addHype: builder.mutation({
       queryFn: async ({ category, hype, id }) => {
-        try {
-          const hypeRef = doc(db, "hype", category);
-          const docSnap = await getDoc(hypeRef);
+        // try {
+        const hypeRef = doc(db, "hype", category);
+        const docSnap = await getDoc(hypeRef);
 
-          // Atomically add a new hype to the "hypes" array field.
-          await updateDoc(hypeRef, {
-            hypes: arrayUnion({
-              id,
-              category,
-              message: hype,
-            }),
-          });
-          toast.success("Hype has been added successfully!");
-        } catch (err) {
-          toast.error(extractErrorMessage(err.message));
-        }
+        // Atomically add a new hype to the "hypes" array field.
+        await updateDoc(hypeRef, {
+          hypes: arrayUnion({
+            id,
+            category,
+            message: hype,
+          }),
+        });
+        return true;
       },
       invalidatesTags: ["hype"],
     }),
     updateHype: builder.mutation({
-      queryFn: async ({ formData, initialData }) => {
-        try {
-          const hypeRef = doc(db, "hype", formData.hypeCategory);
+      queryFn: async ({ alteredValue, staticValue }) => {
+        console.log(alteredValue);
+        console.log(staticValue);
+        const hypeRef = doc(db, "hype", staticValue.category);
+        const docSnap = await getDoc(hypeRef);
 
-          // Atomically remove a hype to the "hypes" array field.
-          await updateDoc(hypeRef, {
-            hypes: arrayRemove({
-              category: initialData.hypeCategory,
-              id: initialData.hypeId,
-              message: initialData.hype,
-            }),
-          });
+        // Atomically remove a hype to the "hypes" array field.
+        await updateDoc(hypeRef, {
+          hypes: arrayRemove({
+            category: staticValue.category,
+            id: staticValue.id,
+            message: staticValue.message,
+          }),
+        });
 
-          // Atomically add a new hype to the "hypes" array field.
-          await updateDoc(hypeRef, {
-            hypes: arrayUnion({
-              id: formData.hypeId,
-              category: formData.hypeCategory,
-              message: formData.hype,
-            }),
-          });
-          toast.success("Hype has been updated successfully!");
-        } catch (err) {
-          toast.error(extractErrorMessage(err.message));
-        }
+        // Atomically add a new hype to the "hypes" array field.
+        await updateDoc(hypeRef, {
+          hypes: arrayUnion({
+            category: alteredValue.category,
+            id: alteredValue.id,
+            message: alteredValue.message,
+          }),
+        });
+        return true;
       },
       invalidatesTags: ["hype"],
     }),
     deleteHype: builder.mutation({
-      queryFn: async (initialData) => {
-        try {
-          const hypeRef = doc(db, "hype", initialData.category);
-          const docSnap = await getDoc(hypeRef);
+      queryFn: async (hype) => {
+        const hypeRef = doc(db, "hype", hype.category);
+        const docSnap = await getDoc(hypeRef);
 
-          // Atomically remove a hype to the "hypes" array field.
-          await updateDoc(hypeRef, {
-            hypes: arrayRemove({
-              category: initialData.category,
-              id: initialData.id,
-              message: initialData.message,
-            }),
-          });
-          toast.success("Hype deleted successfully!");
-        } catch (err) {
-          toast.error(extractErrorMessage(err.message));
-        }
+        // Atomically remove a hype to the "hypes" array field.
+        await updateDoc(hypeRef, {
+          hypes: arrayRemove({
+            category: hype.category,
+            id: hype.id,
+            message: hype.message,
+          }),
+        });
+        return true;
       },
       invalidatesTags: ["hype"],
     }),
     getAllHypeCategories: builder.query({
       queryFn: async () => {
-        try {
-          const allHypeCategories = [];
-          const hypeCategories = collection(db, "hype");
-          const hypeCategoriesSnap = await getDocs(hypeCategories);
-          hypeCategoriesSnap.forEach((hypeCategory) => {
-            id = hypeCategory.id;
-            allHypeCategories.push(id);
-          });
-          return { data: allHypeCategories };
-        } catch (err) {
-          toast.error(extractErrorMessage(err));
-        }
+        const allHypeCategories = [];
+        const hypeCategories = collection(db, "hype");
+        const hypeCategoriesSnap = await getDocs(hypeCategories);
+        hypeCategoriesSnap.forEach((hypeCategory) => {
+          const id = hypeCategory.id;
+          allHypeCategories.push(id);
+        });
+        return { data: allHypeCategories };
       },
       providesTags: ["hypeCategory"],
+    }),
+    addHypeCategory: builder.mutation({
+      queryFn: async (hypeName) => {
+        const docRef = doc(db, "hype", hypeName);
+        const docSnap = await getDoc(docRef);
+
+        // If there are no hype with same name, create hype
+        if (!docSnap.exists()) {
+          await setDoc(doc(db, "hype", hypeName), { hypes: [] });
+        } else {
+          throw new Error("Hype Category already exists!");
+        }
+        return true;
+      },
+      invalidatesTags: ["hypeCategory"],
+    }),
+    deleteHypeCategory: builder.mutation({
+      queryFn: async (document) => {
+        await deleteDoc(doc(db, "hype", document));
+        return true;
+      },
+      invalidatesTags: ["hypeCategory"],
     }),
     getAllHypeAndCat: builder.query({
       queryFn: async () => {
@@ -154,8 +173,9 @@ const adminApi = hypeApi.injectEndpoints({
         });
         return { data: allHypeAndCat };
       },
+      invalidatesTags: ["hype", "hypeCategory"],
     }),
-    addHypeCategories: builder.mutation({
+    providesTags: builder.mutation({
       queryFn: async (hypeName) => {
         try {
           const docRef = doc(db, "hype", hypeName);
@@ -231,14 +251,16 @@ const adminApi = hypeApi.injectEndpoints({
 
 export const {
   useGetAllUsersQuery,
+  useDeleteUserMutation,
   useGetAllHypeQuery,
   useAddHypeMutation,
   useUpdateHypeMutation,
   useDeleteHypeMutation,
   useGetAllHypeCategoriesQuery,
-  useAddHypeCategoriesMutation,
+  useAddHypeCategoryMutation,
+  useDeleteHypeCategoryMutation,
   useGetAllHypeSentQuery,
   useGetAllHypeReceivedQuery,
   useGetAllHypeAndCatQuery,
-  useGetAdminStatisticsMutation,
+  useGetAdminStatisticsQuery,
 } = adminApi;
