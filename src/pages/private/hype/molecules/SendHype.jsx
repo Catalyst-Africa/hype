@@ -505,6 +505,17 @@ const SendHype = () => {
             <br />
             <br />
             <FluidTitle>hype sent</FluidTitle>
+            <br />
+            <SubTitle>
+              We did like get your
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLScXnrHx9MVFbSZ57JnzHm6czkOUFSwndZ8sKEctEyPHvozEWA/viewform?usp=sf_link"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                feedback
+              </a>
+            </SubTitle>
           </Modal>
         </SentHypeModalContainer>
       ) : (

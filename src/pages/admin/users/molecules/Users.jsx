@@ -1,6 +1,4 @@
 import Modal from "@/components/ui/Modal";
-import { getAllUsers } from "@/setup/redux/slices/app/extraReducers";
-import { deleteSingleUser } from "@/setup/redux/slices/auth/extraReducers";
 import { Button } from "@/styles/reusable/elements.styled";
 import { FluidTitle, SubTitle } from "@/styles/reusable/elements.styled";
 import React, { useState } from "react";

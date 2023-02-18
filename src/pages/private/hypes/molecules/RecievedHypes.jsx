@@ -1,5 +1,5 @@
 import { FluidTitle, SubTitle } from "@/styles/reusable/elements.styled";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { FiEdit } from "react-icons/fi";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
@@ -8,8 +8,6 @@ import { Link } from "react-router-dom";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/styles/reusable/elements.styled";
 import { BsWhatsapp } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
-import { receiveSentHypeByUser } from "@/setup/redux/slices/app/extraReducers";
 import { useTimeStampToDate } from "../../../../hooks";
 import {
   useGetReceivedHypeByUserQuery,

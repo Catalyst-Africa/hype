@@ -8,9 +8,7 @@ import { Link } from "react-router-dom";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/styles/reusable/elements.styled";
 import { BsWhatsapp } from "react-icons/bs";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getSentHypeByUser } from "@/setup/redux/slices/app/extraReducers";
+import { useSelector } from "react-redux";
 import { useTimeStampToDate } from "../../../../hooks";
 import { useGetSentHypeByUserQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
 

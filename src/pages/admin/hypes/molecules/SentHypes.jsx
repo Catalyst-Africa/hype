@@ -9,7 +9,6 @@ import Modal from "@/components/ui/Modal";
 import { Button } from "@/styles/reusable/elements.styled";
 import { BsWhatsapp } from "react-icons/bs";
 import { useEffect } from "react";
-import { getAllHypeSent } from "@/setup/redux/slices/app/extraReducers";
 import { useTimeStampToDate } from "@/hooks";
 import { useGetAllHypeSentQuery } from "@/setup/redux/slices/api/nestedApis/adminApi";
 

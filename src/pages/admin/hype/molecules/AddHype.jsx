@@ -6,7 +6,7 @@ import { TextAreaInputGroup, SelectInputGroup } from "@/components/ui";
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 import { Button } from "@/styles/reusable/elements.styled";
-import sendhypebg from "@/assets/sendhypebg.svg";
+import sendhypebg from "@/assets/sendhypebg.png";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Loader } from "@/styles/reusable/elements.styled";
 import hypesent from "../../../../assets/hypesent.svg";
