@@ -34,6 +34,7 @@ import {
 } from "@/setup/redux/slices/api/nestedApis/userApi";
 import { useGetAllHypeAndCatQuery } from "@/setup/redux/slices/api/nestedApis/adminApi";
 import { toast } from "react-hot-toast";
+import { extractErrorMessage } from "@/helpers/helpers";
 
 const SendHype = () => {
   //Get data from the backend
@@ -228,7 +229,9 @@ const SendHype = () => {
       toast.success(`Your Hype is on it's way to ${initialData.name}`);
       setSelectedHypesCategories({});
       setLoadingSend(false);
-    } catch (err) {}
+    } catch (err) {
+      toast.error(extractErrorMessage(err.message));
+    }
   };
 
   return (

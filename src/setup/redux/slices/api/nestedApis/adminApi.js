@@ -10,6 +10,7 @@ import {
   setDoc,
   doc,
   collection,
+  getCountFromServer,
 } from "firebase/firestore";
 import { db } from "@/setup/firebase/firebase";
 
@@ -19,40 +20,38 @@ const adminApi = hypeApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllUsers: builder.query({
       queryFn: async () => {
-        try {
-          const allUsers = [];
-          const users = collection(db, "users");
-          const usersSnap = await getDocs(users);
-          usersSnap.forEach((user) => {
-            // if (user.id !== auth.currentUser.uid) {
-            allUsers.push({
-              userId: user.id,
-              name: user.data().name,
-              email: user.data().email,
-              phone: user.data().phonenumber,
-              timestamp: user.data().timeStamp,
-            });
-            // }
+        // try {
+        const allUsers = [];
+        const users = collection(db, "users");
+        const usersSnap = await getDocs(users);
+        usersSnap.forEach((user) => {
+          allUsers.push({
+            userId: user.id,
+            name: user.data().name,
+            email: user.data().email,
+            phone: user.data().phonenumber,
+            timestamp: user.data().timeStamp,
           });
-          return allUsers;
-        } catch (err) {
-          toast.error(extractErrorMessage(err.message));
-        }
+        });
+        return { data: allUsers };
+        // } catch (err) {
+        //   toast.error(extractErrorMessage(err.message));
+        // }
       },
     }),
     getAllHype: builder.query({
       queryFn: async () => {
-        try {
-          let allHype = [];
-          const hypes = collection(db, "hype");
-          const hypeSnap = await getDocs(hypes);
-          hypeSnap.forEach((hype) => {
-            allHype = [...allHype, ...hype.data().hypes];
-          });
-          return { data: allHype };
-        } catch (err) {
-          toast.error(extractErrorMessage(err.message));
-        }
+        // try {
+        let allHype = [];
+        const hypes = collection(db, "hype");
+        const hypeSnap = await getDocs(hypes);
+        hypeSnap.forEach((hype) => {
+          allHype = [...allHype, ...hype.data().hypes];
+        });
+        return { data: allHype };
+        // } catch (err) {
+        //   toast.error(extractErrorMessage(err.message));
+        // }
       },
       providesTags: ["hype"],
     }),
@@ -176,35 +175,56 @@ const adminApi = hypeApi.injectEndpoints({
     }),
     getAllHypeSent: builder.query({
       queryFn: async () => {
-        try {
-          const allHypeSent = [];
-          const hypes = collection(db, "sentHypes");
-          const hypeSnap = await getDocs(hypes);
-          hypeSnap.forEach((hype) => {
-            allHypeSent.push(hype.data());
-          });
-          return allHypeSent;
-        } catch (err) {
-          toast.error(extractErrorMessage(err.message));
-        }
+        // try {
+        const allHypeSent = [];
+        const hypes = collection(db, "sentHypes");
+        const hypeSnap = await getDocs(hypes);
+        hypeSnap.forEach((hype) => {
+          allHypeSent.push(hype.data());
+        });
+        return { data: allHypeSent };
+        // } catch (err) {
+        //   toast.error(extractErrorMessage(err.message));
+        // }
       },
       providesTags: ["userHype"],
     }),
     getAllHypeReceived: builder.query({
       queryFn: async () => {
-        try {
-          const allHypeReceived = [];
-          const hypes = collection(db, "receivedHypes");
-          const hypeSnap = await getDocs(hypes);
-          hypeSnap.forEach((hype) => {
-            allHypeReceived.push(hype);
-          });
-          return allHypeReceived;
-        } catch (err) {
-          toast.error(extractErrorMessage(err.message));
-        }
+        // try {
+        const allHypeReceived = [];
+        const hypes = collection(db, "receivedHypes");
+        const hypeSnap = await getDocs(hypes);
+        hypeSnap.forEach((hype) => {
+          allHypeReceived.push(hype);
+        });
+        return { data: allHypeReceived };
+        // } catch (err) {
+        //   toast.error(extractErrorMessage(err.message));
+        // }
       },
       providesTags: ["userHype"],
+    }),
+    getAdminStatistics: builder.query({
+      queryFn: async () => {
+        const userData = [];
+        const totalUsers = collection(db, "users");
+        const totalSentHype = collection(db, "sentHypes");
+        const totalReceivedHype = collection(db, "receivedHypes");
+
+        const data = await Promise.all([
+          (await getCountFromServer(totalUsers)).data().count,
+          (await getCountFromServer(totalSentHype)).data().count,
+          (await getCountFromServer(totalReceivedHype)).data().count,
+        ]);
+
+        userData.push({
+          users: data[0],
+          sentHypes: data[1],
+          receivedHypes: data[2],
+        });
+        return { data: userData };
+      },
     }),
   }),
 });
@@ -220,4 +240,5 @@ export const {
   useGetAllHypeSentQuery,
   useGetAllHypeReceivedQuery,
   useGetAllHypeAndCatQuery,
+  useGetAdminStatisticsMutation,
 } = adminApi;

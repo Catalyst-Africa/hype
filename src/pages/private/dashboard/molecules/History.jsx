@@ -10,15 +10,18 @@ import {
   useGetSentHypeByUserQuery,
   useGetReceivedHypeByUserQuery,
 } from "@/setup/redux/slices/api/nestedApis/userApi";
+import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
+import { auth } from "@/setup/firebase/firebase";
 
 const History = () => {
-  const user = useSelector((state) => state.auth.user);
-  const skip = useRef(true);
-  if (user.phoneNumber.length > 0) skip.current = false;
+  const { data: user } = useGetUserDataQuery();
 
-  const { data: hype } = useGetSentHypeByUserQuery(user.uid);
+  const skip = useRef(true);
+  if (user?.phonenumber?.length > 0) skip.current = false;
+
+  const { data: hype } = useGetSentHypeByUserQuery(auth.currentUser.uid);
   const { data: receivedHype } = useGetReceivedHypeByUserQuery(
-    user.phoneNumber,
+    user?.phonenumber,
     {
       skip: skip.current,
     },

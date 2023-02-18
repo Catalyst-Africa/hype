@@ -1,5 +1,5 @@
 import { SubTitle } from "@/styles/reusable/elements.styled";
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import {
   Chart as ChartJS,
@@ -12,11 +12,10 @@ import {
 } from "chart.js";
 
 import { Bar } from "react-chartjs-2";
-import { useDispatch, useSelector } from "react-redux";
 import {
-  getAllUsers,
-  getAllHypeSent,
-} from "@/setup/redux/slices/app/extraReducers";
+  useGetAllUsersQuery,
+  useGetAllHypeSentQuery,
+} from "@/setup/redux/slices/api/nestedApis/adminApi";
 
 ChartJS.register(
   CategoryScale,
@@ -39,21 +38,15 @@ export const options = {
 const label = ["Statistics"];
 
 const Analytics = () => {
-  const dispatch = useDispatch();
-  const hypesListSent = useSelector((state) => state.app.allHypeSent);
-  const totalUsers = useSelector((state) => state.app.totalUser);
-
-  useEffect(() => {
-    dispatch(getAllUsers());
-    dispatch(getAllHypeSent());
-  }, []);
+  const { data: hypesListSent } = useGetAllHypeSentQuery();
+  const { data: totalUsers } = useGetAllUsersQuery();
 
   const data = {
     labels: label,
     datasets: [
       {
         label: "Total Users",
-        data: [totalUsers || 0],
+        data: [totalUsers?.length || 0],
         backgroundColor: "#36BFFA",
       },
       {

@@ -11,24 +11,20 @@ import { BsWhatsapp } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { receiveSentHypeByUser } from "@/setup/redux/slices/app/extraReducers";
 import { useTimeStampToDate } from "../../../../hooks";
-import { useGetReceivedHypeByUserQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
+import {
+  useGetReceivedHypeByUserQuery,
+  useGetUserDataQuery,
+} from "@/setup/redux/slices/api/nestedApis/userApi";
 
 const RecievedHypes = () => {
   // const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user);
+  const { data: user } = useGetUserDataQuery();
   const skip = useRef(true);
-  if (user.phoneNumber?.length > 0) skip.current = false;
+  if (user?.phonenumber?.length > 0) skip.current = false;
 
-  const { data: hypesList } = useGetReceivedHypeByUserQuery(user.phoneNumber, {
+  const { data: hypesList } = useGetReceivedHypeByUserQuery(user?.phonenumber, {
     skip: skip.current,
   });
-  // const hypesList = useSelector((state) => state.app.usersReceivedHype);
-
-  // useEffect(() => {
-  //   if (user?.phoneNumber?.length > 0) {
-  //     dispatch(receiveSentHypeByUser(user));
-  //   }
-  // }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");

@@ -1,5 +1,5 @@
 import { FluidTitle, SubTitle } from "@/styles/reusable/elements.styled";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FiEdit } from "react-icons/fi";
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
@@ -7,23 +7,19 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/styles/reusable/elements.styled";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllHype, deleteHype } from "@/setup/redux/slices/app/extraReducers";
+import { useDispatch } from "react-redux";
+import { deleteHype } from "@/setup/redux/slices/app/extraReducers";
 import { useRef } from "react";
-import { deleteSingleUser } from "@/setup/redux/slices/auth/extraReducers";
+import { useGetAllHypeQuery } from "@/setup/redux/slices/api/nestedApis/adminApi";
 
 const ViewHypes = () => {
   const dispatch = useDispatch();
-  const hypesList = useSelector((state) => state.app.hypes);
+  const { data: hypesList } = useGetAllHypeQuery();
   const deleteMessage = useRef("");
 
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [isOpenDeleteHype, setIsOpenDeleteHype] = useState(false);
-
-  useEffect(() => {
-    dispatch(getAllHype());
-  }, [isOpenDeleteHype]);
 
   const filteredHypes =
     selectedCategory === "All"

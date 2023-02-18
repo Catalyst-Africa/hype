@@ -192,7 +192,7 @@ export const getAdminStatistics = createAsyncThunk(
       sentHypes: data[1],
       receivedHypes: data[2],
     });
-    return userData;
+    return { userData };
   },
 );
 

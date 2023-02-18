@@ -10,16 +10,16 @@ import sendhypebg from "@/assets/sendhypebg.svg";
 import { Loader } from "@/styles/reusable/elements.styled";
 import { useLocation } from "react-router-dom";
 import { updateHype } from "@/setup/redux/slices/app/extraReducers";
+import { toast } from "react-hot-toast";
+import { extractErrorMessage } from "@/helpers/helpers";
 
 const EditHype = () => {
-  const user = useSelector((state) => state.auth.user);
-  const firstname = user?.displayName?.split(" ")[0];
   const location = useLocation();
-  const dispatch = useDispatch();
-  updateHype;
+  const [updateHype, { isLoading }] = useUpdateHypeMutation();
 
+  console.log(isLoading);
   //Loading for when adding hypes
-  const [loadingAdd, setLoadingAdd] = useState(false);
+  // const [loadingAdd, setLoadingAdd] = useState(false);
 
   //Hypes Initial Data
   const [initialData, setInitialData] = useState({
@@ -40,16 +40,12 @@ const EditHype = () => {
   //Handle Add Hype Submit
   const handleEditHypeSubmit = async (e) => {
     e.preventDefault();
-
-    dispatch(updateHype({ formData, initialData }));
-    setLoadingAdd(true);
-
-    setLoadingAdd(false);
-    // setFormData({
-    //   hypeCategory: "",
-    //   hype: "",
-    //   hypeId: "",
-    // });
+    try {
+      await updateHype(formData, initialData);
+      toast.success("Hype successfully updated");
+    } catch (err) {
+      toast.error(extractErrorMessage(err.message));
+    }
   };
 
   return (
@@ -113,7 +109,7 @@ const EditHype = () => {
                 }
               >
                 <span style={{ display: "flex", gap: "10px" }}>
-                  {loadingAdd ? (
+                  {isLoading === true ? (
                     <Loader style={{ width: "20px", height: "20px" }} />
                   ) : (
                     ""
