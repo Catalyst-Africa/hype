@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  collection,
-  getDocs,
-  addDoc,
-  serverTimestamp,
-  updateDoc,
-  doc,
-} from "firebase/firestore";
+import { serverTimestamp, updateDoc, doc } from "firebase/firestore";
 import styled from "styled-components";
 import { FluidTitle } from "@/styles/reusable/elements.styled";
 import {
@@ -17,7 +10,7 @@ import {
 import { useFormValidation } from "@/hooks";
 import { validation } from "@/pages/auth/validation";
 import { Button } from "@/styles/reusable/elements.styled";
-import sendhypebg from "@/assets/sendhypebg.svg";
+import sendhypebg from "../../../../assets/sendhypebg.png";
 import { BiRefresh } from "react-icons/bi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Loader } from "@/styles/reusable/elements.styled";
