@@ -9,10 +9,11 @@ import { logOut } from "@/setup/redux/slices/auth/extraReducers";
 import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
 import { store } from "@/setup/redux/store";
 import { hypeApi } from "@/setup/redux/slices/api/hypeApi";
+import { auth } from "@/setup/firebase/firebase";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const { data: user } = useGetUserDataQuery();
+  const { data: user } = auth.currentUser !== null && useGetUserDataQuery();
   const firstname = user?.name?.split(" ")[0];
 
   const handleLogout = () => {
