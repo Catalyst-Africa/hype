@@ -227,14 +227,6 @@ const SendHype = () => {
     }
   };
 
-  const [selectedContact, setSelectedContact] = useState(null);
-
-  const handleContactChange = async () => {
-    const [contact] = await navigator.contacts.select(["name", "email", "tel"]);
-    setSelectedContact(contact);
-  };
-
-
   return (
     <>
       <SendHypeContainer style={{ opacity: toggleModal ? "0.1" : "" }}>
@@ -531,12 +523,6 @@ const SendHype = () => {
       ) : (
         ""
       )}
-      <button onClick={handleContactChange}>Select Contact</button>
-      <input
-        type="text"
-        value={selectedContact ? selectedContact.name[0] : ""}
-        readOnly
-      />
     </>
   );
 };
