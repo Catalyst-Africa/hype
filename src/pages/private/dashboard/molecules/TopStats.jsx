@@ -10,9 +10,11 @@ import ProgressBar from "@/pages/private/components/ProgressBar";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
+import { auth } from "@/setup/firebase/firebase";
 
 const TopStats = () => {
-  const { data: currentUser } = useGetUserDataQuery();
+  const { data: currentUser } =
+    auth?.currentUser !== null && useGetUserDataQuery();
 
   const streak = currentUser?.streak;
   return (
