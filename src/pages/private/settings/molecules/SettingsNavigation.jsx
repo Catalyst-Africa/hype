@@ -1,6 +1,5 @@
 import { logOut } from "@/setup/redux/slices/auth/extraReducers";
-import { store } from "@/setup/redux/store";
-import { hypeApi } from "@/setup/redux/slices/api/hypeApi";
+
 import { FluidTitle, Button } from "@/styles/reusable/elements.styled";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -13,7 +12,6 @@ const SettingsNavigation = () => {
 
   const handleLogout = () => {
     dispatch(logOut());
-    store.dispatch(hypeApi.util.resetApiState());
   };
 
   return (
