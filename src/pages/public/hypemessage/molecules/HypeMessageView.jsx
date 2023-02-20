@@ -14,13 +14,24 @@ import birthdaybg from "../../../../assets/hypesbg/birthdaybg.svg";
 import birthdaybg1 from "../../../../assets/hypesbg/birthdaybg1.svg";
 import Header from "@/layouts/public/partials/Header";
 import { useGetUserDataQuery } from "@/setup/redux/slices/api/nestedApis/userApi";
+import { auth } from "@/setup/firebase/firebase";
 
 const HypeMessageView = () => {
   const [hype, setHype] = useState();
 
   const location = useLocation();
 
-  const { data: user } = useGetUserDataQuery();
+  const { data: user } = auth.currentUser !== null && useGetUserDataQuery();
+  // const {
+  //   data: firstname,
+  //   error,
+  //   isLoading,
+  // } = useGetUserDataQuery(undefined, {
+  //   selectFromResult: ({ data }) => ({
+  //     data: data?.name?.split(" ")[0],
+  //   }),
+  // });
+
   const firstname = user?.name?.split(" ")[0];
 
   const [width, setWidth] = useState(window.innerWidth);

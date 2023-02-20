@@ -41,6 +41,7 @@ const adminApi = hypeApi.injectEndpoints({
     }),
     deleteUser: builder.mutation({
       queryFn: async (user) => {
+        console.log(user);
         const deleteOneUser = httpsCallable(functions, "deleteUser");
         deleteOneUser({ uid: user });
         const userRef = doc(db, "users", user);
