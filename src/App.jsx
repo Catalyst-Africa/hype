@@ -13,6 +13,8 @@ import { OverlayLoader } from "@/components/ui";
 import { auth } from "@/setup/firebase/firebase";
 import { updateAuth } from "@/setup/redux/slices/app/appSlice";
 import { updateUser } from "@/setup/redux/slices/auth/authSlice";
+import { store } from "./setup/redux/store";
+import { hypeApi } from "./setup/redux/slices/api/hypeApi";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -26,6 +28,7 @@ const App = () => {
         dispatch(updateAuth(true));
         dispatch(updateUser({ ...user, adminRole }));
       } else {
+        store.dispatch(hypeApi.util.resetApiState());
         dispatch(updateAuth(false));
       }
     });

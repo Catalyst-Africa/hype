@@ -60,7 +60,8 @@ const Users = () => {
 
   const handleDeleteUser = async () => {
     try {
-      await deleteUser(userRef.current.uid).unwrap();
+      console.log(userRef.current.userId);
+      await deleteUser(userRef.current.userId).unwrap();
       handleDeleteCloseModal();
     } catch (err) {
       toast.error(extractErrorMessage(err.message));

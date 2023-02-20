@@ -110,13 +110,13 @@ const SendHype = () => {
           });
         }
       } else {
-        if (event?.target?.name === "whatsappnumber") {
-          setInitialData({
-            ...initialData,
-            whatsappnumber: inputValue,
-            smsnumber: "",
-          });
-        }
+        // if (event?.target?.name === "whatsappnumber") {
+        //   setInitialData({
+        //     ...initialData,
+        //     whatsappnumber: inputValue,
+        //     smsnumber: "",
+        //   });
+        // }
         // if (event?.target?.name === "smsnumber") {
         //   setInitialData({
         //     ...initialData,
