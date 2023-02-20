@@ -81,10 +81,9 @@ const SendHype = () => {
   //Handle Hypes Changes
   const handleInitialDataChange = (event) => {
     let inputValue = event?.target?.value;
-    setCurrentIndex(0);
-
     hypes?.forEach((hype) => {
       if (event?.target?.name === "selecthype") {
+        setCurrentIndex(0);
         if (event?.target?.value === "select") {
           setInitialData({
             ...initialData,
