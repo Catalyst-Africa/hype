@@ -1,3 +1,5 @@
+import { STREAK_DURATION } from "./config";
+
 export const extractErrorMessage = (errorString) => {
   const errorMessageRegex = /Firebase: Error \((.+)\)./;
   const errorMessageMatch =
@@ -11,4 +13,37 @@ export const extractErrorMessage = (errorString) => {
     return errorMessage;
   }
   return null;
+};
+
+export const updateStreak = (streak, lastInvokedTime) => {
+  let cstreak = streak;
+  const now = new Date().getTime();
+
+  console.log(cstreak, lastInvokedTime);
+
+  if (
+    !lastInvokedTime ||
+    lastInvokedTime === 0 ||
+    now > lastInvokedTime + STREAK_DURATION * 2
+  ) {
+    lastInvokedTime = now;
+    cstreak = 1;
+    console.log(lastInvokedTime);
+  } else if (now < lastInvokedTime + STREAK_DURATION) {
+    console.log(lastInvokedTime, streak);
+    return cstreak;
+  } else if (
+    now > lastInvokedTime + STREAK_DURATION &&
+    now < lastInvokedTime + STREAK_DURATION * 2
+  ) {
+    cstreak++;
+    lastInvokedTime = now;
+    console.log(cstreak, lastInvokedTime);
+  }
+
+  console.log(lastInvokedTime);
+  return {
+    cstreak,
+    lastInvokedTime,
+  };
 };

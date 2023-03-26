@@ -28,6 +28,8 @@ import {
 import { useGetAllHypeAndCatQuery } from "@/setup/redux/slices/api/nestedApis/adminApi";
 import { toast } from "react-hot-toast";
 import { extractErrorMessage } from "@/helpers/helpers";
+import { updateStreak } from "@/helpers/helpers";
+import { auth } from "@/setup/firebase/firebase";
 
 const SendHype = () => {
   //Get data from the backend
@@ -117,13 +119,7 @@ const SendHype = () => {
             smsnumber: "",
           });
         }
-        // if (event?.target?.name === "smsnumber") {
-        //   setInitialData({
-        //     ...initialData,
-        //     smsnumber: inputValue,
-        //     whatsappnumber: "",
-        //   });
-        // }
+
         if (/^[a-zA-Z0-9]+$/.test(inputValue) || inputValue === "") {
           setInitialData({
             ...initialData,
@@ -175,40 +171,6 @@ const SendHype = () => {
       // Add a new document with a generated id.
       await sendHypes({ user: userData, initialData, displayName }).unwrap();
 
-      const streakTimer = setInterval(() => {
-        // Get current time and date
-        const now = new Date().getTime();
-
-        const x = serverTimestamp()?.seconds;
-
-        // distance between the current time and the countdown date
-        const distance = x - now;
-
-        if (distance < 1) {
-          clearInterval(streakTimer);
-
-          const newTimer = setInterval(async () => {
-            const next24Hours = new Date().getTime() + 86400;
-            const now = new Date().getTime();
-
-            const newDistance = next24Hours - now;
-
-            if (newDistance >= 0) {
-              const updateStreak = doc(db, "users", user.uid);
-              await updateDoc(updateStreak, {
-                streak: Number(user?.streak) + 1,
-              });
-            } else {
-              clearInterval(newTimer);
-              const updateStreak = doc(db, "users", user.uid);
-              await updateDoc(updateStreak, {
-                streak: 1,
-              });
-            }
-          }, 1000);
-        }
-      }, 1000);
-
       setInitialData({
         name: "",
         selecthype: "",
@@ -219,6 +181,22 @@ const SendHype = () => {
       });
       setToggleModal(true);
       toast.success(`Your Hype is on it's way to ${initialData.name}`);
+
+      const { cstreak, lastInvokedTime } = updateStreak(
+        userData?.streak,
+        userData?.lastInvokedTime,
+      );
+
+      console.log(cstreak, lastInvokedTime);
+
+      console.log(lastInvokedTime);
+
+      const docRef = doc(db, "users", auth.currentUser.uid);
+      await updateDoc(docRef, {
+        streak: cstreak,
+        lastInvokedTime: lastInvokedTime,
+      });
+
       setSelectedHypesCategories({});
       setLoadingSend(false);
     } catch (err) {
@@ -513,7 +491,9 @@ const SendHype = () => {
                   <Button>Yes</Button>
                 </a>
                 <Link to="/dashboard">
-                  <Button $type="outlined">Do it later</Button>
+                  <Button style={{ color: "#ffb328" }} $type="outlined">
+                    Do it later
+                  </Button>
                 </Link>
               </FeebackButtonContainer>
             </FeedBackContainer>
@@ -660,7 +640,7 @@ const SentHypeModalContainer = styled.div`
   //use svg or a tag depending on if the react icon is nested inside the Link tag
 `;
 
-const CloseButtonLink = styled.a`
+const CloseButtonLink = styled.div`
   position: absolute;
   top: 10px;
   right: 10px;
@@ -717,6 +697,10 @@ const FeedBackContainer = styled.div`
   width: 100%;
   flex-direction: column;
   gap: 40px;
+
+  a {
+    color: #ffb328;
+  }
 `;
 
 const FeebackButtonContainer = styled.div`

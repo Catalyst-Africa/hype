@@ -67,6 +67,7 @@ const authApi = hypeApi.injectEndpoints({
               phonenumber: "",
               bio: "Hey there, I am active on Hype!",
               streak: 0,
+              lastInvokedTime: 0,
             });
 
             toast.success("Successfully signed in!");
@@ -112,6 +113,7 @@ const authApi = hypeApi.injectEndpoints({
             phonenumber: "",
             bio: "Hey there, I am active on Hype!",
             streak: 0,
+            lastInvokedTime: 0,
           });
         }
 

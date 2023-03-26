@@ -31,8 +31,8 @@ const TopStats = () => {
             </GemInnerBlock> */}
             <ProgressBlock>
               <ProgressTitle>
-                {streak ? "You’re on a streak" : "No streak yet"}, {streak || 0}{" "}
-                Days out of 7 days
+                {streak ? "You’re on a streak" : "No streak yet"}, {streak || 0}
+                Day(s) out of 7 days
               </ProgressTitle>
               <ProgressBar
                 bgcolor="#FFB328"
