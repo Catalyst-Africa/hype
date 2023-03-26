@@ -15,7 +15,6 @@ import {
 } from "@/setup/redux/slices/api/nestedApis/userApi";
 
 const RecievedHypes = () => {
-  // const dispatch = useDispatch();
   const { data: user } = useGetUserDataQuery();
   const skip = useRef(true);
   if (user?.phonenumber?.length > 0) skip.current = false;

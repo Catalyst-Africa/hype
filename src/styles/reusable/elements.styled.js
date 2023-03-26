@@ -109,7 +109,7 @@ export const Button = styled.button`
       case "outlined":
         return css`
           color: ${({ theme, disabled }) =>
-            disabled ? "rgba(28, 27, 31, 0.38)" : theme.color.main.default};
+            disabled ? "rgba(28, 27, 31, 0.38)" : "#fff"};
           border: 1px solid
             ${({ theme, disabled }) =>
               disabled ? "#CAC4D0" : theme.color.main.default};
